@@ -1,0 +1,12 @@
+package main.java.org.dungeon.game;
+
+public class TimeConstants {
+	
+	public static final int WALK_SUCCESS = 200;
+	public static final int WALK_BLOCKED = 2;
+	
+	public static final int REST_COMPLETE = 36000;
+	
+	public static final int BATTLE_TURN_DURATION = 30;
+
+}

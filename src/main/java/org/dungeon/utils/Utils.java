@@ -1,5 +1,6 @@
 package main.java.org.dungeon.utils;
 
+import java.awt.Color;
 import java.util.List;
 
 import main.java.org.dungeon.game.Engine;
@@ -56,6 +57,20 @@ public class Utils {
 		return chance > Engine.RANDOM.nextDouble();
 	}
 	
+	public static void printMissingArgumentsMessage() {
+		switch (Engine.RANDOM.nextInt(3)) {
+		case 0:
+			IO.writeString("Provide some arguments.", Color.BLUE);
+			break;
+		case 1:
+			IO.writeString("Missing arguments.", Color.BLUE);
+			break;
+		case 2:
+			IO.writeString("This command requires arguments.", Color.BLUE);
+			break;
+		}
+	}
+	
 	public static boolean startsWithIgnoreCase(String a, String b) {
 		return a.toLowerCase().startsWith(b.toLowerCase());
 	}
@@ -93,12 +108,31 @@ public class Utils {
 		return stringBuilder.toString();
 	}
 	
+	public static String join(String delimiter, String... elements) {
+		if (elements.length == 0) {
+			throw new IllegalArgumentException("elements must have at least one element.");
+		}
+		
+		StringBuilder sb = new StringBuilder(elements.length * (delimiter.length() + elements[0].length()) + 16);
+		sb.append(elements[0]);
+		
+		for (int i = 1; i < elements.length; i++) {
+			sb.append(delimiter).append(elements[i]);
+		}
+		
+		return sb.toString();
+	}
+	
 	public static void printAmbiguousSelectionMessage() {
 		if (Engine.RANDOM.nextBoolean()) {
 			IO.writeString("Provided input is ambiguous");
 		} else {
 			IO.writeString("More than one entity with this name could be found.");
 		}
+	}
+	
+	public static void printFailedToCreateDirectoryMessage(String directory) {
+		IO.writeString("Failed to create the " + directory + " directory.");
 	}
 
 }

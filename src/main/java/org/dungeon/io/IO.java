@@ -43,5 +43,31 @@ public final class IO {
 	public static void writeBattleString(String string, Color color) {
 		writeString(string, color, true, WRITE_BATTLE_STRING_WAIT);
 	}
+	
+	public static void writeNewLine() {
+		writeString("");
+	}
+	
+	public static void writeKeyValueString(String key, String value) {
+		writeKeyValueString(key, value, Constants.FORE_COLOR_NORMAL, Constants.FORE_COLOR_DARKER);
+	}
+	
+	public static void writeKeyValueString(String key, String value, Color textColor, Color fillColor) {
+		int dots = Constants.COLS - key.length() - value.length();
+		
+		if (dots < 0) {
+			throw new IllegalArgumentException("strings are too large");
+		}
+		
+		writeString(key, textColor, false);
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		for(; dots > 0; dots--) {
+			stringBuilder.append('.');
+		}
+		
+		writeString(stringBuilder.toString(), fillColor, false);
+		writeString(value, textColor, true);
+	}
 
 }

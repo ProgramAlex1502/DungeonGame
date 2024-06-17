@@ -6,12 +6,20 @@ public class GameState {
 	
 	private final World world;
 	
+	private Point heroPosition;
+	
 	public GameState() {
 		world = new World();
+		
+		heroPosition = new Point(0, 0);
 	}
 	
 	public World getWorld() {
 		return world;
+	}
+
+	public Point getHeroPosition() {
+		return heroPosition;
 	}
 
 }
