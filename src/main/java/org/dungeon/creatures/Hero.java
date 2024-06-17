@@ -177,5 +177,7 @@ public class Hero extends Creature {
 			return null;
 		}
 	}
+	
+	//TODO: AAAA Go here to continue 2
 
 }
