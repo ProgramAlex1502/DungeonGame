@@ -13,13 +13,20 @@ public class World implements Serializable {
 	private final WorldGenerator generator;
 	
 	private final HashMap<Point, Location> locations;
+	private final DateTime worldCreationDate;
 	
+	private DateTime worldDate;
+
 	public World() {
+		worldDate = new DateTime(1985, 6, 2, 6, 10);
+		worldCreationDate = worldDate.minusHours(6);
 		locations = new HashMap<Point, Location>();
 		generator = new WorldGenerator(this);
 	}
 
-	private DateTime worldDate;
+	public DateTime getWorldCreationDate() {
+		return worldCreationDate;
+	}
 	
 	public DateTime getWorldDate() {
 		return worldDate;

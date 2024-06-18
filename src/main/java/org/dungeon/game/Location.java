@@ -18,7 +18,7 @@ public class Location implements Serializable {
 	private final String name;
 	
 	private final List<Creature> creatures;
-	
+	private final List<Spawner> spawners;
 	private final LocationInventory items;
 	
 	private final double lightPermittivity;
@@ -28,7 +28,7 @@ public class Location implements Serializable {
 		this.name = preset.getName();
 		this.lightPermittivity = preset.getLightPermittivity();
 		this.creatures = new ArrayList<Creature>();
-		
+		this.spawners = new ArrayList<Spawner>(preset.getSpawners().size());
 		this.items = new LocationInventory();
 	}
 	
@@ -74,6 +74,22 @@ public class Location implements Serializable {
 	
 	public int getItemCount() {
 		return items.getItems().size();
+	}
+	
+	public void addItem(Item item) {
+		items.addItem(item);
+	}
+	
+	public void removeItem(Item item) {
+		items.removeItem(item);
+	}
+	
+	public void removeCreature(Creature creature) {
+		for (Spawner spawner : spawners) {
+			spawner.notifyKill(creature);
+		}
+		
+		creatures.remove(creature);
 	}
 	
 	public World getWorld() {

@@ -3,6 +3,10 @@ package main.java.org.dungeon.utils;
 import java.awt.Color;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+
 import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.game.Selectable;
 import main.java.org.dungeon.io.IO;
@@ -55,6 +59,10 @@ public class Utils {
 		}
 		
 		return chance > Engine.RANDOM.nextDouble();
+	}
+	
+	public static String dateDifferenceToString(DateTime start, DateTime end) {
+		Period period = new Period(start, end, PeriodType.yearMonthDay());
 	}
 	
 	public static void printMissingArgumentsMessage() {

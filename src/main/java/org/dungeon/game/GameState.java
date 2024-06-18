@@ -8,6 +8,8 @@ public class GameState {
 	
 	private Point heroPosition;
 	
+	private boolean usingBars;
+	
 	public GameState() {
 		world = new World();
 		
@@ -20,6 +22,10 @@ public class GameState {
 
 	public Point getHeroPosition() {
 		return heroPosition;
+	}
+	
+	public boolean isUsingBars() {
+		return usingBars;
 	}
 
 }

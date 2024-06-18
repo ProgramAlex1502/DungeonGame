@@ -69,5 +69,36 @@ public final class IO {
 		writeString(stringBuilder.toString(), fillColor, false);
 		writeString(value, textColor, true);
 	}
+	
+	public static void writeNamedBar(String name, double percentage, Color fore) {
+		if (percentage < 0.0 || percentage > 1.0) {
+			throw new IllegalArgumentException("percentage must be in the range [0.0, 1.0]");
+		}
+		
+		if (name.length() > Constants.BAR_NAME_LENGTH) {
+			throw new IllegalArgumentException("name is too long.");
+		}
+		
+		writeString(name, Constants.FORE_COLOR_NORMAL, false);
+		int size = Constants.COLS - Constants.BAR_NAME_LENGTH;
+		
+		int bars = (int) (size * percentage) + 1;
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i = 0; i < Constants.BAR_NAME_LENGTH - name.length(); i++) {
+			sb.append(' ');
+		}
+		
+		for(int i = 0; i < size; i++) {
+			if (i < bars) {
+				sb.append('|');
+			} else {
+				sb.append(' ');
+			}
+		}
+		
+		writeString(sb.toString(), fore, true);
+	}
 
 }
