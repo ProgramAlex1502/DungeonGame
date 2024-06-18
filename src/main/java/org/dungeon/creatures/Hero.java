@@ -22,11 +22,13 @@ import main.java.org.dungeon.items.CreatureInventory;
 import main.java.org.dungeon.items.FoodComponent;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.utils.Holiday;
 import main.java.org.dungeon.utils.SelectionResult;
 import main.java.org.dungeon.utils.Utils;
 
 public class Hero extends Creature {
-	
+	private static final long serialVersionUID = 1L;
+
 	private final double minimumLuminosity = 0.3;
 	
 	private final DateTime dateOfBirth;
@@ -408,6 +410,34 @@ public class Hero extends Creature {
 		IO.writeString(String.format("You are %s old.", age), Color.CYAN);
 	}
 	
-	
+	public int printDateAndTime() {
+		World world = getLocation().getWorld();
+		int timeSpent = 2;
+		if (hasClock()) {
+			if (hasWeapon() && getWeapon().isClock() && !getWeapon().isBroken()) {
+				timeSpent += 2;
+			} else {
+				timeSpent += 8;
+			}
+			
+			IO.writeString(getClock().getClockComponent().getTimeString());
+		}
+		
+		DateTime worldDate = world.getWorldDate();
+		IO.writeString("You think it is " + Constants.DATE_FORMAT.print(worldDate) + ".");
+		
+		String holiday = Holiday.getHoliday(worldDate);
+		if (holiday != null) {
+			IO.writeString("You remember it is " + holiday + ".");
+		}
+		
+		DateTime dob = getDateOfBirth();
+		if (worldDate.getMonthOfYear() == dob.getMonthOfYear() && worldDate.getDayOfMonth() == dob.getDayOfMonth()) {
+			IO.writeString("Today is your birthday.");
+		}
+		
+		IO.writeString("You can see that it is " + world.getPartOfDay().toString().toLowerCase() + ".");
+		return timeSpent;
+	}
 
 }
