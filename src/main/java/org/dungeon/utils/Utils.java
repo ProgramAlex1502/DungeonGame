@@ -15,6 +15,8 @@ public class Utils {
 	
 	//TODO: finish Utils class
 	
+	public static String LESS_THAN_A_DAY = "Less than a day";
+	
 	public static <T extends Selectable> SelectionResult<T> selectFromList(List<T> candidates, String[] tokens) {
 		SelectionResult<T> selectionResult = new SelectionResult<T>();
 		
@@ -63,6 +65,47 @@ public class Utils {
 	
 	public static String dateDifferenceToString(DateTime start, DateTime end) {
 		Period period = new Period(start, end, PeriodType.yearMonthDay());
+		int years = period.getYears();
+		int months = period.getMonths();
+		int days = period.getDays();
+		StringBuilder builder = new StringBuilder();
+		
+		if (years != 0) {
+			if (years == 1) {
+				builder.append(years).append(" year");
+			} else {
+				builder.append(years).append(" years");
+			}
+		}
+		if (months != 0) {
+			if (builder.length() != 0) {
+				if (days == 0) {
+					builder.append(" and ");
+				} else {
+					builder.append(",");
+				}
+			}
+			if (months == 1) {
+				builder.append(months).append(" month");
+			} else {
+				builder.append(months).append(" months");
+			}
+		}
+		if (days != 0) {
+			if (builder.length() != 0) {
+				builder.append(" and ");
+			}
+			if (days == 1) {
+				builder.append(days).append(" day");
+			} else {
+				builder.append(days).append(" days");
+			}
+		}
+		if (builder.length() == 0) {
+			builder.append(LESS_THAN_A_DAY);
+		}
+		
+		return builder.toString();
 	}
 	
 	public static void printMissingArgumentsMessage() {

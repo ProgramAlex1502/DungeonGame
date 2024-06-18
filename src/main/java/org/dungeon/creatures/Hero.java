@@ -402,5 +402,12 @@ public class Hero extends Creature {
 			printWeaponStatus();
 		}
 	}
+	
+	public void printAge() {
+		String age = Utils.dateDifferenceToString(getDateOfBirth(), Game.getGameState().getWorld().getWorldDate());
+		IO.writeString(String.format("You are %s old.", age), Color.CYAN);
+	}
+	
+	
 
 }
