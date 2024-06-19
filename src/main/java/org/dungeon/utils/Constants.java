@@ -10,6 +10,7 @@ public class Constants {
 	//TODO: finish Constants class
 	
 	public static final int COLS = 100;
+	public static final int ROWS = 30;
 	public static final String ACHIEVEMENT_UNLOCKED = "Achievement Unlocked!";
 	
 	public static final String SUICIDE_ATTEMPT_1 = "You cannot attempt suicide.";
