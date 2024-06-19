@@ -10,10 +10,14 @@ public class GameState {
 	
 	private boolean usingBars;
 	
+	transient private boolean saved;
+	
 	public GameState() {
 		world = new World();
 		
 		heroPosition = new Point(0, 0);
+		
+		saved = true;
 	}
 	
 	public World getWorld() {
@@ -26,6 +30,14 @@ public class GameState {
 	
 	public boolean isUsingBars() {
 		return usingBars;
+	}
+	
+	public boolean isSaved() {
+		return saved;
+	}
+	
+	public void setSaved(boolean saved) {
+		this.saved = saved;
 	}
 
 }

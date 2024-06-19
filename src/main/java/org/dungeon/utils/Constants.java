@@ -11,6 +11,7 @@ public class Constants {
 	
 	public static final int COLS = 100;
 	public static final int ROWS = 30;
+	public static final String FILE_FOUND = "A saved campaign was found.";
 	public static final String ACHIEVEMENT_UNLOCKED = "Achievement Unlocked!";
 	
 	public static final String SUICIDE_ATTEMPT_1 = "You cannot attempt suicide.";
@@ -33,6 +34,8 @@ public class Constants {
 	
 	public static final int BAR_NAME_LENGTH = 16;
 	public static final String UNARMED_ID = "";
+	
+	public static final String NAME = "Dungeon";
 
 
 }
