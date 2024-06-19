@@ -1,7 +1,8 @@
 package main.java.org.dungeon.game;
 
-import java.awt.Color;
 import java.util.Random;
+
+import java.awt.Color;
 
 import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.creatures.Hero;

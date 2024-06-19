@@ -8,13 +8,12 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 import main.java.org.dungeon.game.Engine;
+import main.java.org.dungeon.game.GameData;
 import main.java.org.dungeon.game.Selectable;
 import main.java.org.dungeon.io.IO;
 
 public class Utils {
-	
-	//TODO: finish Utils class
-	
+		
 	public static String LESS_THAN_A_DAY = "Less than a day";
 	
 	public static <T extends Selectable> SelectionResult<T> selectFromList(List<T> candidates, String[] tokens) {
@@ -126,6 +125,43 @@ public class Utils {
 		return a.toLowerCase().startsWith(b.toLowerCase());
 	}
 	
+	public static String getAfterColon(String string) {
+		int colonPosition = string.indexOf(':');
+		
+		if (colonPosition == -1) {
+			throw new IllegalArgumentException("string does not have a colon.");
+		} else {
+			return string.substring(colonPosition + 1);
+		}
+	}
+	
+	public static String centerString(String string, char fill) {
+		return centerString(string, Constants.COLS, fill);
+	}
+	
+	private static String centerString(String string, int width, char fill) {
+		int length = string.length();
+		
+		if (length > width) {
+			throw new IllegalArgumentException("String is bigger than the desired width.");
+		} else {
+			StringBuilder builder = new StringBuilder();
+			for(int i = 0; i < (width - length) / 2; i++) {
+				builder.append(fill);
+			}
+			builder.append(string);
+			
+			for (int i = 0; i < (width - length) / 2; i++) {
+				builder.append(fill);
+			}
+			if (builder.length() < width) {
+				builder.append(fill);
+			}
+			
+			return builder.toString();
+		}
+	}
+	
 	public static String makeRepeatedCharacterString(int repetitions, char character) {
 		StringBuilder builder = new StringBuilder();
 		
@@ -138,6 +174,26 @@ public class Utils {
 	
 	public static String[] split(String string) {
 		return string.split("\\s+");
+	}
+	
+	public static boolean isNotBlankString(String str) {
+		for (char c : str.toCharArray()) {
+			if (!Character.isWhitespace(c)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean isAlphabetic(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			if (!Character.isAlphabetic(s.charAt(i))) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public static String clearEnd(String str) {
@@ -184,6 +240,10 @@ public class Utils {
 	
 	public static void printFailedToCreateDirectoryMessage(String directory) {
 		IO.writeString("Failed to create the " + directory + " directory.");
+	}
+	
+	public static void printLicense() {
+		IO.writeString(GameData.LICENSE);
 	}
 
 }

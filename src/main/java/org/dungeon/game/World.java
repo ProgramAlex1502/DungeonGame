@@ -13,7 +13,7 @@ public class World implements Serializable {
 	private final WorldGenerator generator;
 	
 	private final HashMap<Point, Location> locations;
-	private final DateTime worldCreationDate;
+	final DateTime worldCreationDate;
 	
 	private DateTime worldDate;
 
