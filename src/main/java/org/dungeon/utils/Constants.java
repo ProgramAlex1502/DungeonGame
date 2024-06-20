@@ -6,9 +6,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public class Constants {
-	
-	//TODO: finish Constants class
-	
+		
 	public static final int COLS = 100;
 	public static final int ROWS = 30;
 	public static final String FILE_FOUND = "A saved campaign was found.";
@@ -17,6 +15,7 @@ public class Constants {
 	public static final String SUICIDE_ATTEMPT_1 = "You cannot attempt suicide.";
 	public static final String SUICIDE_ATTEMPT_2 = "You cannot target yourself.";
 	
+	public static final String COMMAND_HELP_FORMAT = "%-20s %s";
 	public static final String LIST_ENTRY_FORMAT = "%-15s%s";
 	
 	public static final String INVENTORY_FULL = "Inventory is full.";
@@ -24,6 +23,8 @@ public class Constants {
 	public static final String NOT_EQUIPPING_A_WEAPON = "You are not equipping a weapon.";
 	public static final String CANT_SEE_ANYTHING = "It's too dark, you can't see anything.";
 	public static final String HERO_ID = "HERO";
+	public static final String INVALID_COMMAND = "'%s' is not a command.";
+	public static final String SUGGEST_COMMANDS = "See 'commands' for a list of commands.";
 	
 	public static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern("HH:mm:ss");
 	public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");

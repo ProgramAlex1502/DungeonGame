@@ -4,12 +4,11 @@ import java.awt.*;
 
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.utils.Poem;
 import main.java.org.dungeon.utils.Utils;
 
 public final class IO {
-	
-	//TODO: finish IO class
-	
+		
 	public static final long WRITE_BATTLE_STRING_WAIT = 300;
 	
 	public static void writeString(String string) {
@@ -68,6 +67,10 @@ public final class IO {
 		
 		writeString(stringBuilder.toString(), fillColor, false);
 		writeString(value, textColor, true);
+	}
+	
+	public static void writePoem(Poem poem) {
+		writeString(poem.getTitle() + "\n\n" + poem.getContent() + "\n\n" + poem.getAuthor());
 	}
 	
 	public static void writeNamedBar(String name, double percentage, Color fore) {
