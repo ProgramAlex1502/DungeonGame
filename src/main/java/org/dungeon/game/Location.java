@@ -11,12 +11,10 @@ import main.java.org.dungeon.items.LocationInventory;
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	//TODO: finish Location class
-
 	private World world;
 	
 	private final String name;
-	
+	private final BlockedEntrances blockedEntrances;
 	private final List<Creature> creatures;
 	private final List<Spawner> spawners;
 	private final LocationInventory items;
@@ -26,10 +24,29 @@ public class Location implements Serializable {
 	public Location(LocationPreset preset, World world) {
 		this.world = world;
 		this.name = preset.getName();
+		this.blockedEntrances = preset.getBlockedEntrances();
 		this.lightPermittivity = preset.getLightPermittivity();
 		this.creatures = new ArrayList<Creature>();
 		this.spawners = new ArrayList<Spawner>(preset.getSpawners().size());
+		
+		for (SpawnerPreset spawner : preset.getSpawners()) {
+			spawners.add(new Spawner(spawner, this));
+		}
+		
 		this.items = new LocationInventory();
+		
+		for (ItemFrequencyPair pair : preset.getItems()) {
+			if (Engine.RANDOM.nextDouble() < pair.getFrequency()) {
+				this.addItem(new Item(GameData.ITEM_BLUEPRINTS.get(pair.getId())));
+			}
+		}
+		
+	}
+	
+	public void refreshSpawners() {
+		for (Spawner spawner : spawners) {
+			spawner.refresh();
+		}
 	}
 	
 	public String getName() {
@@ -76,6 +93,11 @@ public class Location implements Serializable {
 		return items.getItems().size();
 	}
 	
+	public void addCreature(Creature creature) {
+		creature.setLocation(this);
+		creatures.add(creature);
+	}
+	
 	public void addItem(Item item) {
 		items.addItem(item);
 	}
@@ -94,5 +116,13 @@ public class Location implements Serializable {
 	
 	public World getWorld() {
 		return world;
+	}
+	
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
+	public boolean isBlocked(Direction direction) {
+		return blockedEntrances.isBlocked(direction);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import java.awt.Color;
 
+import main.java.org.dungeon.achievements.Achievement;
 import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.io.IO;
@@ -14,6 +15,23 @@ public class Engine {
 	//TODO: finish Engine class
 	
 	public static final Random RANDOM = new Random();
+	
+	public static void refresh() {
+		refreshAchievements();
+		refreshSpawners();
+	}
+	
+	private static void refreshAchievements() {
+		Hero hero = Game.getGameState().getHero();
+		
+		for (Achievement a : GameData.ACHIEVEMENTS.values()) {
+			a.update(hero);
+		}
+	}
+	
+	private static void refreshSpawners() {
+		Game.getGameState().getHeroLocation().refreshSpawners();
+	}
 	
 	public static int battle(Creature attacker, Creature defender) {
 		if (attacker == defender) {

@@ -2,6 +2,8 @@ package main.java.org.dungeon.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -23,19 +25,21 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameData;
+import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.Loader;
+import main.java.org.dungeon.utils.CommandHistory;
 import main.java.org.dungeon.utils.Constants;
 
 public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
-
-	//TODO: finish GameWindow class
 	
 	private final SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 	private StyledDocument document;
@@ -101,6 +105,8 @@ public class GameWindow extends JFrame{
 		});
 		
 		Action save = new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(ActionEvent e) {
 				if (idle) {
 					clearTextPane();
@@ -139,8 +145,112 @@ public class GameWindow extends JFrame{
 		}
 	}
 	
-	public void writeToTextPane(String string, Color color, long wait) {
+	private void resize() {
+		textPane.setPreferredSize(calculateTextPaneSize());
+		pack();
+		setLocationRelativeTo(null);
+	}
+	
+	private Dimension calculateTextPaneSize() {
+		FontMetrics fontMetrics = getFontMetrics(GameData.monospaced);
+		int width = fontMetrics.charWidth(' ') * (Constants.COLS + 1);
+		int height = fontMetrics.getHeight() * rows;
+		return new Dimension(width, height);
+	}
+	
+	public boolean setRows(int rows) {
+		if (rows < 0) {
+			throw new IllegalArgumentException("rows should be positive.");
+		}
+		if (rows != this.rows) {
+			this.rows = rows;
+			resize();
+			return true;
+		}
 		
+		return false;
+	}
+	
+	private void textFieldActionPerformed() {
+		String text = getTrimmedTextFieldText();
+		if (!text.isEmpty()) {
+			clearTextField();
+			setIdle(false);
+			Game.renderTurn(new IssuedCommand(text));
+			Game.getGameState().getCommandHistory().getCursor().moveToEnd();
+			textField.requestFocusInWindow();
+			setIdle(true);
+		}
+	}
+	
+	private void setIdle(boolean idle) {
+		this.idle = idle;
+		textField.setEnabled(idle);
+	}
+	
+	private void textFieldKeyPressed(KeyEvent e) {
+		CommandHistory commandHistory = Game.getGameState().getCommandHistory();
+		if (idle && commandHistory != null) {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				textField.setText(commandHistory.getCursor().moveUp().getSelectedCommand());
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				textField.setText(commandHistory.getCursor().moveDown().getSelectedCommand());
+			} else if (e.getKeyCode() == KeyEvent.VK_TAB) {
+				String trimmedTextFieldText = getTrimmedTextFieldText();
+				if (trimmedTextFieldText.isEmpty() && !commandHistory.isEmpty()) {
+					textField.setText(commandHistory.getCursor().moveToEnd().moveUp().getSelectedCommand());
+				} else {
+					String lastSimilarCommand = commandHistory.getLastSimilarCommand(trimmedTextFieldText);
+					if (lastSimilarCommand != null) {
+						textField.setText(lastSimilarCommand);
+					}
+				}
+			}
+		}
+	}
+	
+	private String getTrimmedTextFieldText() {
+		return textField.getText().trim();
+	}
+	
+	public void writeToTextPane(String string, Color color, long wait) {
+		writeToTextPane(string, color, textPane.getBackground(), wait);
+	}
+	
+	void writeToTextPane(String string, Color fore, Color back, long wait) {
+		StyleConstants.setForeground(attributeSet, fore);
+		StyleConstants.setBackground(attributeSet, back);
+		
+		if (Game.getGameState() != null) {
+			StyleConstants.setBold(attributeSet, Game.getGameState().isBold());
+		}
+		
+		try {
+			document.insertString(document.getLength(), string, attributeSet);
+			try {
+				if (wait > 0) {
+					textPane.update(textPane.getGraphics());
+					Thread.sleep(wait);
+				}
+			} catch (InterruptedException ignored) {
+			}
+		} catch (BadLocationException ignored) {
+		}
+	}
+	
+	public void clearTextPane() {
+		try {
+			document.remove(0, document.getLength());
+		} catch (BadLocationException ignored) {
+		}
+	}
+	
+	public void requestFocusOnTextField() {
+		textField.requestFocusInWindow();
+	}
+	
+	private void clearTextField() {
+		textField.setText(null);
 	}
 
 }
