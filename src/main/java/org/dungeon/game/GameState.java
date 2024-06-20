@@ -45,6 +45,10 @@ public class GameState {
 		return heroPosition;
 	}
 	
+	public void setHeroPosition(Point heroPosition) {
+		this.heroPosition = heroPosition;
+	}
+	
 	public boolean isBold() {
 		return bold;
 	}

@@ -11,8 +11,6 @@ import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.utils.Constants;
 
 public class Engine {
-
-	//TODO: finish Engine class
 	
 	public static final Random RANDOM = new Random();
 	
@@ -31,6 +29,41 @@ public class Engine {
 	
 	private static void refreshSpawners() {
 		Game.getGameState().getHeroLocation().refreshSpawners();
+	}
+	
+	public static int parseHeroWalk(IssuedCommand issuedCommand) {
+		if (issuedCommand.hasArguments()) {
+			for (Direction dir : Direction.values()) {
+				if (dir.equalsIgnoreCase(issuedCommand.getFirstArgument())) {
+					return heroWalk(dir);
+				}
+			}
+			IO.writeString(Constants.INVALID_INPUT);
+		} else {
+			IO.writeString("To where?", Color.ORANGE);
+		}
+		
+		return 0;
+	}
+	
+	static int heroWalk(Direction dir) {
+		GameState gameState = Game.getGameState();
+		World world = gameState.getWorld();
+		Point point = gameState.getHeroPosition();
+		Hero hero = gameState.getHero();
+		Point destinationPoint = new Point(gameState.getHeroPosition(), dir);
+		
+		if(world.getLocation(destinationPoint).isBlocked(dir.invert()) || world.getLocation(point).isBlocked(dir)) {
+			IO.writeString("You cannot go " + dir + ".");
+			return TimeConstants.WALK_BLOCKED;
+		}
+		
+		Location destination = gameState.getWorld().moveHero(dir);
+		hero.setLocation(destination);
+		String arrivalmessage = "You arrive at " + destination.getName() + ".";
+		IO.writeString(arrivalmessage, Color.ORANGE);
+		hero.getExplorationLog().addVisit(destinationPoint);
+		return TimeConstants.WALK_SUCCESS;
 	}
 	
 	public static int battle(Creature attacker, Creature defender) {

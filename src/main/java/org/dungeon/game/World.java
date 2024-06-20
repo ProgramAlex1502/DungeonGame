@@ -6,18 +6,18 @@ import java.util.HashMap;
 import org.joda.time.DateTime;
 
 import main.java.org.dungeon.counters.CounterMap;
+import main.java.org.dungeon.creatures.Hero;
+import main.java.org.dungeon.io.IO;
 
 public class World implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	//TODO: finish World class
 	private final CounterMap<String> spawnCounter;
 	
 	private final WorldGenerator generator;
 	
 	private final HashMap<Point, Location> locations;
 	final DateTime worldCreationDate;
-	
 	private DateTime worldDate;
 
 	public World() {
@@ -48,6 +48,17 @@ public class World implements Serializable {
 		locations.put(coordinates, locationObject);
 	}
 	
+	public Location moveHero(Direction dir) {
+		Hero hero = Game.getGameState().getHero();
+		Point heroOldPosition = Game.getGameState().getHeroPosition();
+		Point heroNewPosition = new Point(heroOldPosition, dir);
+		Game.getGameState().setHeroPosition(heroNewPosition);
+		locations.get(heroOldPosition).removeCreature(hero);
+		Location heroNewLocation = locations.get(heroNewPosition);
+		heroNewLocation.addCreature(hero);
+		return heroNewLocation;
+	}
+	
 	public boolean hasLocation(Point point) {
 		return locations.containsKey(point);
 	}
@@ -61,6 +72,12 @@ public class World implements Serializable {
 	
 	public PartOfDay getPartOfDay() {
 		return PartOfDay.getCorrespondingConstants(new DateTime(worldDate));
+	}
+	
+	public void pritnSpawnCounters() {
+		for (String id : spawnCounter.keySet()) {
+			IO.writeKeyValueString(id, Integer.toString(spawnCounter.getCounter(id)));
+		}
 	}
 	
 	public void rollDate(int seconds) {
