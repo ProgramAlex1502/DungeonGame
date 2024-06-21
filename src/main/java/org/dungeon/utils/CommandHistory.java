@@ -1,19 +1,18 @@
 package main.java.org.dungeon.utils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import main.java.org.dungeon.game.IssuedCommand;
 
 public class CommandHistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private final List<String> commands;
+	private static final int HISTORY_MAXIMUM_SIZE = 200;
+	private final CircularList<String> commands;
 	private transient Cursor cursor;
 	
 	public CommandHistory() {
-		commands = new ArrayList<String>();
+		commands = new CircularList<String>(HISTORY_MAXIMUM_SIZE);
 		cursor = new Cursor(this);
 	}
 	
