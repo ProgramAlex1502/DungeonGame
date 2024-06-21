@@ -130,7 +130,7 @@ public class Loader {
 			GameState loadedGameState = (GameState) objectInStream.readObject();
 			objectInStream.close();
 			IO.writeString(LOAD_SUCCESS);
-			IO.writeString("Read " + file.length() + " bytes from " + file.getName());
+			IO.writeString("Read " + Utils.bytesToHuman(file.length()) + " from " + file.getName());
 			loadedGameState.setSaved(true);
 			return loadedGameState;
 		} catch (IOException ex) {
@@ -166,7 +166,7 @@ public class Loader {
 			if (!quiet) {
 				IO.writeString(SAVE_SUCCESS);
 				long bytes = file.length();
-				IO.writeString("Wrote " + bytes + " bytes to " + file.getName());
+				IO.writeString("Wrote " + Utils.bytesToHuman(bytes) + " to " + file.getName());
 			}
 		} catch(IOException ex) {
 			if (!quiet) {

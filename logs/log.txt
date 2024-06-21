@@ -156,3 +156,27 @@
 [21/06/2024 13:44:52.048] (INFO) : Loaded 4 poems.
 [21/06/2024 13:44:52.053] (INFO) : Finished loading the game data. Took 90 ms.
 [21/06/2024 13:45:15.603] (INFO) : Exited with no problems.
+[2024-06-21 15:00:53] (INFO) : Started loading the game data.
+[2024-06-21 15:00:53] (INFO) : Loaded 13 item blueprints
+[2024-06-21 15:00:53] (INFO) : Loaded 16 creature blueprints.
+[2024-06-21 15:00:53] (INFO) : Created 9 location presets.
+[2024-06-21 15:00:53] (INFO) : Created 17 achievements.
+[2024-06-21 15:00:53] (INFO) : Loaded 4 poems.
+[2024-06-21 15:00:53] (INFO) : Finished loading the game data. Took 265 ms.
+[2024-06-21 15:01:00] (INFO) : Exited with no problems.
+[2024-06-21 15:01:08] (INFO) : Started loading the game data.
+[2024-06-21 15:01:08] (INFO) : Loaded 13 item blueprints
+[2024-06-21 15:01:08] (INFO) : Loaded 16 creature blueprints.
+[2024-06-21 15:01:08] (INFO) : Created 9 location presets.
+[2024-06-21 15:01:08] (INFO) : Created 17 achievements.
+[2024-06-21 15:01:08] (INFO) : Loaded 4 poems.
+[2024-06-21 15:01:08] (INFO) : Finished loading the game data. Took 50 ms.
+[2024-06-21 15:04:13] (INFO) : Exited with no problems.
+[2024-06-21 15:07:26] (INFO) : Started loading the game data.
+[2024-06-21 15:07:26] (INFO) : Loaded 13 item blueprints
+[2024-06-21 15:07:26] (INFO) : Loaded 16 creature blueprints.
+[2024-06-21 15:07:26] (INFO) : Created 9 location presets.
+[2024-06-21 15:07:26] (INFO) : Created 17 achievements.
+[2024-06-21 15:07:26] (INFO) : Loaded 4 poems.
+[2024-06-21 15:07:26] (INFO) : Finished loading the game data. Took 74 ms.
+[2024-06-21 15:07:32] (INFO) : Exited with no problems.
