@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-public class DungeonScrollBarUI extends BasicScrollBarUI {
+public class DScrollBarUI extends BasicScrollBarUI {
 	
 	private static final Dimension zeroDimension = new Dimension(0, 0);
 	
