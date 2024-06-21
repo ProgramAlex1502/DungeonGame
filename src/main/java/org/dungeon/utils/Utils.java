@@ -264,6 +264,19 @@ public class Utils {
 		IO.writeString("Failed to create the " + directory + " directory.");
 	}
 	
+	public static String bytesToHuman(long bytes) {
+		if (bytes < 1024) {
+			return bytes + " B";
+		}
+		
+		int bitsUsed = 63 - Long.numberOfLeadingZeros(bytes);
+		
+		double significand = (double) bytes / (1L << (bitsUsed - bitsUsed % 10));
+		
+		char prefix = "kMGTPE".charAt(bitsUsed / 10 - 1);
+		return String.format("%.1f %sB", significand, prefix);
+	}
+	
 	public static void printLicense() {
 		IO.writeString(GameData.LICENSE);
 	}
