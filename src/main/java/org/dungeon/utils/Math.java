@@ -8,7 +8,7 @@ import main.java.org.dungeon.io.IO;
 
 public class Math {
 	
-	private static final int FIBONACCI_MAX = 10000;
+	private static final int FIBONACCI_MAX = 65535;
 	
 	public static void fibonacci(IssuedCommand issuedCommand) {
 		int intArgument;
@@ -36,7 +36,7 @@ public class Math {
 					}
 					IO.writeString(sb.toString());
 				} else {
-					IO.writeString("n must be positive and smaller than " + FIBONACCI_MAX + ".", Color.ORANGE);
+					IO.writeString("n must be positive and smaller than " + (FIBONACCI_MAX + 1) + ".", Color.ORANGE);
 				}
 			}
 		} else {
