@@ -15,6 +15,7 @@ import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.utils.DTable;
 import main.java.org.dungeon.utils.Utils;
 
 public class Loader {
@@ -32,9 +33,7 @@ public class Loader {
 	private static final String LOAD_ERROR = "Could not load the saved game.";
 	private static final String LOAD_SUCCESS = "Successfully loaded the game.";
 	private static final String LOAD_CONFIRM = "Do you want to load the game?";
-	
-	private static final String FILE_ENTRY = "%-60s|%s";
-	
+		
 	private static boolean checkForDefaultSave() {
 		File savedCampaign = new File(SAVES_FOLDER, DEFAULT_SAVE_NAME + SAVE_EXTENSION);
 		return savedCampaign.exists() && savedCampaign.isFile();
@@ -45,10 +44,11 @@ public class Loader {
 		
 		if (files != null) {
 			if (files.length != 0) {
-				IO.writeString(String.format(FILE_ENTRY, "Name", "Size"));
+				DTable dTable = new DTable("Name", "Size");
 				for (File file : files) {
-					IO.writeString(String.format(FILE_ENTRY, file.getName(), Utils.bytesToHuman(file.length())));
+					dTable.insertRow(file.getName(), Utils.bytesToHuman(file.length()));
 				}
+				dTable.print();
 			} else {
 				if (Engine.RANDOM.nextBoolean()) {
 					IO.writeString("Saves folder is empty.", Color.RED);
