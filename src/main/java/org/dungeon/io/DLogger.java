@@ -23,6 +23,7 @@ public class DLogger {
 				logger = Logger.getLogger("main.java.org.dungeon");
 				Handler handler = new FileHandler(getLogFilePath(), true);
 				handler.setFormatter(new DFormatter());
+				logger.setUseParentHandlers(false);
 				logger.addHandler(handler);
 				logger.setLevel(Level.ALL);
 			} catch(IOException ignored) {
