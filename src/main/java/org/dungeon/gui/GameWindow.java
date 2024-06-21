@@ -36,6 +36,7 @@ import javax.swing.text.StyledDocument;
 
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameData;
+import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.Loader;
@@ -209,20 +210,23 @@ public class GameWindow extends JFrame{
 	}
 	
 	private void textFieldKeyPressed(KeyEvent e) {
-		CommandHistory commandHistory = Game.getGameState().getCommandHistory();
-		if (idle && commandHistory != null) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				textField.setText(commandHistory.getCursor().moveUp().getSelectedCommand());
-			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				textField.setText(commandHistory.getCursor().moveDown().getSelectedCommand());
-			} else if (e.getKeyCode() == KeyEvent.VK_TAB) {
-				String trimmedTextFieldText = getTrimmedTextFieldText();
-				if (trimmedTextFieldText.isEmpty() && !commandHistory.isEmpty()) {
-					textField.setText(commandHistory.getCursor().moveToEnd().moveUp().getSelectedCommand());
-				} else {
-					String lastSimilarCommand = commandHistory.getLastSimilarCommand(trimmedTextFieldText);
-					if (lastSimilarCommand != null) {
-						textField.setText(lastSimilarCommand);
+		if (idle) {
+			GameState gameState = Game.getGameState();
+			if (gameState != null) {
+				CommandHistory commandHistory = gameState.getCommandHistory();
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textField.setText(commandHistory.getCursor().moveUp().getSelectedCommand());
+				} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textField.setText(commandHistory.getCursor().moveDown().getSelectedCommand());
+				} else if (e.getKeyCode() == KeyEvent.VK_TAB) {
+					String trimmedTextFieldText = getTrimmedTextFieldText();
+					if (trimmedTextFieldText.isEmpty() && !commandHistory.isEmpty()) {
+						textField.setText(commandHistory.getCursor().moveToEnd().moveUp().getSelectedCommand());
+					} else {
+						String lastSimilarCommand = commandHistory.getLastSimilarCommand(trimmedTextFieldText);
+						if (lastSimilarCommand != null) {
+							textField.setText(lastSimilarCommand);
+						}
 					}
 				}
 			}
