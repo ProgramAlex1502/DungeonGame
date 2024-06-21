@@ -10,11 +10,33 @@ import org.joda.time.PeriodType;
 import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.game.GameData;
 import main.java.org.dungeon.game.Selectable;
+import main.java.org.dungeon.help.Help;
 import main.java.org.dungeon.io.IO;
 
 public class Utils {
 		
 	public static String LESS_THAN_A_DAY = "Less than a day";
+	
+	public static String padString(String original, int desiredLength) {
+		int requiredSpaces = desiredLength - original.length();
+		if (requiredSpaces > 0) {
+			StringBuilder stringBuilder = new StringBuilder(desiredLength);
+			stringBuilder.append(original);
+			for (int i = 0; i < requiredSpaces; i++) {
+				stringBuilder.append(' ');
+			}
+			return stringBuilder.toString();
+		} else {
+			return original;
+		}
+	}
+	
+	public static void printInvalidCommandMessage(String command) {
+		IO.writeString(String.format(Constants.INVALID_COMMAND, command), Color.RED);
+		if (Help.isInitialized()) {
+			IO.writeString(Constants.SUGGEST_COMMANDS, Color.ORANGE);
+		}
+	}
 	
 	public static <T extends Selectable> SelectionResult<T> selectFromList(List<T> candidates, String[] tokens) {
 		SelectionResult<T> selectionResult = new SelectionResult<T>();

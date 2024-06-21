@@ -74,7 +74,7 @@ public class World implements Serializable {
 		return PartOfDay.getCorrespondingConstants(new DateTime(worldDate));
 	}
 	
-	public void pritnSpawnCounters() {
+	public void printSpawnCounters() {
 		for (String id : spawnCounter.keySet()) {
 			IO.writeKeyValueString(id, Integer.toString(spawnCounter.getCounter(id)));
 		}

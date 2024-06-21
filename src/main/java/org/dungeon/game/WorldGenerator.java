@@ -1,9 +1,12 @@
 package main.java.org.dungeon.game;
 
+import java.io.Serializable;
+
 import main.java.org.dungeon.io.IO;
 
-public class WorldGenerator {
-		
+public class WorldGenerator implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private final World world;
 	
 	private final RiverGenerator riverGenerator;

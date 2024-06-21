@@ -18,7 +18,7 @@ final class LocationPreset extends Preset {
 		items = new ArrayList<ItemFrequencyPair>();
 	}
 	
-	public LocationPreset addPreset(SpawnerPreset spawner) {
+	public LocationPreset addSpawner(SpawnerPreset spawner) {
 		if (!isLocked()) {
 			this.spawners.add(spawner);
 		}

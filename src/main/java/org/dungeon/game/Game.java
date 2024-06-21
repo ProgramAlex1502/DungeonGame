@@ -1,19 +1,29 @@
 package main.java.org.dungeon.game;
 
 import main.java.org.dungeon.gui.GameWindow;
+import main.java.org.dungeon.help.Help;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.Loader;
+import main.java.org.dungeon.utils.Math;
+import main.java.org.dungeon.utils.SystemInfo;
+import main.java.org.dungeon.utils.Utils;
 
 public class Game {
-	
-	//TODO: finish Game class
 	
 	private static int turnLength = 0;
 	private static boolean configurationsChanged = false;
 	
 	private static GameWindow gameWindow;
 	private static GameState gameState;
+	
+	public static void main(String[] args) {
+		Help.initialize();
+		DLogger.initialize();
+		GameData.loadGameData();
+		gameWindow = new GameWindow();
+		gameState = Loader.loadGame(null);
+	}
 	
 	public static GameWindow getGameWindow() {
 		return gameWindow;
@@ -41,7 +51,84 @@ public class Game {
 	}
 	
 	private static void processInput(IssuedCommand issuedCommand) {
-		// TODO: complete "game.processInput(IssuedCommand issuedCommand)" method
+		gameState.getCommandHistory().addCommand(issuedCommand);
+        gameState.getStatistics().addCommand(issuedCommand);
+
+        turnLength = 0;
+        configurationsChanged = false;
+        if (issuedCommand.firstTokenEquals("rest")) {
+            turnLength = gameState.getHero().rest();
+        } else if (issuedCommand.firstTokenEquals("sleep")) {
+            turnLength = gameState.getHero().sleep();
+        } else if (issuedCommand.firstTokenEquals("look") || issuedCommand.firstTokenEquals("peek")) {
+            gameState.getHero().look();
+        } else if (issuedCommand.firstTokenEquals("inventory") || issuedCommand.firstTokenEquals("items")) {
+            gameState.getHero().printInventory();
+        } else if (issuedCommand.firstTokenEquals("loot") || issuedCommand.firstTokenEquals("pick")) {
+            gameState.getHero().pickItem(issuedCommand);
+            turnLength = 120;
+        } else if (issuedCommand.firstTokenEquals("equip")) {
+            gameState.getHero().parseEquip(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("unequip")) {
+            gameState.getHero().unequipWeapon();
+        } else if (issuedCommand.firstTokenEquals("eat") || issuedCommand.firstTokenEquals("devour")) {
+            gameState.getHero().eatItem(issuedCommand);
+            turnLength = 120;
+        } else if (issuedCommand.firstTokenEquals("walk") || issuedCommand.firstTokenEquals("go")) {
+            turnLength = Engine.parseHeroWalk(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("drop")) {
+            gameState.getHero().dropItem(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("destroy") || issuedCommand.firstTokenEquals("crash")) {
+            gameState.getHero().destroyItem(issuedCommand);
+            turnLength = 120;
+        } else if (issuedCommand.firstTokenEquals("status")) {
+            gameState.getHero().printAllStatus();
+        } else if (issuedCommand.firstTokenEquals("hero") || issuedCommand.firstTokenEquals("me")) {
+            gameState.getHero().printHeroStatus();
+        } else if (issuedCommand.firstTokenEquals("age")) {
+            gameState.getHero().printAge();
+        } else if (issuedCommand.firstTokenEquals("weapon")) {
+            gameState.getHero().printWeaponStatus();
+        } else if (issuedCommand.firstTokenEquals("kill") || issuedCommand.firstTokenEquals("attack")) {
+            turnLength = gameState.getHero().attackTarget(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("statistics")) {
+            gameState.printGameStatistics();
+        } else if (issuedCommand.firstTokenEquals("achievements")) {
+            gameState.printUnlockedAchievements();
+        } else if (issuedCommand.firstTokenEquals("spawns")) {
+            gameState.getWorld().printSpawnCounters();
+        } else if (issuedCommand.firstTokenEquals("time") || issuedCommand.firstTokenEquals("date")) {
+            turnLength = gameState.getHero().printDateAndTime();
+        } else if (issuedCommand.firstTokenEquals("system")) {
+            SystemInfo.printSystemInfo();
+        } else if (issuedCommand.firstTokenEquals("help") || issuedCommand.firstTokenEquals("?")) {
+            Help.printHelp(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("commands")) {
+            Help.printCommandList(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("save")) {
+            Loader.saveGame(gameState, issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("load")) {
+            GameState loadedGameState = Loader.loadGame(issuedCommand);
+            if (loadedGameState != null) {
+                gameState = loadedGameState;
+            }
+        } else if (issuedCommand.firstTokenEquals("quit") || issuedCommand.firstTokenEquals("exit")) {
+            Game.exit();
+        } else if (issuedCommand.firstTokenEquals("license") || issuedCommand.firstTokenEquals("copyright")) {
+            Utils.printLicense();
+        } else if (issuedCommand.firstTokenEquals("fibonacci")) {
+            Math.fibonacci(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("hint") || issuedCommand.firstTokenEquals("tip")) {
+            gameState.printNextHint();
+        } else if (issuedCommand.firstTokenEquals("poem")) {
+            gameState.printNextPoem();
+        } else if (issuedCommand.firstTokenEquals("debug")) {
+            DebugTools.parseDebugCommand(issuedCommand);
+        } else if (issuedCommand.firstTokenEquals("config")) {
+            configurationsChanged = ConfigTools.parseConfigCommand(issuedCommand);
+        } else {
+            Utils.printInvalidCommandMessage(issuedCommand.getFirstToken());
+        }
 	}
 	
 	public static void exit() {

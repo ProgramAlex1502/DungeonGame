@@ -40,7 +40,7 @@ public class Loader {
 		return savedCampaign.exists() && savedCampaign.isFile();
 	}
 	
-	public static void printFileInSavesFolder() {
+	public static void printFilesInSavesFolder() {
 		File[] files = SAVES_FOLDER.listFiles();
 		
 		if (files != null) {
@@ -119,6 +119,7 @@ public class Loader {
 		return result == JOptionPane.YES_OPTION;
 	}
 	
+	@SuppressWarnings("resource")
 	private static GameState loadFile(File file) {
 		FileInputStream fileInStream;
 		ObjectInputStream objectInStream;
@@ -134,9 +135,11 @@ public class Loader {
 			return loadedGameState;
 		} catch (IOException ex) {
 			IO.writeString(LOAD_ERROR);
+			IO.writeString(ex.toString());
 			return new GameState();
 		} catch (ClassNotFoundException ex) {
 			IO.writeString(LOAD_ERROR);
+			IO.writeString(ex.toString());
 			return new GameState();
 		}
 	}
@@ -168,6 +171,8 @@ public class Loader {
 		} catch(IOException ex) {
 			if (!quiet) {
 				IO.writeString(SAVE_ERROR);
+				IO.writeString(ex.toString());
+				
 			}
 		}
 	}

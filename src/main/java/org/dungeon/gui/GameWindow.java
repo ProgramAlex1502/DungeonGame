@@ -71,7 +71,7 @@ public class GameWindow extends JFrame{
 		textPane.setFont(GameData.monospaced);
 		
 		scrollPane.setViewportView(textPane);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		textField.setBackground(Color.BLACK);
 		textField.setForeground(Constants.FORE_COLOR_NORMAL);

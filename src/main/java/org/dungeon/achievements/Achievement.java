@@ -46,11 +46,11 @@ public class Achievement {
 		battle.killsByWeapon.incrementCounter(id, amount);
 	}
 	
-	public void incrementKillByCreatureId(String id, int amount) {
+	public void incrementKillsByCreatureId(String id, int amount) {
 		battle.killsByCreatureId.incrementCounter(id, amount);
 	}
 	
-	public void incrementKillByCreatureType(String id, int amount) {
+	public void incrementKillsByCreatureType(String id, int amount) {
 		battle.killsByCreatureType.incrementCounter(id, amount);
 	}
 	

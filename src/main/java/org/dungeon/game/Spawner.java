@@ -1,9 +1,12 @@
 package main.java.org.dungeon.game;
 
+import java.io.Serializable;
+
 import main.java.org.dungeon.creatures.Creature;
 
-public class Spawner {
-		
+public class Spawner implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private final String id;
 	private final int populationLimit;
 	private final int spawnDelay;

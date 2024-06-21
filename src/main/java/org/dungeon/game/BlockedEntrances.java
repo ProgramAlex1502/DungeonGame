@@ -1,9 +1,11 @@
 package main.java.org.dungeon.game;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class BlockedEntrances {
-	
+public class BlockedEntrances implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private HashSet<Direction> blockedEntrances;
 	
 	public BlockedEntrances() {
