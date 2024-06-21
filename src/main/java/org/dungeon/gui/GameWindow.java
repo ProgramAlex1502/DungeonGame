@@ -1,9 +1,11 @@
 package main.java.org.dungeon.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -15,8 +17,10 @@ import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -41,6 +45,11 @@ import main.java.org.dungeon.utils.Constants;
 public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
+	private static final int MARGIN = 5;
+	
+	private static final Color MARGIN_COLOR = Color.BLACK;
+	private static final Color INSIDE_COLOR = new Color(20, 20, 20);
+	
 	private final SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 	private StyledDocument document;
 	
@@ -61,23 +70,28 @@ public class GameWindow extends JFrame{
 	private void initComponents() {
 		setSystemLookAndFeel();
 		
+		JPanel panel = new JPanel(new GridBagLayout());
+		panel.setBackground(MARGIN_COLOR);
+		
 		textPane = new JTextPane();
 		textField = new JTextField();
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
 		textPane.setEditable(false);
-		textPane.setBackground(Constants.DEFAULT_BACK_COLOR);
+		textPane.setBackground(INSIDE_COLOR);
 		textPane.setFont(GameData.monospaced);
 		
 		scrollPane.setViewportView(textPane);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		
-		textField.setBackground(Color.BLACK);
+		textField.setBackground(INSIDE_COLOR);
 		textField.setForeground(Constants.FORE_COLOR_NORMAL);
 		textField.setCaretColor(Color.WHITE);
 		textField.setFont(GameData.monospaced);
 		textField.setFocusTraversalKeysEnabled(false);
+		textField.setBorder(BorderFactory.createEmptyBorder());
 		
 		textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -91,8 +105,14 @@ public class GameWindow extends JFrame{
 			}
 		});
 		
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
-		getContentPane().add(textField, BorderLayout.SOUTH);
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(MARGIN, MARGIN, MARGIN, MARGIN);
+		panel.add(scrollPane, c);
+		
+		c.gridy = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, MARGIN, MARGIN, MARGIN);
+		panel.add(textField, c);
 		
 		setTitle(Constants.NAME);
 		
@@ -125,6 +145,8 @@ public class GameWindow extends JFrame{
 		} else {
 			DLogger.warning("Could not find the icon.");
 		}
+		
+		add(panel);
 		
 		setResizable(false);
 		resize();
