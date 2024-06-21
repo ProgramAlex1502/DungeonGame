@@ -29,8 +29,6 @@ public class GameState implements Serializable {
 	
 	private boolean bold;
 	
-	private boolean usingBars;
-	
 	transient private boolean saved;
 	private int nextHintIndex;
 	private int nextPoemIndex;
@@ -80,14 +78,6 @@ public class GameState implements Serializable {
 	
 	public void setBold(boolean bold) {
 		this.bold = bold;
-	}
-	
-	public boolean isUsingBars() {
-		return usingBars;
-	}
-	
-	public void setUsingBars(boolean usingBars) {
-		this.usingBars = usingBars;
 	}
 	
 	public boolean isSaved() {
