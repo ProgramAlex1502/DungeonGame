@@ -50,7 +50,6 @@ public final class GameData {
 	}
 	
 	private static void loadItemBlueprints() {
-		@SuppressWarnings("resource")
 		ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("items.txt"));
 		
 		while (resourceReader.readNextElement()) {
@@ -79,10 +78,10 @@ public final class GameData {
 			ITEM_BLUEPRINTS.put(blueprint.getId(), blueprint);
 		}
 		
+		resourceReader.close();
 		DLogger.info("Loaded " + ITEM_BLUEPRINTS.size() + " item blueprints");
 	}
 	
-	@SuppressWarnings("resource")
 	private static void loadCreatureBlueprints() {        
         ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("creatures.txt"));
         
@@ -98,6 +97,7 @@ public final class GameData {
         	CREATURE_BLUEPRINTS.put(blueprint.getId(), blueprint);
         }
         
+        resourceReader.close();
         DLogger.info("Loaded " + CREATURE_BLUEPRINTS.size() + " creature blueprints.");
     }
 	

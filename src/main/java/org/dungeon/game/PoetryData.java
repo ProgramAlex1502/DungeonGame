@@ -33,7 +33,6 @@ public final class PoetryData {
 	
 	private void loadPoems() {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		@SuppressWarnings("resource")
 		ResourceReader reader = new ResourceReader(classLoader.getResourceAsStream("poems.txt"));
 		final String IDENTIFIER_TITLE = "TITLE";
 		final String IDENTIFIER_AUTHOR = "AUTHOR";
@@ -49,8 +48,9 @@ public final class PoetryData {
 			}
 		}
 		
-		DLogger.info("Loaded " + poems.size() + " poems");
+		reader.close();
 		poems.trimToSize();
+		DLogger.info("Loaded " + poems.size() + " poems");
 	}
 
 }
