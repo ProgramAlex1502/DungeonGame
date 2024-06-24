@@ -3,10 +3,10 @@ package main.java.org.dungeon.utils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CircularList<T> implements Serializable {
+final class CircularList<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public final int capacity;
+	private final int capacity;
 	private final ArrayList<T> list;
 	
 	private int zeroIndex;
@@ -36,7 +36,7 @@ public class CircularList<T> implements Serializable {
 		return list.size();
 	}
 	
-	public boolean isFull() {
+	boolean isFull() {
 		return size() == capacity;
 	}
 	

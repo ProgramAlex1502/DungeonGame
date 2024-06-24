@@ -6,8 +6,8 @@ import main.java.org.dungeon.utils.Utils;
 
 public final class IssuedCommand {
 	
-	private String stringRepresentation;
-	private String[] tokens;
+	private final String stringRepresentation;
+	private final String[] tokens;
 	
 	public IssuedCommand(String source) {
 		this.tokens = Utils.split(source);

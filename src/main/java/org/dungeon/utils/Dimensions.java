@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Dimensions {
 	
-	int[] dimensions;
+	private final int[] dimensions;
 	
 	public Dimensions(int... dimensions) {
 		this.dimensions = dimensions;

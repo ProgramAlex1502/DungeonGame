@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
-public class ExpandableIntegerSet implements Serializable {
+class ExpandableIntegerSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final int MIN_DBI;

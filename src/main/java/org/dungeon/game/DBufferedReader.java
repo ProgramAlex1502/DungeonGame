@@ -7,7 +7,7 @@ import java.io.Reader;
 
 import main.java.org.dungeon.io.DLogger;
 
-public class DBufferedReader implements Closeable {
+class DBufferedReader implements Closeable {
 	
 	private String line;
 	private boolean continued;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import main.java.org.dungeon.game.IssuedCommand;
 
-public class CommandStatistics implements Serializable {
+class CommandStatistics implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int commands;

@@ -1,6 +1,6 @@
 package main.java.org.dungeon.game;
 
-public class SpawnerPreset {
+class SpawnerPreset {
 	
 	public final ID id;
 	public final int population;

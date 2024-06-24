@@ -43,7 +43,7 @@ public class DLogger {
 		}
 	}
 	
-	public static String getLogFilePath() {
+	private static String getLogFilePath() {
 		File logFolder = new File(LOG_FILE_PATH);
 		
 		if (!logFolder.exists()) {

@@ -8,7 +8,7 @@ import main.java.org.dungeon.io.IO;
 
 public class DTable {
 	
-	private ArrayList<Column> columns;
+	private final ArrayList<Column> columns;
 	
 	public DTable(String... headers) {
 		columns = new ArrayList<Column>(headers.length);
@@ -112,9 +112,9 @@ public class DTable {
 	}
 	
 	private class Column {
-		String header;
+		final String header;
 		int widestValue;
-		ArrayList<String> rows;
+		final ArrayList<String> rows;
 		
 		public Column(String header) {
 			rows = new ArrayList<String>();

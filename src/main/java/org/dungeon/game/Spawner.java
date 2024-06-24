@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import main.java.org.dungeon.creatures.Creature;
 
-public class Spawner implements Serializable {
+class Spawner implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final ID id;

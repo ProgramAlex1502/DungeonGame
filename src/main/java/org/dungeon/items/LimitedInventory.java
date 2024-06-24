@@ -1,6 +1,6 @@
 package main.java.org.dungeon.items;
 
-public interface LimitedInventory {
+interface LimitedInventory {
 	
 	public int getLimit();
 	

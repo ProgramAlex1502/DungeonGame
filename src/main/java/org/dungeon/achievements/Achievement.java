@@ -8,7 +8,7 @@ import main.java.org.dungeon.utils.Utils;
 
 public class Achievement {
 
-	final ID id;
+	private final ID id;
 	private final String name;
 	private final String info;
 	
@@ -63,17 +63,17 @@ public class Achievement {
 		exploration.visitCount = count;
 	}
 	
-	public boolean isFulfilled(Hero hero) {
+	boolean isFulfilled(Hero hero) {
 		return battle.isFulfilled(hero) && exploration.isFulfilled(hero);
 	}
 	
-	public final boolean update(Hero hero) {
+	public final void update(Hero hero) {
 		if (!hero.getAchievementTracker().isUnlocked(this) && isFulfilled(hero)) {
 			printAchievementUnlocked();
 			hero.getAchievementTracker().unlock(this);
-			return true;
+			return;
 		} else {
-			return false;
+			return;
 		}
 	}
 	

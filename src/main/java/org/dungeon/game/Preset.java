@@ -1,6 +1,6 @@
 package main.java.org.dungeon.game;
 
-public abstract class Preset {
+abstract class Preset {
 	
 	private boolean finished;
 	

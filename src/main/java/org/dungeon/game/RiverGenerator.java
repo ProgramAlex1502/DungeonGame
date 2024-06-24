@@ -3,7 +3,7 @@ package main.java.org.dungeon.game;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class RiverGenerator implements Serializable {
+final class RiverGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final ExpandableIntegerSet lines;

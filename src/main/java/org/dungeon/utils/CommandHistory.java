@@ -23,7 +23,7 @@ public class CommandHistory implements Serializable {
 		return cursor;
 	}
 	
-	public int size() {
+	int size() {
 		return commands.size();
 	}
 	

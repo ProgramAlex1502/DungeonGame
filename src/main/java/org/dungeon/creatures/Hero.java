@@ -169,7 +169,7 @@ public class Hero extends Creature {
 		IO.writeNewLine();
 	}
 	
-	public boolean canSee() {
+	boolean canSee() {
 		return getLocation().getLuminosity() >= minimumLuminosity;
 	}
 	
@@ -204,7 +204,7 @@ public class Hero extends Creature {
 		return 0;
 	}
 	
-	public Creature selectTarget(IssuedCommand issuedCommand) {
+	Creature selectTarget(IssuedCommand issuedCommand) {
 		if (issuedCommand.hasArguments()) {
 			return findCreature(issuedCommand.getArguments());
 		} else {
@@ -217,7 +217,7 @@ public class Hero extends Creature {
 		}
 	}
 	
-	public Creature findCreature(String[] tokens) {
+	Creature findCreature(String[] tokens) {
 		SelectionResult<Creature> result = Utils.selectFromList(getLocation().getCreatures(), tokens);
 		if (result.size() == 0) {
 			IO.writeString("Creature not found.");

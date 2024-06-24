@@ -7,11 +7,11 @@ import main.java.org.dungeon.items.Item;
 public class Creature extends Entity{
 	private static final long serialVersionUID = 1L;
 	
-	private int maxHealth;
+	private final int maxHealth;
 	private int curHealth;
 	
-	private int attack;
-	private String attackAlgorithm;
+	private final int attack;
+	private final String attackAlgorithm;
 	
 	private CreatureInventory inventory;
 	private Item weapon;
@@ -109,7 +109,7 @@ public class Creature extends Entity{
 		return !isAlive();
 	}
 	
-	public boolean hasWeapon() {
+	boolean hasWeapon() {
 		return getWeapon() != null;
 	}
 

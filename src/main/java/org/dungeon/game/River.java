@@ -2,7 +2,7 @@ package main.java.org.dungeon.game;
 
 import java.io.Serializable;
 
-public class River implements Serializable {
+class River implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final ExpandableIntegerSet bridges;

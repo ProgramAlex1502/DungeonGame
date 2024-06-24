@@ -11,7 +11,7 @@ import main.java.org.dungeon.utils.Utils;
 
 public final class PoetryData {
 	
-	private ArrayList<Poem> poems;
+	private final ArrayList<Poem> poems;
 	private boolean initialized;
 	
 	public PoetryData() {

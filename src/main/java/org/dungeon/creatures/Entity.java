@@ -8,11 +8,11 @@ import main.java.org.dungeon.game.Selectable;
 public abstract class Entity implements Selectable, Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	public final ID id;
-	public final String type;
-	public final String name;
+	private final ID id;
+	protected final String type;
+	protected final String name;
 	
-	public Entity(ID id, String type, String name) {
+	protected Entity(ID id, String type, String name) {
 		this.id = id;
 		this.type = type;
 		this.name = name;

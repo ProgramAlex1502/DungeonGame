@@ -1,6 +1,6 @@
 package main.java.org.dungeon.game;
 
-public class ItemFrequencyPair {
+class ItemFrequencyPair {
 	
 	private final Pair<ID, Double> pair;
 	

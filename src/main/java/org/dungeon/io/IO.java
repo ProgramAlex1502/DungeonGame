@@ -9,7 +9,7 @@ import main.java.org.dungeon.utils.Utils;
 
 public final class IO {
 		
-	public static final long WRITE_BATTLE_STRING_WAIT = 300;
+	private static final long WRITE_BATTLE_STRING_WAIT = 300;
 	
 	public static void writeString(String string) {
 		writeString(string, Constants.FORE_COLOR_NORMAL);
@@ -51,7 +51,7 @@ public final class IO {
 		writeKeyValueString(key, value, Constants.FORE_COLOR_NORMAL, Constants.FORE_COLOR_DARKER);
 	}
 	
-	public static void writeKeyValueString(String key, String value, Color textColor, Color fillColor) {
+	private static void writeKeyValueString(String key, String value, Color textColor, Color fillColor) {
 		int dots = Constants.COLS - key.length() - value.length();
 		
 		if (dots < 0) {
