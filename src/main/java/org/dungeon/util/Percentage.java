@@ -1,16 +1,23 @@
 package main.java.org.dungeon.util;
 
-public class Percentage {
+import java.io.Serializable;
+
+import main.java.org.dungeon.io.DLogger;
+
+public class Percentage implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private static final double ONE = 1.0;
 	private static final double ZERO = 0.0;
-	private double value;
+	private final double value;
 	
 	public Percentage(double percentage) {
 		if (percentage < ZERO) {
 			value = ZERO;
+			DLogger.warning("Tried to use " + percentage + " as a percentage. Used " + ZERO + " instead.");
 		} else if (percentage > ONE) {
 			value = ONE;
+			DLogger.warning("Tried to use " + percentage + " as a percentage. Used " + ONE + " instead.");
 		} else {
 			value = percentage;
 		}
