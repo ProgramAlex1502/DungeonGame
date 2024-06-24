@@ -7,6 +7,5 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
-	<classpathentry kind="lib" path="lib/joda-time-2.12.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
