@@ -17,17 +17,22 @@ public final class GameData {
 		
 	public static final HashMap<ID, CreatureBlueprint> CREATURE_BLUEPRINTS = new HashMap<ID, CreatureBlueprint>(20, 1f);
 	public static final HashMap<ID, ItemBlueprint> ITEM_BLUEPRINTS = new HashMap<ID, ItemBlueprint>(20, 1f);
+	
+	private final static PoetryLibrary poetryLibrary = new PoetryLibrary();
+	private final static HintLibrary hintLibrary = new HintLibrary();
 	public static LocationPreset[] LOCATION_PRESETS;
 	public static HashMap<ID, Achievement> ACHIEVEMENTS;
 	public static Font monospaced;
-		
 	public static String LICENSE;
 	
-	private static PoetryData poetryData;
 	private static ClassLoader loader;
 	
-	public static PoetryData getPoetryData() {
-		return poetryData;
+	public static PoetryLibrary getPoetryLibrary() {
+		return poetryLibrary;
+	}
+	
+	public static HintLibrary getHintLibrary() {
+		return hintLibrary;
 	}
 	
 	static void loadGameData() {
@@ -43,7 +48,6 @@ public final class GameData {
 		loadLocationPresets();
 		
 		createAchievements();
-		poetryData = new PoetryData();
 		loadLicense();
 		
 		DLogger.info("Finished loading the game data. Took " + stopWatch.toString() + " ms.");

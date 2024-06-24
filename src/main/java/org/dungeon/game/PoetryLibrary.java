@@ -6,17 +6,12 @@ import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.util.Poem;
 import main.java.org.dungeon.util.PoemBuilder;
 
-public final class PoetryData {
+public final class PoetryLibrary extends Library{
 	
-	private final ArrayList<Poem> poems;
-	private boolean initialized;
-	
-	public PoetryData() {
-		poems = new ArrayList<Poem>();
-	}
+	private final ArrayList<Poem> poems = new ArrayList<Poem>();
 	
 	public int getPoemCount() {
-		if (!initialized) {
+		if (!isInitialized()) {
 			initialize();
 		}
 		return poems.size();
@@ -26,12 +21,8 @@ public final class PoetryData {
 		return poems.get(index);
 	}
 	
-	private void initialize() {
-		loadPoems();
-		initialized = true;
-	}
-	
-	private void loadPoems() {
+	@Override
+	void load() {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		ResourceReader reader = new ResourceReader(classLoader.getResourceAsStream("poems.txt"));
 		final String IDENTIFIER_TITLE = "TITLE";
