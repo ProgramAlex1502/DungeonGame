@@ -145,12 +145,24 @@ public class GameState implements Serializable {
 		incrementNextHintIndex();
 	}
 	
-	public void printNextPoem() {
+	public void printPoem(IssuedCommand command) {
 		if (GameData.getPoetryData().getPoemCount() == 0) {
-			IO.writeString("No poems were loaded.", Color.RED);
+			IO.writeString("No poems were loaded.");
 		} else {
-			IO.writePoem(GameData.getPoetryData().getPoem(nextPoemIndex));
-			incrementNextPoemIndex();
+			if (command.hasArguments()) {
+				try {
+					int index = Integer.parseInt(command.getFirstArgument()) - 1;
+					if (index >= 0 && index < GameData.getPoetryData().getPoemCount()) {
+						IO.writePoem(GameData.getPoetryData().getPoem(index));
+						return;
+					}
+				} catch (NumberFormatException ignore) {
+				}
+				IO.writeString("Invalid poem index.");
+			} else {
+				IO.writePoem(GameData.getPoetryData().getPoem(nextPoemIndex));
+				incrementNextPoemIndex();
+			}
 		}
 	}
 	
