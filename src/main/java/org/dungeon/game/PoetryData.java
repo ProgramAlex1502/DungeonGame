@@ -1,13 +1,10 @@
 package main.java.org.dungeon.game;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.util.Poem;
 import main.java.org.dungeon.util.PoemBuilder;
-import main.java.org.dungeon.util.Utils;
 
 public final class PoetryData {
 	
@@ -36,6 +33,7 @@ public final class PoetryData {
 	
 	private void loadPoems() {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		@SuppressWarnings("resource")
 		ResourceReader reader = new ResourceReader(classLoader.getResourceAsStream("poems.txt"));
 		final String IDENTIFIER_TITLE = "TITLE";
 		final String IDENTIFIER_AUTHOR = "AUTHOR";
