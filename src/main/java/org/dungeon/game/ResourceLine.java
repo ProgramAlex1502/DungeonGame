@@ -1,0 +1,52 @@
+package main.java.org.dungeon.game;
+
+import main.java.org.dungeon.io.DLogger;
+
+final class ResourceLine {
+	
+	private static final char LINE_BREAK = '\\';
+	private static final String[] COMMENT_ESCAPES = {"//", "#"};
+	
+	private final String text;
+	private final boolean valid;
+	
+	public ResourceLine(String line) {
+		if (line == null) {
+			DLogger.warning("Tried to create a ResourceLine with a null String.");
+			this.text = null;
+			valid = false;
+		} else {
+			this.text = line.trim();
+			valid = !this.text.isEmpty();
+		}
+	}
+	
+	boolean isValid() {
+		return valid;
+	}
+	
+	boolean isContinued() {
+		return valid && text.charAt(text.length() - 1) == LINE_BREAK;
+	}
+	
+	boolean isComment() {
+		if (valid) {
+			for (String escape : COMMENT_ESCAPES) {
+				if (text.startsWith(escape)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public String toString() {
+		if (isContinued()) {
+			return text.substring(0, text.length() - 1);
+		}
+		
+		return text;
+	}
+
+}

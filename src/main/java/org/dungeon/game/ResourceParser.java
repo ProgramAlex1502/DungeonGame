@@ -9,63 +9,53 @@ import main.java.org.dungeon.io.DLogger;
 
 class ResourceParser implements Closeable {
 	
-	
-	private static final char LINE_BREAK = '\\';
-	
 	private final BufferedReader br;
-	
-	private String line;
-	private boolean continued;
+	private ResourceLine line;
 
 	public ResourceParser(Reader in) {
 		br = new BufferedReader(in);
 	}
 	
 	private void readLine() {
-		try {
-			do {
-				line = br.readLine();
-			} while (line != null && (line.isEmpty() || isComment()));
-			if (line != null) {
-				continued = isContinued();
-				if (continued) {
-					line = line.substring(0, line.length() - 1);
+		do {
+			try {
+				String text = br.readLine();
+				
+				if (text == null) {
+					line = null;
+					return;
 				}
-				line = line.trim();
-			} else {
-				continued = false;
-			}
-		} catch (IOException e) {
-			DLogger.warning(e.getMessage());
-		}
-	}
-	
-	private boolean isContinued() {
-		return line.charAt(line.length() - 1) == LINE_BREAK;
-	}
-	
-	private boolean isComment() {
-		return line.trim().startsWith("//") || line.trim().startsWith("#");
+				line = new ResourceLine(text);
+			} catch (IOException e) {
+				DLogger.warning(e.getMessage());
+			}			
+		} while (!line.isValid() || line.isComment());
 	}
 	
 	public String readString() {
 		readLine();
-		if (continued) {
-			StringBuilder sb = new StringBuilder(line);
-			while (continued) {
+		if (line == null) {
+			return null;
+		}
+		if (line.isContinued()) {
+			StringBuilder sb = new StringBuilder();
+			do {
+				sb.append(line.toString()).append('\n');
 				readLine();
-				if (line != null) {
-					sb.append('\n').append(line);
-				}
-			}
+			} while (line != null && line.isContinued());
 			return sb.toString();
 		}
-		return line;
+		
+		return line.toString();
 	}
 
 	@Override
-	public void close() throws IOException {
-		br.close();
+	public void close() {
+		try {
+			br.close();			
+		} catch (IOException e) {
+			DLogger.warning(e.getMessage());
+		}
 	}
 
 }

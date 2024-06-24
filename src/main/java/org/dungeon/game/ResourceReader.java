@@ -1,7 +1,6 @@
 package main.java.org.dungeon.game;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -9,13 +8,13 @@ import java.util.HashMap;
 class ResourceReader implements Closeable {
 
 	private final HashMap<String, String> map;
-	private final ResourceParser dBufferedReader;
+	private final ResourceParser resourceParser;
 	
 	private Pair<String, String> lastPair;
 	
 	public ResourceReader(InputStream inputStream) {
 		map = new HashMap<String, String>();
-		dBufferedReader = new ResourceParser(new InputStreamReader(inputStream));
+		resourceParser = new ResourceParser(new InputStreamReader(inputStream));
 	}
 	
 	public boolean contains(String key) {
@@ -49,7 +48,7 @@ class ResourceReader implements Closeable {
 	}
 	
 	private Pair<String, String> readNextPair() {
-		String string = dBufferedReader.readString();
+		String string = resourceParser.readString();
 		if (string != null && !string.isEmpty()) {
 			int colonIndex = string.indexOf(':');
 			String key = string.substring(0, colonIndex).trim();
@@ -61,8 +60,8 @@ class ResourceReader implements Closeable {
 	}
 	
 	@Override
-	public void close() throws IOException {
-		dBufferedReader.close();
+	public void close() {
+		resourceParser.close();
 	}
 
 }
