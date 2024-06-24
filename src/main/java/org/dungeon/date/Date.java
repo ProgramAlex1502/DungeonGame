@@ -7,15 +7,49 @@ import main.java.org.dungeon.io.DLogger;
 public class Date implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private final long time;
-	private static final long DAYS_IN_MONTH = 10;
-	private static final long MONTHS_IN_YEAR = 10;
-	private static final long millisInDay = 1000 * 60 * 60 * 24;
+	public static final long SECONDS_IN_MINUTE = 60;
+	public static final long MINUTES_IN_HOUR = 60;
+	public static final long HOURS_IN_DAY = 24;
+	public static final long DAYS_IN_MONTH = 10;
+	public static final long MONTHS_IN_YEAR = 10;
+	
+	private static final long millisInSecond = 1000;
+	private static final long millisInMinute = millisInSecond * SECONDS_IN_MINUTE;
+	private static final long millisInHour = millisInMinute * MINUTES_IN_HOUR;
+	private static final long millisInDay = millisInHour * HOURS_IN_DAY;
 	private static final long millisInMonth = millisInDay * DAYS_IN_MONTH;
 	private static final long millisInYear = millisInMonth * MONTHS_IN_YEAR;
+
+	private long time;
 	
 	private Date(long millis) {
 		time = millis;
+	}
+	
+	public Date(long year, long month, long day, long hour, long minute, long second) {
+		this(year, month, day);
+		if (hour < 0) {
+			DLogger.warning("Tried to construct Date with negative hour!");
+			hour = 0;
+		} else if (hour >= HOURS_IN_DAY) {
+			DLogger.warning("Tried to construct Date with nonexistent hour.");
+			hour = HOURS_IN_DAY;
+		}
+		if (minute < 0) {
+		    DLogger.warning("Tried to construct Date with negative minute!");
+		    minute = 0;
+		} else if (minute >= MINUTES_IN_HOUR) {
+		    DLogger.warning("Tried to construct Date with nonexistent minute.");
+		    minute = MINUTES_IN_HOUR;
+		}
+		if (second < 0) {
+		    DLogger.warning("Tried to construct Date with negative second!");
+		    second = 0;
+		} else if (second >= SECONDS_IN_MINUTE) {
+		    DLogger.warning("Tried to construct Date with nonexistent second.");
+		    second = SECONDS_IN_MINUTE;
+		}
+		time += hour * millisInHour + minute * millisInMinute + second * millisInSecond;
 	}
 	
 	public Date(long year, long month, long day) {
