@@ -59,6 +59,7 @@ public class Engine {
 		}
 		
 		Location destination = gameState.getWorld().moveHero(dir);
+		refreshSpawners();
 		hero.setLocation(destination);
 		hero.look(true);
 		hero.getExplorationLog().addVisit(destinationPoint);
