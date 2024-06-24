@@ -9,13 +9,13 @@ import java.util.HashMap;
 class ResourceReader implements Closeable {
 
 	private final HashMap<String, String> map;
-	private final DBufferedReader dBufferedReader;
+	private final ResourceParser dBufferedReader;
 	
 	private Pair<String, String> lastPair;
 	
 	public ResourceReader(InputStream inputStream) {
 		map = new HashMap<String, String>();
-		dBufferedReader = new DBufferedReader(new InputStreamReader(inputStream));
+		dBufferedReader = new ResourceParser(new InputStreamReader(inputStream));
 	}
 	
 	public boolean contains(String key) {

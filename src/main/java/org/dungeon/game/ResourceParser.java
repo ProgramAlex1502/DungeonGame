@@ -7,7 +7,7 @@ import java.io.Reader;
 
 import main.java.org.dungeon.io.DLogger;
 
-class DBufferedReader implements Closeable {
+class ResourceParser implements Closeable {
 	
 	
 	private static final char LINE_BREAK = '\\';
@@ -17,7 +17,7 @@ class DBufferedReader implements Closeable {
 	private String line;
 	private boolean continued;
 
-	public DBufferedReader(Reader in) {
+	public ResourceParser(Reader in) {
 		br = new BufferedReader(in);
 	}
 	

@@ -42,7 +42,7 @@ public final class PoetryData {
 		String line;
 		PoemBuilder pb = new PoemBuilder();
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		DBufferedReader reader = new DBufferedReader(new InputStreamReader(cl.getResourceAsStream("poems.txt")));
+		ResourceParser reader = new ResourceParser(new InputStreamReader(cl.getResourceAsStream("poems.txt")));
 		
 		try {
 			while ((line = reader.readString()) != null) {
