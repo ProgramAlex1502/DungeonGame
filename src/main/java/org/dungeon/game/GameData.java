@@ -18,8 +18,10 @@ public final class GameData {
 	public static final HashMap<ID, CreatureBlueprint> CREATURE_BLUEPRINTS = new HashMap<ID, CreatureBlueprint>(20, 1f);
 	public static final HashMap<ID, ItemBlueprint> ITEM_BLUEPRINTS = new HashMap<ID, ItemBlueprint>(20, 1f);
 	
-	private final static PoetryLibrary poetryLibrary = new PoetryLibrary();
-	private final static HintLibrary hintLibrary = new HintLibrary();
+	private static final PoetryLibrary poetryLibrary = new PoetryLibrary();
+	private static final HintLibrary hintLibrary = new HintLibrary();
+	private static final LocationPreset riverPreset = new LocationPreset("River");
+	private static final LocationPreset bridgePreset = new LocationPreset("Bridge");
 	public static LocationPreset[] LOCATION_PRESETS;
 	public static HashMap<ID, Achievement> ACHIEVEMENTS;
 	public static Font monospaced;
@@ -190,8 +192,19 @@ public final class GameData {
 
         LOCATION_PRESETS = new LocationPreset[locationPresets.size()];
         locationPresets.toArray(LOCATION_PRESETS);
+        
+        makeHardcodedLocationPresets();
+        
         DLogger.info("Created " + LOCATION_PRESETS.length + " location presets.");
     }
+	
+	private static void makeHardcodedLocationPresets() {
+		riverPreset.block(Direction.WEST).block(Direction.EAST);
+		riverPreset.setLightPermittivity(1.0);
+		
+		bridgePreset.block(Direction.NORTH).block(Direction.SOUTH);
+		bridgePreset.setLightPermittivity(1.0);
+	}
 	
 	private static void createAchievements() {
         ACHIEVEMENTS = new HashMap<ID, Achievement>();
@@ -285,17 +298,11 @@ public final class GameData {
     }
 	
 	public static LocationPreset getRandomRiver() {
-		LocationPreset river = new LocationPreset("River");
-		river.block(Direction.EAST).block(Direction.WEST);
-		river.setLightPermittivity(1.0);
-		return river;
+		return riverPreset;
 	}
 	
 	public static LocationPreset getRandomBridge() {
-		LocationPreset bridge = new LocationPreset("Bridge");
-		bridge.block(Direction.SOUTH).block(Direction.NORTH);
-		bridge.setLightPermittivity(1.0);
-		return bridge;
+		return bridgePreset;
 	}
 
 }
