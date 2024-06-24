@@ -106,10 +106,10 @@ public class Hero extends Creature {
 		return seconds;
 	}
 	
-	public void look(boolean arriving) {
+	public void look(Direction walkedInFrom) {
 		Location location = getLocation();
 		
-		if (arriving) {
+		if (walkedInFrom != null) {
 			IO.writeString("You arrive at " + location.getName() + ".");
 		} else {
 			IO.writeString("You are at " + location.getName() + ".");
@@ -118,7 +118,7 @@ public class Hero extends Creature {
 		IO.writeNewLine();
 		
 		if (canSee()) {
-			lookAdjacentLocations();
+			lookAdjacentLocations(walkedInFrom);
 			if (location.getCreatureCount() == 1) {
 				if (Engine.RANDOM.nextBoolean()) {
 					IO.writeString("You do not see anyone here.");
@@ -156,18 +156,20 @@ public class Hero extends Creature {
 		}
 	}
 	
-	private void lookAdjacentLocations() {
+	private void lookAdjacentLocations(Direction walkedInFrom) {
 		World world = Game.getGameState().getWorld();
 		Point pos = Game.getGameState().getHeroPosition();
 		
 		StringBuilder stringBuilder = new StringBuilder(140);
 		
 		for(Direction dir : Direction.values()) {
-			stringBuilder.append("To ");
-			stringBuilder.append(dir);
-			stringBuilder.append(" you see ");
-			stringBuilder.append(world.getLocation(new Point(pos, dir)).getName());
-			stringBuilder.append(".\n");
+			if (walkedInFrom == null || !dir.equals(walkedInFrom)) {
+				stringBuilder.append("To ");
+				stringBuilder.append(dir);
+				stringBuilder.append(" you see ");
+				stringBuilder.append(world.getLocation(new Point(pos, dir)).getName());
+				stringBuilder.append(".\n");				
+			}
 		}
 		
 		IO.writeString(stringBuilder.toString());

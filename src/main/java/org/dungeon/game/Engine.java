@@ -61,7 +61,7 @@ public class Engine {
 		Location destination = gameState.getWorld().moveHero(dir);
 		refreshSpawners();
 		hero.setLocation(destination);
-		hero.look(true);
+		hero.look(dir.invert());
 		hero.getExplorationLog().addVisit(destinationPoint);
 		return TimeConstants.WALK_SUCCESS;
 	}
