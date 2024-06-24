@@ -184,7 +184,7 @@ public class Help {
 		} else if (issuedCommand.hasArguments()) {
 			String argument = issuedCommand.getFirstArgument();
 			if (!printCommandHelp(argument) && !printAspectHelp(argument)) {
-				IO.writeString(String.format("No help text for '%s' could be found.", issuedCommand.getFirstToken()));
+				IO.writeString(String.format("No help text for '%s' could be found.", argument));
 			}
 		} else {
 			Utils.printMissingArgumentsMessage();
