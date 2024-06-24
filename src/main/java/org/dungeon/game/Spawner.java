@@ -26,7 +26,6 @@ class Spawner implements Serializable {
 		long worldTime = getWorldTime();
 		
 		while (worldTime - lastChange >= spawnDelay && location.getCreatureCount(id) < populationLimit) {
-			location.getWorld().getSpawnCounter().incrementCounter(id);
 			location.addCreature(new Creature(GameData.CREATURE_BLUEPRINTS.get(id)));
 			
 			lastChange += spawnDelay;

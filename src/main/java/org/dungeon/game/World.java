@@ -3,16 +3,12 @@ package main.java.org.dungeon.game;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import main.java.org.dungeon.counters.CounterMap;
 import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.date.Date;
-import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.stats.WorldStatistics;
 
 public class World implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private final CounterMap<ID> spawnCounter;
 	
 	private final WorldGenerator generator;
 	
@@ -26,13 +22,8 @@ public class World implements Serializable {
 		worldStatistics = statistics;
 		worldDate = new Date(455, 6, 2, 6, 10, 0);
 		worldCreationDate = worldDate.minusHours(6);
-		spawnCounter = new CounterMap<ID>();
 		locations = new HashMap<Point, Location>();
 		generator = new WorldGenerator(this);
-	}
-	
-	public CounterMap<ID> getSpawnCounter() {
-		return spawnCounter;
 	}
 	
 	public WorldGenerator getGenerator() {
@@ -80,12 +71,6 @@ public class World implements Serializable {
 	
 	public PartOfDay getPartOfDay() {
 		return PartOfDay.getCorrespondingConstants(worldDate);
-	}
-	
-	public void printSpawnCounters() {
-		for (ID id : spawnCounter.keySet()) {
-			IO.writeKeyValueString(id.getId(), Integer.toString(spawnCounter.getCounter(id)));
-		}
 	}
 	
 	public void rollDate(int seconds) {
