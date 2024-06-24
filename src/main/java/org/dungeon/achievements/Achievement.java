@@ -71,9 +71,6 @@ public class Achievement {
 		if (!hero.getAchievementTracker().isUnlocked(this) && isFulfilled(hero)) {
 			printAchievementUnlocked();
 			hero.getAchievementTracker().unlock(this);
-			return;
-		} else {
-			return;
 		}
 	}
 	
