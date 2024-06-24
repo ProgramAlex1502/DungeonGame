@@ -9,6 +9,7 @@ import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.items.LocationInventory;
+import main.java.org.dungeon.util.Percentage;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +20,7 @@ public class Location implements Serializable {
 	private final List<Spawner> spawners;
 	private final LocationInventory items;
 	
-	private final double lightPermittivity;
+	private final Percentage lightPermittivity;
 	private World world;
 	
 	public Location(LocationPreset preset, World world) {
@@ -59,12 +60,12 @@ public class Location implements Serializable {
 		return name;
 	}
 	
-	double getLightPermittivity() {
+	Percentage getLightPermittivity() {
 		return lightPermittivity;
 	}
 	
 	public double getLuminosity() {
-		return getLightPermittivity() * getWorld().getPartOfDay().getLuminosity();
+		return getLightPermittivity().toDouble() * getWorld().getPartOfDay().getLuminosity();
 	}
 	
 	public List<Creature> getCreatures() {
