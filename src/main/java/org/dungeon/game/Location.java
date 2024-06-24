@@ -14,6 +14,7 @@ import main.java.org.dungeon.util.Percentage;
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	private final ID id;
 	private final String name;
 	private final BlockedEntrances blockedEntrances;
 	private final List<Creature> creatures;
@@ -24,6 +25,7 @@ public class Location implements Serializable {
 	private World world;
 	
 	public Location(LocationPreset preset, World world) {
+		this.id = preset.id;
 		this.world = world;
 		this.name = preset.getName();
 		this.blockedEntrances = preset.getBlockedEntrances();
