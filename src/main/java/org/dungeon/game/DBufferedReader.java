@@ -9,20 +9,23 @@ import main.java.org.dungeon.io.DLogger;
 
 class DBufferedReader implements Closeable {
 	
-	private String line;
-	private boolean continued;
 	
 	private static final char LINE_BREAK = '\\';
 	
 	private final BufferedReader br;
 	
+	private String line;
+	private boolean continued;
+
 	public DBufferedReader(Reader in) {
 		br = new BufferedReader(in);
 	}
 	
 	private void readLine() {
 		try {
-			line = br.readLine();
+			do {
+				line = br.readLine();
+			} while (line != null && (line.isEmpty() || isComment()));
 			if (line != null) {
 				continued = isContinued();
 				if (continued) {
@@ -38,7 +41,11 @@ class DBufferedReader implements Closeable {
 	}
 	
 	private boolean isContinued() {
-		return !line.isEmpty() && line.charAt(line.length() - 1) == LINE_BREAK;
+		return line.charAt(line.length() - 1) == LINE_BREAK;
+	}
+	
+	private boolean isComment() {
+		return line.trim().startsWith("//") || line.trim().startsWith("#");
 	}
 	
 	public String readString() {

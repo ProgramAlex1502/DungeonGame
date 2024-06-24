@@ -25,6 +25,7 @@ public class ExplorationLog implements Serializable {
 		return maximumKills;
 	}
 	
+	@SuppressWarnings("unused")
 	private int getVisitCount(Point point) {
 		return entries.containsKey(point) ? entries.get(point).getVisitCount() : 0;
 	}
@@ -43,6 +44,7 @@ public class ExplorationLog implements Serializable {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private int getKillCount(Point point) {
 		return entries.containsKey(point) ? entries.get(point).getKillCount() : 0;
 	}

@@ -1,7 +1,6 @@
 package main.java.org.dungeon.game;
 
 import java.awt.Font;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import main.java.org.dungeon.creatures.CreatureBlueprint;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.utils.Constants;
-import main.java.org.dungeon.utils.Utils;
 
 public final class GameData {
 		
@@ -21,11 +19,10 @@ public final class GameData {
 	public static LocationPreset[] LOCATION_PRESETS;
 	public static HashMap<ID, Achievement> ACHIEVEMENTS;
 	public static Font monospaced;
-	
-	private static PoetryData poetryData;
-	
+		
 	public static String LICENSE;
 	
+	private static PoetryData poetryData;
 	private static ClassLoader loader;
 	
 	public static PoetryData getPoetryData() {
@@ -54,54 +51,36 @@ public final class GameData {
 	
 	private static void loadItemBlueprints() {
 		ITEM_BLUEPRINTS = new HashMap<ID, ItemBlueprint>();
-		BufferedReader br = new BufferedReader(new InputStreamReader(loader.getResourceAsStream("items.txt")));
-		String line;
-		ItemBlueprint blueprint = new ItemBlueprint();
+		@SuppressWarnings("resource")
+		ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("items.txt"));
+		ItemBlueprint blueprint;
 		
-		try {
-			while ((line = br.readLine()) != null) {
-				if (Utils.isNotBlankString(line)) {
-					if (line.startsWith("ID:")) {
-						if (blueprint.getId() != null) {
-							ITEM_BLUEPRINTS.put(blueprint.getId(), blueprint);
-							blueprint = new ItemBlueprint();
-						}
-						blueprint.setId(Utils.getAfterColon(line).trim());
-					} else if (line.startsWith("TYPE:")) {
-						blueprint.setType(Utils.getAfterColon(line).trim());
-					} else if (line.startsWith("NAME:")) {
-						blueprint.setName(Utils.getAfterColon(line).trim());
-					} else if (line.startsWith("CUR_INTEGRITY:")) {
-						blueprint.setCurIntegrity(Integer.parseInt(Utils.getAfterColon(line).trim()));
-					} else if (line.startsWith("MAX_INTEGRITY:")) {
-                        blueprint.setMaxIntegrity(Integer.parseInt(Utils.getAfterColon(line).trim()));
-                    } else if (line.startsWith("REPAIRABLE:")) {
-                        blueprint.setRepairable(Integer.parseInt(Utils.getAfterColon(line).trim()) == 1);
-                    } else if (line.startsWith("WEAPON:")) {
-                        blueprint.setWeapon(Integer.parseInt(Utils.getAfterColon(line).trim()) == 1);
-                    } else if (line.startsWith("DAMAGE:")) {
-                        blueprint.setDamage(Integer.parseInt(Utils.getAfterColon(line).trim()));
-                    } else if (line.startsWith("HIT_RATE:")) {
-                        blueprint.setHitRate(Double.parseDouble(Utils.getAfterColon(line).trim()));
-                    } else if (line.startsWith("INTEGRITY_DECREMENT_ON_HIT:")) {
-                        blueprint.setIntegrityDecrementOnHit(Integer.parseInt(Utils.getAfterColon(line).trim()));
-                    } else if (line.startsWith("FOOD:")) {
-                        blueprint.setFood(Integer.parseInt(Utils.getAfterColon(line).trim()) == 1);
-                    } else if (line.startsWith("NUTRITION:")) {
-                        blueprint.setNutrition(Integer.parseInt(Utils.getAfterColon(line).trim()));
-                    } else if (line.startsWith("INTEGRITY_DECREMENT_ON_EAT:")) {
-                        blueprint.setIntegrityDecrementOnEat(Integer.parseInt(Utils.getAfterColon(line).trim()));
-                    } else if (line.startsWith("CLOCK:")) {
-                        blueprint.setClock(Integer.parseInt(Utils.getAfterColon(line).trim()) == 1);
-                    }
-				}
-			}
-			br.close();
-		} catch (IOException exception) {
-			DLogger.warning(exception.toString());
+		while (resourceReader.readNextElement()) {
+			blueprint = new ItemBlueprint();
+			blueprint.setId(new ID(resourceReader.getValue("ID")));
+			blueprint.setType(resourceReader.getValue("TYPE"));
+			blueprint.setName(resourceReader.getValue("NAME"));
+		    blueprint.setCurIntegrity(Integer.parseInt(resourceReader.getValue("CUR_INTEGRITY")));
+		    blueprint.setMaxIntegrity(Integer.parseInt(resourceReader.getValue("MAX_INTEGRITY")));
+		    blueprint.setRepairable(Integer.parseInt(resourceReader.getValue("REPAIRABLE")) == 1);
+		    blueprint.setWeapon(Integer.parseInt(resourceReader.getValue("WEAPON")) == 1);
+		    blueprint.setDamage(Integer.parseInt(resourceReader.getValue("DAMAGE")));
+		    blueprint.setHitRate(Double.parseDouble(resourceReader.getValue("HIT_RATE")));
+		    blueprint.setIntegrityDecrementOnHit(Integer.parseInt(resourceReader.getValue("INTEGRITY_DECREMENT_ON_HIT")));
+		    blueprint.setFood(Integer.parseInt(resourceReader.getValue("FOOD")) == 1);
+		    if (resourceReader.contains("NUTRITION")) {
+		    	blueprint.setNutrition(Integer.parseInt(resourceReader.getValue("NUTRITION")));
+		    }
+		    if (resourceReader.contains("INTEGRITY_DECREMENT_ON_EAT")) {
+		        blueprint.setIntegrityDecrementOnEat(Integer.parseInt(resourceReader.getValue("INTEGRITY_DECREMENT_ON_EAT")));
+		    }
+		    if (resourceReader.contains("CLOCK")) {
+		        blueprint.setClock(Integer.parseInt(resourceReader.getValue("CLOCK")) == 1);
+		    }
+			
+			ITEM_BLUEPRINTS.put(blueprint.getId(), blueprint);
 		}
 		
-		ITEM_BLUEPRINTS.put(blueprint.getId(), blueprint);
 		DLogger.info("Loaded " + ITEM_BLUEPRINTS.size() + " item blueprints");
 	}
 	

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class ExplorationData implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@SuppressWarnings("unused")
 	private String locationID;
 	private int visitCount;
 	private int killCount;

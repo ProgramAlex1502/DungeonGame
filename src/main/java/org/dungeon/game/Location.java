@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.org.dungeon.creatures.Creature;
+import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.items.Item;
+import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.items.LocationInventory;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private World world;
 	
 	private final String name;
 	private final BlockedEntrances blockedEntrances;
@@ -20,6 +20,7 @@ public class Location implements Serializable {
 	private final LocationInventory items;
 	
 	private final double lightPermittivity;
+	private World world;
 	
 	public Location(LocationPreset preset, World world) {
 		this.world = world;
@@ -37,7 +38,12 @@ public class Location implements Serializable {
 		
 		for (ItemFrequencyPair pair : preset.getItems()) {
 			if (Engine.RANDOM.nextDouble() < pair.getFrequency()) {
-				this.addItem(new Item(GameData.ITEM_BLUEPRINTS.get(pair.getId())));
+				ItemBlueprint blueprint = GameData.ITEM_BLUEPRINTS.get(pair.getId());
+				if (blueprint != null) {
+					this.addItem(new Item(blueprint));
+				} else {
+					DLogger.warning("ItemBlueprint not found: " + pair.getId().getId());
+				}
 			}
 		}
 		
