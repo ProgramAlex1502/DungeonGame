@@ -22,7 +22,7 @@ public class GameState implements Serializable {
 	
 	private final Statistics statistics;
 	
-	private final Hero hero;
+	private Hero hero;
 	private Point heroPosition;
 	
 	private boolean bold;
@@ -37,13 +37,17 @@ public class GameState implements Serializable {
 		
 		statistics = new Statistics();
 		
+		createHeroAndStartingLocation();
+		
+		saved = true;
+	}
+	
+	private void createHeroAndStartingLocation() {
 		hero = new Hero("Seth");
 		heroPosition = new Point(0, 0);
 		
 		world.getLocation(heroPosition).addCreature(hero);
 		hero.getExplorationLog().addVisit(heroPosition);
-		
-		saved = true;
 	}
 	
 	public CommandHistory getCommandHistory() {
