@@ -1,6 +1,6 @@
 package main.java.org.dungeon.help;
 
-import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.util.Constants;
 
 public class CommandHelp {
 	

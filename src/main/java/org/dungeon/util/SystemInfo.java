@@ -1,4 +1,4 @@
-package main.java.org.dungeon.utils;
+package main.java.org.dungeon.util;
 
 import java.util.Date;
 

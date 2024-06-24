@@ -14,9 +14,9 @@ import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
-import main.java.org.dungeon.utils.Constants;
-import main.java.org.dungeon.utils.DTable;
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.DTable;
+import main.java.org.dungeon.util.Utils;
 
 public class Loader {
 	

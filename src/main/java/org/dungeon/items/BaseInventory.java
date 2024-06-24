@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.org.dungeon.io.IO;
-import main.java.org.dungeon.utils.SelectionResult;
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.SelectionResult;
+import main.java.org.dungeon.util.Utils;
 
 public abstract class BaseInventory implements Serializable {
 	private static final long serialVersionUID = 1L;

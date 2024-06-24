@@ -10,7 +10,7 @@ import main.java.org.dungeon.achievements.Achievement;
 import main.java.org.dungeon.creatures.CreatureBlueprint;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.items.ItemBlueprint;
-import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.util.Constants;
 
 public final class GameData {
 		
@@ -52,10 +52,9 @@ public final class GameData {
 	private static void loadItemBlueprints() {
 		@SuppressWarnings("resource")
 		ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("items.txt"));
-		ItemBlueprint blueprint;
 		
 		while (resourceReader.readNextElement()) {
-			blueprint = new ItemBlueprint();
+			ItemBlueprint blueprint = new ItemBlueprint();
 			blueprint.setId(new ID(resourceReader.getValue("ID")));
 			blueprint.setType(resourceReader.getValue("TYPE"));
 			blueprint.setName(resourceReader.getValue("NAME"));
@@ -86,10 +85,9 @@ public final class GameData {
 	@SuppressWarnings("resource")
 	private static void loadCreatureBlueprints() {        
         ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("creatures.txt"));
-        CreatureBlueprint blueprint;
         
         while (resourceReader.readNextElement()) {
-        	blueprint = new CreatureBlueprint();
+        	CreatureBlueprint blueprint = new CreatureBlueprint();
         	blueprint.setId(new ID(resourceReader.getValue("ID")));
         	blueprint.setType(resourceReader.getValue("TYPE"));
         	blueprint.setName(resourceReader.getValue("NAME"));

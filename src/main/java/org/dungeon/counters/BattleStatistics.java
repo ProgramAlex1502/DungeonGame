@@ -5,7 +5,7 @@ import java.io.Serializable;
 import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.items.Item;
-import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.util.Constants;
 
 public class BattleStatistics implements Serializable{
 	private static final long serialVersionUID = 1L;

@@ -2,7 +2,7 @@ package main.java.org.dungeon.game;
 
 import java.util.Arrays;
 
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Utils;
 
 public final class IssuedCommand {
 	

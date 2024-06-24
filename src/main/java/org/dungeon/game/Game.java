@@ -5,9 +5,9 @@ import main.java.org.dungeon.help.Help;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.Loader;
-import main.java.org.dungeon.utils.Math;
-import main.java.org.dungeon.utils.SystemInfo;
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Math;
+import main.java.org.dungeon.util.SystemInfo;
+import main.java.org.dungeon.util.Utils;
 
 public class Game {
 	

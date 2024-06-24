@@ -8,7 +8,7 @@ import main.java.org.dungeon.achievements.Achievement;
 import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.io.IO;
-import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.util.Constants;
 
 public class Engine {
 	

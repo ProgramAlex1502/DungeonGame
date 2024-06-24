@@ -7,7 +7,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Utils;
 
 public class DLogger {
 	

@@ -4,7 +4,7 @@ import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.creatures.Entity;
 import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.game.Game;
-import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.util.Constants;
 
 public class Item extends Entity{
 	private static final long serialVersionUID = 1L;

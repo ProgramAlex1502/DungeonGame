@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import main.java.org.dungeon.io.DLogger;
-import main.java.org.dungeon.utils.Poem;
-import main.java.org.dungeon.utils.PoemBuilder;
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Poem;
+import main.java.org.dungeon.util.PoemBuilder;
+import main.java.org.dungeon.util.Utils;
 
 public final class PoetryData {
 	

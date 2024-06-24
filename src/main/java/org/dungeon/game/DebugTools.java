@@ -7,8 +7,8 @@ import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.Loader;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.items.ItemBlueprint;
-import main.java.org.dungeon.utils.Constants;
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.Utils;
 
 public class DebugTools {
 	

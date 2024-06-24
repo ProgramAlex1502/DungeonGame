@@ -40,8 +40,8 @@ import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.Loader;
-import main.java.org.dungeon.utils.CommandHistory;
-import main.java.org.dungeon.utils.Constants;
+import main.java.org.dungeon.util.CommandHistory;
+import main.java.org.dungeon.util.Constants;
 
 public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 1L;

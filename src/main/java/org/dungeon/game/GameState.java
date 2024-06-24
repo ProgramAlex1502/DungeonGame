@@ -11,9 +11,9 @@ import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.date.Period;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.IO;
-import main.java.org.dungeon.utils.CommandHistory;
-import main.java.org.dungeon.utils.Hints;
-import main.java.org.dungeon.utils.Statistics;
+import main.java.org.dungeon.util.CommandHistory;
+import main.java.org.dungeon.util.Hints;
+import main.java.org.dungeon.util.Statistics;
 
 public class GameState implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -3,9 +3,9 @@ package main.java.org.dungeon.io;
 import java.awt.*;
 
 import main.java.org.dungeon.game.Game;
-import main.java.org.dungeon.utils.Constants;
-import main.java.org.dungeon.utils.Poem;
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.Poem;
+import main.java.org.dungeon.util.Utils;
 
 public final class IO {
 		

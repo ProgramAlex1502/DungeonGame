@@ -5,8 +5,8 @@ import java.awt.Color;
 import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.items.Item;
-import main.java.org.dungeon.utils.Constants;
-import main.java.org.dungeon.utils.Utils;
+import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.Utils;
 
 class AttackAlgorithm {
 	
