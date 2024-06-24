@@ -109,7 +109,7 @@ public final class GameData {
 	private static void loadCreatureBlueprints() {
         CREATURE_BLUEPRINTS = new HashMap<ID, CreatureBlueprint>();
         
-        DResourceReader resourceReader = new DResourceReader(loader.getResourceAsStream("creatures.txt"));
+        ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("creatures.txt"));
         CreatureBlueprint blueprint;
         
         while (resourceReader.readNextElement()) {

@@ -6,12 +6,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
-class DResourceReader implements Closeable {
+class ResourceReader implements Closeable {
 
 	private final HashMap<String, String> map;
 	private final DBufferedReader dBufferedReader;
 	
-	public DResourceReader(InputStream inputStream) {
+	public ResourceReader(InputStream inputStream) {
 		map = new HashMap<String, String>();
 		dBufferedReader = new DBufferedReader(new InputStreamReader(inputStream));
 	}
