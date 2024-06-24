@@ -11,8 +11,8 @@ import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.date.Period;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.IO;
+import main.java.org.dungeon.stats.Statistics;
 import main.java.org.dungeon.util.CommandHistory;
-import main.java.org.dungeon.util.Statistics;
 
 public class GameState implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +20,7 @@ public class GameState implements Serializable {
 	private final CommandHistory commandHistory;
 	private final World world;
 	
-	private final Statistics statistics;
+	private final Statistics statistics = new Statistics();
 	
 	private Hero hero;
 	private Point heroPosition;
@@ -33,9 +33,8 @@ public class GameState implements Serializable {
 	
 	public GameState() {
 		commandHistory = new CommandHistory();
-		world = new World();
 		
-		statistics = new Statistics();
+		world = new World(statistics.getWorldStatistics());
 		
 		createHeroAndStartingLocation();
 		
@@ -174,7 +173,7 @@ public class GameState implements Serializable {
 	}
 	
 	public void printGameStatistics() {
-		statistics.print();
+		statistics.printAllStatistics();
 	}
 	
 	public Location getHeroLocation() {

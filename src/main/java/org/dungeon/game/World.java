@@ -7,6 +7,7 @@ import main.java.org.dungeon.counters.CounterMap;
 import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.io.IO;
+import main.java.org.dungeon.stats.WorldStatistics;
 
 public class World implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -16,10 +17,13 @@ public class World implements Serializable {
 	private final WorldGenerator generator;
 	
 	private final HashMap<Point, Location> locations;
+	
 	private final Date worldCreationDate;
 	private Date worldDate;
+	private WorldStatistics worldStatistics;
 
-	public World() {
+	public World(WorldStatistics statistics) {
+		worldStatistics = statistics;
 		worldDate = new Date(455, 6, 2, 6, 10, 0);
 		worldCreationDate = worldDate.minusHours(6);
 		spawnCounter = new CounterMap<ID>();
@@ -43,8 +47,13 @@ public class World implements Serializable {
 		return worldDate;
 	}
 	
+	public WorldStatistics getWorldStatistics() {
+		return worldStatistics;
+	}
+	
 	public void addLocation(Location locationObject, Point coordinates) {
 		locations.put(coordinates, locationObject);
+		worldStatistics.addLocation(locationObject.getName());
 	}
 	
 	public Location moveHero(Direction dir) {

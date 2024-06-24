@@ -1,10 +1,10 @@
-package main.java.org.dungeon.util;
+package main.java.org.dungeon.stats;
 
 import java.io.Serializable;
 
 import main.java.org.dungeon.game.IssuedCommand;
 
-class CommandStatistics implements Serializable {
+final class CommandStatistics implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int commands;
