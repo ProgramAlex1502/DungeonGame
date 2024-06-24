@@ -14,11 +14,6 @@ public class Date implements Serializable {
 	private static final long millisInMonth = millisInDay * DAYS_IN_MONTH;
 	private static final long millisInYear = millisInMonth * MONTHS_IN_YEAR;
 	
-	@SuppressWarnings("unused")
-	private Date() {
-		time = 0;
-	}
-	
 	private Date(long millis) {
 		time = millis;
 	}
