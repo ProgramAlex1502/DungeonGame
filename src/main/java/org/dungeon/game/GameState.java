@@ -115,7 +115,7 @@ public class GameState implements Serializable {
 	
 	private void incrementNextPoemIndex() {
 		int newIndex = getNextPoemIndex() + 1;
-		if (newIndex == GameData.POEMS.size()) {
+		if (newIndex == GameData.getPoetryData().getPoemCount()) {
 			setNextPoemIndex(0);
 		} else {
 			setNextPoemIndex(newIndex);
@@ -147,10 +147,10 @@ public class GameState implements Serializable {
 	}
 	
 	public void printNextPoem() {
-		if (GameData.POEMS.isEmpty()) {
+		if (GameData.getPoetryData().getPoemCount() == 0) {
 			IO.writeString("No poems were loaded.", Color.RED);
 		} else {
-			IO.writePoem(GameData.POEMS.get(nextPoemIndex));
+			IO.writePoem(GameData.getPoetryData().getPoem(nextPoemIndex));
 			incrementNextPoemIndex();
 		}
 	}
