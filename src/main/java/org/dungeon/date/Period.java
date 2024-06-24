@@ -10,7 +10,7 @@ public class Period {
 		difference = new Date(end.getTime() - start.getTime());
 	}
 	
-	public long getSecond() {
+	public long getSeconds() {
 		return difference.getTime() / 1000;
 	}
 	

@@ -40,11 +40,11 @@ public class Spawner implements Serializable {
 	}
 	
 	private long getWorldTime() {
-		return location.getWorld().getWorldDate().getMillis();
+		return location.getWorld().getWorldDate().getTime();
 	}
 	
 	private long getWorldCreationTime() {
-		return location.getWorld().getWorldCreationDate().getMillis();
+		return location.getWorld().getWorldCreationDate().getTime();
 	}
 
 }

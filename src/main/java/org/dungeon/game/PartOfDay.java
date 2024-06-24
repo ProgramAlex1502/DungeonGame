@@ -1,8 +1,7 @@
 package main.java.org.dungeon.game;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
+import main.java.org.dungeon.date.Date;
+import main.java.org.dungeon.date.Period;
 
 public enum PartOfDay {
 		
@@ -27,8 +26,8 @@ public enum PartOfDay {
 		setStartingHour(startingHour);
 	}
 	
-	public static PartOfDay getCorrespondingConstants(DateTime dateTime) {
-		int hour = dateTime.getHourOfDay();
+	public static PartOfDay getCorrespondingConstants(Date date) {
+		long hour = date.getHour();
 		
 		if (hour == 0) {
 			return MIDNIGHT;
@@ -45,10 +44,10 @@ public enum PartOfDay {
 		return null;
 	}
 	
-	public static int getSecondsToNext(DateTime cur, PartOfDay pod) {
-		DateTime startOfPod = cur.getHourOfDay() < pod.getStartingHour() ? cur : cur.plusDays(1);
-		startOfPod = startOfPod.withHourOfDay(pod.getStartingHour()).withMinuteOfHour(0).withSecondOfMinute(0);
-		return new Period(cur, startOfPod, PeriodType.seconds()).getSeconds();
+	public static int getSecondsToNext(Date cur, PartOfDay pod) {
+		Date day = cur.getHour() < pod.getStartingHour() ? cur : cur.plusDays(1);
+		day = new Date(day.getYear(), day.getMonth(), day.getDay(), pod.getStartingHour(), 0, 0);
+		return (int) new Period(cur, day).getSeconds();
 	}
 	
 	public double getLuminosity() {

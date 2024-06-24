@@ -3,10 +3,9 @@ package main.java.org.dungeon.game;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import org.joda.time.DateTime;
-
 import main.java.org.dungeon.counters.CounterMap;
 import main.java.org.dungeon.creatures.Hero;
+import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.io.IO;
 
 public class World implements Serializable {
@@ -17,11 +16,11 @@ public class World implements Serializable {
 	private final WorldGenerator generator;
 	
 	private final HashMap<Point, Location> locations;
-	final DateTime worldCreationDate;
-	private DateTime worldDate;
+	private final Date worldCreationDate;
+	private Date worldDate;
 
 	public World() {
-		worldDate = new DateTime(1985, 6, 2, 6, 10);
+		worldDate = new Date(455, 6, 2, 6, 10, 0);
 		worldCreationDate = worldDate.minusHours(6);
 		spawnCounter = new CounterMap<ID>();
 		locations = new HashMap<Point, Location>();
@@ -36,11 +35,11 @@ public class World implements Serializable {
 		return generator;
 	}
 
-	public DateTime getWorldCreationDate() {
+	public Date getWorldCreationDate() {
 		return worldCreationDate;
 	}
 	
-	public DateTime getWorldDate() {
+	public Date getWorldDate() {
 		return worldDate;
 	}
 	
@@ -71,7 +70,7 @@ public class World implements Serializable {
 	}
 	
 	public PartOfDay getPartOfDay() {
-		return PartOfDay.getCorrespondingConstants(new DateTime(worldDate));
+		return PartOfDay.getCorrespondingConstants(worldDate);
 	}
 	
 	public void printSpawnCounters() {

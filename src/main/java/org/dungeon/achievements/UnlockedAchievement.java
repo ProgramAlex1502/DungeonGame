@@ -2,8 +2,7 @@ package main.java.org.dungeon.achievements;
 
 import java.io.Serializable;
 
-import org.joda.time.DateTime;
-
+import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.game.ID;
 
 public class UnlockedAchievement implements Serializable {
@@ -11,9 +10,9 @@ public class UnlockedAchievement implements Serializable {
 	
 	public final ID id;
 	public final String name;
-	public final DateTime date;
+	public final Date date;
 	
-	public UnlockedAchievement(ID id, String name, DateTime date) {
+	public UnlockedAchievement(ID id, String name, Date date) {
 		this.id = id;
 		this.name = name;
 		this.date = date;

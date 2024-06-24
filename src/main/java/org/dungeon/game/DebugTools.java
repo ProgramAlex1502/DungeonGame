@@ -2,15 +2,12 @@ package main.java.org.dungeon.game;
 
 import java.awt.Color;
 
-import org.joda.time.DateTime;
-
 import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.Loader;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.utils.Constants;
-import main.java.org.dungeon.utils.Holiday;
 import main.java.org.dungeon.utils.Utils;
 
 public class DebugTools {
@@ -20,6 +17,7 @@ public class DebugTools {
 	};
 	
 	private static void give(String itemId) {
+		@SuppressWarnings("unlikely-arg-type")
 		ItemBlueprint bp = GameData.ITEM_BLUEPRINTS.get(itemId.toUpperCase());
 		if (bp != null) {
 			if (Game.getGameState().getHero().getInventory().addItem(new Item(bp))) {
@@ -46,7 +44,7 @@ public class DebugTools {
 	}
 	
 	private static void printTime() {
-		IO.writeString(Constants.TIME_FORMAT.print(Game.getGameState().getWorld().getWorldDate()));
+		IO.writeString(Game.getGameState().getWorld().getWorldDate().toTimeString());
 	}
 	
 	static void parseDebugCommand(IssuedCommand issuedCommand) {
@@ -59,14 +57,6 @@ public class DebugTools {
                     IO.writeString("A day has passed.", Color.ORANGE);
                 } else {
                     IO.writeString("You are one day closer to your ending.", Color.ORANGE);
-                }
-            } else if (issuedCommand.firstArgumentEquals(args[2])) {
-                String holiday;
-                for (DateTime date = new DateTime(1970, 1, 1, 0, 0); date.getYear() != 1971; date = date.plusDays(1)) {
-                    holiday = Holiday.getHoliday(date);
-                    if (holiday != null) {
-                        IO.writeKeyValueString(Constants.DATE_FORMAT.print(date), holiday);
-                    }
                 }
             } else if (issuedCommand.firstArgumentEquals(args[3])) {
                 Loader.printFilesInSavesFolder();

@@ -3,18 +3,17 @@ package main.java.org.dungeon.game;
 import java.awt.Color;
 import java.io.Serializable;
 
-import org.joda.time.DateTime;
-
 import main.java.org.dungeon.achievements.Achievement;
 import main.java.org.dungeon.achievements.AchievementTracker;
 import main.java.org.dungeon.achievements.UnlockedAchievement;
 import main.java.org.dungeon.creatures.Hero;
+import main.java.org.dungeon.date.Date;
+import main.java.org.dungeon.date.Period;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.utils.CommandHistory;
 import main.java.org.dungeon.utils.Hints;
 import main.java.org.dungeon.utils.Statistics;
-import main.java.org.dungeon.utils.Utils;
 
 public class GameState implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -125,14 +124,14 @@ public class GameState implements Serializable {
 	public void printUnlockedAchievements() {
 		String dateDifference;
 		Achievement achievement;
-		DateTime now = world.getWorldDate();
+		Date now = world.getWorldDate();
 		AchievementTracker tracker = hero.getAchievementTracker();
 		IO.writeString("Progress: " + tracker.getUnlockedCount() + "/" + GameData.ACHIEVEMENTS.size(), Color.CYAN);
 		
 		for (UnlockedAchievement ua : tracker.getUnlockedAchievementArray()) {
 			achievement = GameData.ACHIEVEMENTS.get(ua.id);
 			if (achievement != null) {
-				dateDifference = Utils.dateDifferenceToString(ua.date, now);
+				dateDifference = new Period(ua.date, now).toString();
 				IO.writeString(achievement.getName() + " (" + dateDifference + " ago)", Color.ORANGE);
 				IO.writeString(" " + achievement.getInfo(), Color.YELLOW);
 			} else {

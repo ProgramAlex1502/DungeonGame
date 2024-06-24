@@ -3,8 +3,7 @@ package main.java.org.dungeon.achievements;
 import java.io.Serializable;
 import java.util.TreeSet;
 
-import org.joda.time.DateTime;
-
+import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.io.DLogger;
@@ -23,7 +22,7 @@ public class AchievementTracker implements Serializable {
 	}
 	
 	public void unlock(Achievement achievement) {
-		DateTime now = Game.getGameState().getWorld().getWorldDate();
+		Date now = Game.getGameState().getWorld().getWorldDate();
 		if (!isUnlocked(achievement)) {
 			unlockedAchievements.add(new UnlockedAchievement(achievement.getId(), achievement.getName(), now));
 		} else {
