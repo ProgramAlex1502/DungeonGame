@@ -10,6 +10,8 @@ final class ResourceLine {
 	private final String text;
 	private final boolean valid;
 	
+	private String returnText;
+	
 	public ResourceLine(String line) {
 		if (line == null) {
 			DLogger.warning("Tried to create a ResourceLine with a null String.");
@@ -42,11 +44,34 @@ final class ResourceLine {
 	}
 	
 	public String toString() {
+		if (isComment()) {
+			return null;
+		}
+		if (returnText == null) {
+			makeReturnText();
+		}
+		return returnText;
+		
+	}
+	
+	private void makeReturnText() {
 		if (isContinued()) {
-			return text.substring(0, text.length() - 1);
+			returnText = text.substring(0, text.length() - 1);
 		}
 		
-		return text;
+		if (!returnText.isEmpty() && Character.isWhitespace(returnText.charAt(returnText.length() - 1))) {
+			int indexOfFirstTrailingWhitespace = returnText.length() - 1;
+			
+			while (indexOfFirstTrailingWhitespace > 0) {
+				if (Character.isWhitespace(returnText.charAt(indexOfFirstTrailingWhitespace - 1))) {
+					indexOfFirstTrailingWhitespace--;
+				} else {
+					break;
+				}
+			}
+			
+			returnText = returnText.substring(0, indexOfFirstTrailingWhitespace);
+		}
 	}
 
 }
