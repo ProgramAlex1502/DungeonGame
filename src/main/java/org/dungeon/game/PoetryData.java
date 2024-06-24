@@ -35,36 +35,20 @@ public final class PoetryData {
 	}
 	
 	private void loadPoems() {
-		String IDENTIFIER_TITLE = "TITLE:";
-		String IDENTIFIER_AUTHOR = "AUTHOR:";
-		String IDENTIFIER_CONTENT = "CONTENT:";
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		ResourceReader reader = new ResourceReader(classLoader.getResourceAsStream("poems.txt"));
+		final String IDENTIFIER_TITLE = "TITLE";
+		final String IDENTIFIER_AUTHOR = "AUTHOR";
+		final String IDENTIFIER_CONTENT = "CONTENT";
 		
-		String line;
-		PoemBuilder pb = new PoemBuilder();
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		ResourceParser reader = new ResourceParser(new InputStreamReader(cl.getResourceAsStream("poems.txt")));
-		
-		try {
-			while ((line = reader.readString()) != null) {
-				if (line.startsWith(IDENTIFIER_TITLE)) {
-					if (pb.isComplete()) {
-						poems.add(pb.createPoem());
-						pb = new PoemBuilder();
-					}
-					pb.setTitle(Utils.getAfterColon(line).trim());
-				} else if (line.startsWith(IDENTIFIER_AUTHOR)) {
-					pb.setAuthor(Utils.getAfterColon(line).trim());
-				} else if (line.startsWith(IDENTIFIER_CONTENT)) {
-					pb.setAuthor(Utils.getAfterColon(line).trim());
-				}
+		while (reader.readNextElement()) {
+			PoemBuilder pb = new PoemBuilder();
+			pb.setTitle(reader.getValue(IDENTIFIER_TITLE));
+			pb.setAuthor(reader.getValue(IDENTIFIER_AUTHOR));
+			pb.setContent(reader.getValue(IDENTIFIER_CONTENT));
+			if (pb.isComplete()) {
+				poems.add(pb.createPoem());
 			}
-			reader.close();
-		} catch (IOException exception) {
-			DLogger.warning(exception.toString());
-		}
-		
-		if (pb.isComplete()) {
-			poems.add(pb.createPoem());
 		}
 		
 		DLogger.info("Loaded " + poems.size() + " poems");
