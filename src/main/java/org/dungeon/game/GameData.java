@@ -11,6 +11,7 @@ import main.java.org.dungeon.creatures.CreatureBlueprint;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.StopWatch;
 
 public final class GameData {
 		
@@ -30,7 +31,7 @@ public final class GameData {
 	}
 	
 	static void loadGameData() {
-		long milliseconds = System.nanoTime();
+		StopWatch stopWatch = new StopWatch();
 		DLogger.info("Started loading the game data.");
 		
 		loader = Thread.currentThread().getContextClassLoader();
@@ -45,8 +46,7 @@ public final class GameData {
 		poetryData = new PoetryData();
 		loadLicense();
 		
-		milliseconds = (System.nanoTime() - milliseconds) / 1000000;
-		DLogger.info("Finished loading the game data. Took " + milliseconds + " ms.");
+		DLogger.info("Finished loading the game data. Took " + stopWatch.toString() + " ms.");
 	}
 	
 	private static void loadItemBlueprints() {
