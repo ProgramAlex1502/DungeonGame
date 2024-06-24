@@ -2,6 +2,7 @@ package main.java.org.dungeon.creatures;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import main.java.org.dungeon.achievements.AchievementTracker;
 import main.java.org.dungeon.counters.BattleStatistics;
@@ -13,6 +14,7 @@ import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.game.Location;
+import main.java.org.dungeon.game.Pair;
 import main.java.org.dungeon.game.PartOfDay;
 import main.java.org.dungeon.game.Point;
 import main.java.org.dungeon.game.TimeConstants;
@@ -160,20 +162,52 @@ public class Hero extends Creature {
 		World world = Game.getGameState().getWorld();
 		Point pos = Game.getGameState().getHeroPosition();
 		
-		StringBuilder stringBuilder = new StringBuilder(140);
+		ArrayList<Pair<String, ArrayList<Direction>>> pairs = new ArrayList<Pair<String, ArrayList<Direction>>>();
 		
 		for(Direction dir : Direction.values()) {
 			if (walkedInFrom == null || !dir.equals(walkedInFrom)) {
-				stringBuilder.append("To ");
-				stringBuilder.append(dir);
-				stringBuilder.append(" you see ");
-				stringBuilder.append(world.getLocation(new Point(pos, dir)).getName());
-				stringBuilder.append(".\n");				
+				boolean pairWithNameNotFound = true;
+				String locationName = world.getLocation(new Point(pos, dir)).getName();
+				for (Pair<String, ArrayList<Direction>> pair : pairs) {
+					if (pair.a.equals(locationName)) {
+						pair.b.add(dir);
+						pairWithNameNotFound = false;
+						break;
+					}
+				}
+				if (pairWithNameNotFound) {
+					ArrayList<Direction> directionList = new ArrayList<Direction>();
+					directionList.add(dir);
+					pairs.add(new Pair<String, ArrayList<Direction>>(locationName, directionList));
+				}
 			}
+		}
+		
+		StringBuilder stringBuilder = new StringBuilder(140);
+		for (Pair<String, ArrayList<Direction>> pair : pairs) {
+			stringBuilder.append("To ");
+			stringBuilder.append(enumerateDirections(pair.b));
+			stringBuilder.append(" you see ");
+			stringBuilder.append(pair.a);
+			stringBuilder.append(".\n");			
 		}
 		
 		IO.writeString(stringBuilder.toString());
 		IO.writeNewLine();
+	}
+	
+	private String enumerateDirections(List<Direction> directions) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0; i < directions.size(); i++) {
+			stringBuilder.append(directions.get(i).toString().toLowerCase());
+			if (i < directions.size() - 2) {
+				stringBuilder.append(", ");
+			} else if (i == directions.size() - 2) {
+				stringBuilder.append(" and ");
+			}
+		}
+		
+		return stringBuilder.toString();
 	}
 	
 	boolean canSee() {

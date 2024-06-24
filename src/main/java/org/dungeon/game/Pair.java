@@ -1,6 +1,6 @@
 package main.java.org.dungeon.game;
 
-class Pair<T, U> {
+public class Pair<T, U> {
 	
 	public final T a;
 	public final U b;
