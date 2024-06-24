@@ -1,23 +1,26 @@
 package main.java.org.dungeon.date;
 
-public class Period {
-	
+import java.io.Serializable;
+
+public class Period implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	private static final String LESS_THAN_A_DAY = "Less than a day";
 	
-	private final Date difference;
+	private final long difference;
 	
 	public Period(Date start, Date end) {
-		difference = new Date(end.getTime() - start.getTime());
+		difference = end.getTime() - start.getTime();
 	}
 	
 	public long getSeconds() {
-		return difference.getTime() / 1000;
+		return difference / 1000;
 	}
 	
 	public String toString() {
-		long years = difference.getYear();
-		long months = difference.getMonth();
-		long days = difference.getDay();
+		long years = difference / Date.MILLIS_IN_YEAR;
+		long months = (difference % Date.MILLIS_IN_YEAR) / Date.MILLIS_IN_MONTH;
+		long days = (difference % Date.MILLIS_IN_MONTH) / Date.MILLIS_IN_DAY;
 		StringBuilder builder = new StringBuilder();
 		if (years != 0) {
 			if (years == 1) {
