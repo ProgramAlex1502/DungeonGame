@@ -60,8 +60,7 @@ public class Engine {
 		
 		Location destination = gameState.getWorld().moveHero(dir);
 		hero.setLocation(destination);
-		String arrivalmessage = "You arrive at " + destination.getName() + ".";
-		IO.writeString(arrivalmessage, Color.ORANGE);
+		hero.look(true);
 		hero.getExplorationLog().addVisit(destinationPoint);
 		return TimeConstants.WALK_SUCCESS;
 	}

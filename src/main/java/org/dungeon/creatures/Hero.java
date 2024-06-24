@@ -106,10 +106,15 @@ public class Hero extends Creature {
 		return seconds;
 	}
 	
-	public void look() {
+	public void look(boolean arriving) {
 		Location location = getLocation();
 		
-		IO.writeString(location.getName());
+		if (arriving) {
+			IO.writeString("You arrive at " + location.getName() + ".");
+		} else {
+			IO.writeString("You are at " + location.getName() + ".");
+		}
+		
 		IO.writeNewLine();
 		
 		if (canSee()) {
