@@ -14,8 +14,8 @@ import main.java.org.dungeon.utils.Constants;
 
 public final class GameData {
 		
-	public static HashMap<ID, CreatureBlueprint> CREATURE_BLUEPRINTS;
-	public static HashMap<ID, ItemBlueprint> ITEM_BLUEPRINTS;
+	public static final HashMap<ID, CreatureBlueprint> CREATURE_BLUEPRINTS = new HashMap<ID, CreatureBlueprint>(20, 1f);
+	public static final HashMap<ID, ItemBlueprint> ITEM_BLUEPRINTS = new HashMap<ID, ItemBlueprint>(20, 1f);
 	public static LocationPreset[] LOCATION_PRESETS;
 	public static HashMap<ID, Achievement> ACHIEVEMENTS;
 	public static Font monospaced;
@@ -50,7 +50,6 @@ public final class GameData {
 	}
 	
 	private static void loadItemBlueprints() {
-		ITEM_BLUEPRINTS = new HashMap<ID, ItemBlueprint>();
 		@SuppressWarnings("resource")
 		ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("items.txt"));
 		ItemBlueprint blueprint;
@@ -85,9 +84,7 @@ public final class GameData {
 	}
 	
 	@SuppressWarnings("resource")
-	private static void loadCreatureBlueprints() {
-        CREATURE_BLUEPRINTS = new HashMap<ID, CreatureBlueprint>();
-        
+	private static void loadCreatureBlueprints() {        
         ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("creatures.txt"));
         CreatureBlueprint blueprint;
         
