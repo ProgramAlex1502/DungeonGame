@@ -16,6 +16,10 @@ class ResourceReader implements Closeable {
 		dBufferedReader = new DBufferedReader(new InputStreamReader(inputStream));
 	}
 	
+	public boolean contains(String key) {
+		return map.containsKey(key);
+	}
+	
 	public String getValue(String identifier) {
 		return map.get(identifier);
 	}
