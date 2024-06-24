@@ -3,6 +3,7 @@ package main.java.org.dungeon.counters;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.game.Point;
 
 public class ExplorationLog implements Serializable {
@@ -10,50 +11,51 @@ public class ExplorationLog implements Serializable {
 	
 	private final HashMap<Point, ExplorationData> entries;
 	
-	private int maximumVisits;
-	private int maximumKills;
-	
 	public ExplorationLog() {
 		this.entries = new HashMap<Point, ExplorationData>();
 	}
 	
-	public int getMaximumVisits() {
-		return maximumVisits;
-	}
-	
-	public int getMaximumKills() {
-		return maximumKills;
-	}
-	
-	@SuppressWarnings("unused")
-	private int getVisitCount(Point point) {
-		return entries.containsKey(point) ? entries.get(point).getVisitCount() : 0;
-	}
-	
-	public void addVisit(Point point) {
-		int visitsToPoint;
+	public void addVisit(Point point, ID locationID) {
 		if (entries.containsKey(point)) {
-			visitsToPoint = entries.get(point).addVisit();
+			entries.get(point).addVisit();
 		} else {
-			entries.put(point, new ExplorationData(1, 0));
-			visitsToPoint = 1;
+			entries.put(point, new ExplorationData(locationID, 1, 0));
 		}
-		
-		if (visitsToPoint > maximumVisits) {
-			maximumVisits = visitsToPoint;
-		}
-	}
-	
-	@SuppressWarnings("unused")
-	private int getKillCount(Point point) {
-		return entries.containsKey(point) ? entries.get(point).getKillCount() : 0;
 	}
 	
 	public void addKill(Point point) {
-		int killsInPoint = entries.get(point).addKill();
-		if (killsInPoint > maximumKills) {
-			maximumKills = killsInPoint;
+		entries.get(point).addKill();
+	}
+	
+	public int getDistinctVisitCount(ID locationID) {
+		int count = 0;
+		for (ExplorationData entry : entries.values()) {
+			if (entry.getLocationID().equals(locationID)) {
+				count++;
+			}
 		}
+		return count;
+	}
+	
+	public int getSameLocationVisitCount(ID locationID) {
+		int count = 0;
+		for (ExplorationData entry : entries.values()) {
+			if (entry.getLocationID().equals(locationID)) {
+				count += entry.getVisitCount();
+			}
+		}
+		
+		return count;
+	}
+	
+	public int getKillCount(ID locationID) {
+		int count = 0;
+		for (ExplorationData entry : entries.values()) {
+			if (entry.getLocationID().equals(locationID)) {
+				count += entry.getKillCount();
+			}
+		}
+		return count;
 	}
 	
 	public String toString() {

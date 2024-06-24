@@ -7,14 +7,12 @@ import main.java.org.dungeon.game.ID;
 
 public class BattleComponent extends AchievementComponent{
 	
-	int battleCount;
-	int longestBattleLength;
 	final CounterMap<String> killsByCreatureType = new CounterMap<String>();
 	final CounterMap<ID> killsByCreatureId = new CounterMap<ID>();
 	final CounterMap<ID> killsByWeapon = new CounterMap<ID>();
-	
-	public BattleComponent() {
-	}
+
+	int battleCount;
+	int longestBattleLength;
 
 	@Override
 	public boolean isFulfilled(Hero hero) {

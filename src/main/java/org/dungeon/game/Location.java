@@ -52,6 +52,10 @@ public class Location implements Serializable {
 		
 	}
 	
+	public ID getID() {
+		return id;
+	}
+	
 	public void refreshSpawners() {
 		for (Spawner spawner : spawners) {
 			spawner.refresh();

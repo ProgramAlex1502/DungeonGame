@@ -62,7 +62,7 @@ public class Engine {
 		refreshSpawners();
 		hero.setLocation(destination);
 		hero.look(dir.invert());
-		hero.getExplorationLog().addVisit(destinationPoint);
+		hero.getExplorationLog().addVisit(destinationPoint, world.getLocation(destinationPoint).getID());
 		return TimeConstants.WALK_SUCCESS;
 	}
 	

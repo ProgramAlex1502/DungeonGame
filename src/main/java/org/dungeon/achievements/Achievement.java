@@ -12,15 +12,13 @@ public class Achievement {
 	private final String name;
 	private final String info;
 	
-	private BattleComponent battle;
-	private ExplorationComponent exploration;
+	private final BattleComponent battle = new BattleComponent();
+	private final ExplorationComponent exploration = new ExplorationComponent();
 	
 	public Achievement(String id, String name, String info) {
 		this.id = new ID(id);
 		this.name = name;
 		this.info = info;
-		battle = new BattleComponent();
-		exploration = new ExplorationComponent();
 	}
 	
 	public ID getId() {
@@ -35,32 +33,36 @@ public class Achievement {
 		return info;
 	}
 	
-	public void setBattleCount(int battleCount) {
-		battle.battleCount = battleCount;
+	public void setMinimumBattleCount(int minimumBattleCount) {
+		battle.battleCount = minimumBattleCount;
 	}
 	
 	public void setLongestBattleLength(int longestBattleLength) {
 		battle.longestBattleLength = longestBattleLength;
 	}
 	
-	public void incrementKillsByWeapon(ID id, int amount) {
-		battle.killsByWeapon.incrementCounter(id, amount);
+	public void incrementKillsByWeapon(String id, int amount) {
+		battle.killsByWeapon.incrementCounter(new ID(id), amount);
 	}
 	
-	public void incrementKillsByCreatureId(ID id, int amount) {
-		battle.killsByCreatureId.incrementCounter(id, amount);
+	public void incrementKillsByCreatureId(String id, int amount) {
+		battle.killsByCreatureId.incrementCounter(new ID(id), amount);
 	}
 	
 	public void incrementKillsByCreatureType(String id, int amount) {
 		battle.killsByCreatureType.incrementCounter(id, amount);
 	}
 	
-	public void setKillCount(int count) {
-		exploration.killCount = count;
+	public void incrementKillsByLocationID(String locationID, int amount) {
+		exploration.killCounter.incrementCounter(new ID(locationID), amount);
 	}
 	
-	public void setVisitCount(int count) {
-		exploration.visitCount = count;
+	public void incrementVisitsToDistinctLocations(String locationID, int amount) {
+		exploration.distinctLocationsVisitCount.incrementCounter(new ID(locationID), amount);
+	}
+	
+	public void incrementVisitsToTheSameLocation(String locationID, int amount) {
+		exploration.sameLocationVisitCounter.incrementCounter(new ID(locationID), amount);
 	}
 	
 	boolean isFulfilled(Hero hero) {
