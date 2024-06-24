@@ -22,7 +22,7 @@ public class Date implements Serializable {
 
 	private long time;
 	
-	private Date(long millis) {
+	public Date(long millis) {
 		time = millis;
 	}
 	
@@ -72,6 +72,10 @@ public class Date implements Serializable {
 			day = DAYS_IN_MONTH;
 		}
 		time = millisInYear * (year - 1) + millisInMonth * (month - 1) + millisInDay * (day - 1);
+	}
+	
+	public long getTime() {
+		return time;
 	}
 	
 	public long getDay() {
