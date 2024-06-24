@@ -3,18 +3,19 @@ package main.java.org.dungeon.achievements;
 import main.java.org.dungeon.counters.BattleStatistics;
 import main.java.org.dungeon.counters.CounterMap;
 import main.java.org.dungeon.creatures.Hero;
+import main.java.org.dungeon.game.ID;
 
 public class BattleComponent extends AchievementComponent{
 	
 	int battleCount;
 	int longestBattleLength;
-	CounterMap<String> killsByWeapon;
-	CounterMap<String> killsByCreatureId;
+	CounterMap<ID> killsByWeapon;
+	CounterMap<ID> killsByCreatureId;
 	CounterMap<String> killsByCreatureType;
 	
 	public BattleComponent() {
-		killsByWeapon = new CounterMap<String>();
-		killsByCreatureId = new CounterMap<String>();
+		killsByWeapon = new CounterMap<ID>();
+		killsByCreatureId = new CounterMap<ID>();
 		killsByCreatureType = new CounterMap<String>();
 	}
 

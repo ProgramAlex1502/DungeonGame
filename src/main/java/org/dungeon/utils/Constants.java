@@ -5,6 +5,8 @@ import java.awt.Color;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import main.java.org.dungeon.game.ID;
+
 public class Constants {
 		
 	public static final int COLS = 100;
@@ -24,7 +26,6 @@ public class Constants {
 	
 	public static final String NOT_EQUIPPING_A_WEAPON = "You are not equipping a weapon.";
 	public static final String CANT_SEE_ANYTHING = "It's too dark, you can't see anything.";
-	public static final String HERO_ID = "HERO";
 	public static final String INVALID_COMMAND = "'%s' is not a command.";
 	public static final String SUGGEST_COMMANDS = "See 'commands' for a list of commands.";
 	
@@ -35,7 +36,9 @@ public class Constants {
 	public static final Color HEALTH_BAR_COLOR = Color.GREEN;
 	
 	public static final int BAR_NAME_LENGTH = 16;
-	public static final String UNARMED_ID = "";
+	
+	public static final ID HERO_ID = new ID("HERO");
+	public static final ID UNARMED_ID = new ID("");
 	
 	public static final String NAME = "Dungeon";
 

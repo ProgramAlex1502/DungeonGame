@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import org.joda.time.DateTime;
 
 import main.java.org.dungeon.game.Game;
+import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.io.DLogger;
 
 public class AchievementTracker implements Serializable {
@@ -31,7 +32,7 @@ public class AchievementTracker implements Serializable {
 	}
 	
 	public UnlockedAchievement getUnlockedAchievement(Achievement achievement) {
-		String id = achievement.getId();
+		ID id = achievement.getId();
 		
 		for (UnlockedAchievement ua : unlockedAchievements) {
 			if (ua.id.equals(id)) {

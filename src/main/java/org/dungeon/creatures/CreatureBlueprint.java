@@ -1,8 +1,10 @@
 package main.java.org.dungeon.creatures;
 
+import main.java.org.dungeon.game.ID;
+
 public class CreatureBlueprint {
 	
-	private String id;
+	private ID id;
 	private String type;
 	private String name;
 	private int curHealth;
@@ -14,11 +16,11 @@ public class CreatureBlueprint {
 		
 	}
 	
-	public String getId() {
+	public ID getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(ID id) {
 		this.id = id;
 	}
 	

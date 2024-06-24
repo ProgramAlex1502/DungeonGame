@@ -54,10 +54,6 @@ public class Item extends Entity{
 		return owner != null && owner.getWeapon() == this;
 	}
 	
-	public String getId() {
-		return id;
-	}
-	
 	String getType() {
 		return type;
 	}

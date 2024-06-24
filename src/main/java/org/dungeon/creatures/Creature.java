@@ -25,10 +25,6 @@ public class Creature extends Entity{
 		maxHealth = bp.getMaxHealth();
 		curHealth = bp.getCurHealth();
 	}
-	
-	public String getId() {
-		return id;
-	}
 		
 	public String getType() {
 		return type;

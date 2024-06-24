@@ -12,7 +12,7 @@ import main.java.org.dungeon.io.IO;
 public class World implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private final CounterMap<String> spawnCounter;
+	private final CounterMap<ID> spawnCounter;
 	
 	private final WorldGenerator generator;
 	
@@ -23,12 +23,12 @@ public class World implements Serializable {
 	public World() {
 		worldDate = new DateTime(1985, 6, 2, 6, 10);
 		worldCreationDate = worldDate.minusHours(6);
-		spawnCounter = new CounterMap<String>();
+		spawnCounter = new CounterMap<ID>();
 		locations = new HashMap<Point, Location>();
 		generator = new WorldGenerator(this);
 	}
 	
-	public CounterMap<String> getSpawnCounter() {
+	public CounterMap<ID> getSpawnCounter() {
 		return spawnCounter;
 	}
 	
@@ -75,8 +75,8 @@ public class World implements Serializable {
 	}
 	
 	public void printSpawnCounters() {
-		for (String id : spawnCounter.keySet()) {
-			IO.writeKeyValueString(id, Integer.toString(spawnCounter.getCounter(id)));
+		for (ID id : spawnCounter.keySet()) {
+			IO.writeKeyValueString(id.getId(), Integer.toString(spawnCounter.getCounter(id)));
 		}
 	}
 	

@@ -1,13 +1,14 @@
 package main.java.org.dungeon.achievements;
 
 import main.java.org.dungeon.creatures.Hero;
+import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.utils.Constants;
 import main.java.org.dungeon.utils.Utils;
 
 public class Achievement {
 
-	final String id;
+	final ID id;
 	private final String name;
 	private final String info;
 	
@@ -15,14 +16,14 @@ public class Achievement {
 	private ExplorationComponent exploration;
 	
 	public Achievement(String id, String name, String info) {
-		this.id = id;
+		this.id = new ID(id);
 		this.name = name;
 		this.info = info;
 		battle = new BattleComponent();
 		exploration = new ExplorationComponent();
 	}
 	
-	public String getId() {
+	public ID getId() {
 		return id;
 	}
 	
@@ -42,11 +43,11 @@ public class Achievement {
 		battle.longestBattleLength = longestBattleLength;
 	}
 	
-	public void incrementKillsByWeapon(String id, int amount) {
+	public void incrementKillsByWeapon(ID id, int amount) {
 		battle.killsByWeapon.incrementCounter(id, amount);
 	}
 	
-	public void incrementKillsByCreatureId(String id, int amount) {
+	public void incrementKillsByCreatureId(ID id, int amount) {
 		battle.killsByCreatureId.incrementCounter(id, amount);
 	}
 	

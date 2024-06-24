@@ -1,8 +1,10 @@
 package main.java.org.dungeon.items;
 
+import main.java.org.dungeon.game.ID;
+
 public final class ItemBlueprint {
 	
-	String id;
+	ID id;
 	String type;
 	String name;
 	
@@ -21,12 +23,12 @@ public final class ItemBlueprint {
 	
 	boolean clock;
 	
-	public String getId() {
+	public ID getId() {
 		return id;
 	}
 	
 	public void setId(String id) {
-		this.id = id;
+		this.id = new ID(id);
 	}
 	
 	public String getType() {
