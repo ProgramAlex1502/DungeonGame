@@ -12,15 +12,12 @@ public class SkillList implements Serializable {
 		list.add(skill);
 	}
 	
-	public boolean hasSkill() {
-		return !list.isEmpty();
+	public int getSize() {
+		return list.size();
 	}
 	
-	public Skill getFirstSkill() {
-		if (hasSkill()) {
-			return list.get(0);
-		}
-		return null;
+	public Skill getSkill(int index) {
+		return list.get(index);
 	}
 
 }

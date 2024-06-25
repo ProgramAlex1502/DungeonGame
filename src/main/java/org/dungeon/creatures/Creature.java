@@ -5,6 +5,7 @@ import main.java.org.dungeon.game.Location;
 import main.java.org.dungeon.items.CreatureInventory;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.skill.SkillList;
+import main.java.org.dungeon.skill.SkillRotation;
 
 public class Creature extends Entity{
 	private static final long serialVersionUID = 1L;
@@ -16,6 +17,7 @@ public class Creature extends Entity{
 	private final String attackAlgorithm;
 	
 	private final SkillList skillList = new SkillList();
+	private final SkillRotation skillRotation = new SkillRotation();
 	private CreatureInventory inventory;
 	private Item weapon;
 	
@@ -31,6 +33,10 @@ public class Creature extends Entity{
 	
 	public SkillList getSkillList() {
 		return skillList;
+	}
+	
+	public SkillRotation getSkillRotation() {
+		return skillRotation;
 	}
 		
 	public String getType() {

@@ -272,7 +272,7 @@ public final class GameData {
         	}
         	if (reader.hasValue("KILLS_BY_WEAPON")) {
         		try {
-        			String killsByWeapon = reader.getValue("KILLS_BY_CREATURE_TYPE");
+        			String killsByWeapon = reader.getValue("KILLS_BY_WEAPON");
         			String[] parts = killsByWeapon.split(",");
         			achievement.incrementKillsByWeapon(parts[0].trim(), Integer.parseInt(parts[1].trim()));
         		} catch (NumberFormatException ignore) {

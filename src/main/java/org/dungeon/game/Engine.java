@@ -112,6 +112,7 @@ public class Engine {
 	}
 	
 	private static void battleCleanup(Creature survivor, Creature defeated) {
-		survivor.getLocation().removeCreature(defeated);
+		defeated.getLocation().removeCreature(defeated);
+		survivor.getSkillRotation().restartRotation();
 	}
 }

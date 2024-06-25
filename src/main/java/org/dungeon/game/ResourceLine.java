@@ -55,6 +55,8 @@ final class ResourceLine {
 	}
 	
 	private void makeReturnText() {
+		returnText = text;
+		
 		if (isContinued()) {
 			returnText = text.substring(0, text.length() - 1);
 		}
