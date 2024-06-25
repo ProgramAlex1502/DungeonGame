@@ -5,7 +5,7 @@ import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.util.CounterMap;
 
-public class BattleComponent extends AchievementComponent{
+public class BattleComponent {
 	
 	final CounterMap<String> killsByCreatureType = new CounterMap<String>();
 	final CounterMap<ID> killsByCreatureID = new CounterMap<ID>();
@@ -14,7 +14,6 @@ public class BattleComponent extends AchievementComponent{
 	int battleCount;
 	int longestBattleLength;
 
-	@Override
 	public boolean isFulfilled(Hero hero) {
 		BattleStatistics stats = hero.getBattleStatistics();
 		if (stats.getBattleCount() < battleCount) {

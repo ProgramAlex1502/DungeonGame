@@ -5,7 +5,7 @@ import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.util.CounterMap;
 
-public class ExplorationComponent extends AchievementComponent{
+public class ExplorationComponent {
 
 	final CounterMap<ID> killCounter = new CounterMap<ID>();
 	
@@ -13,7 +13,6 @@ public class ExplorationComponent extends AchievementComponent{
 	
 	final CounterMap<ID> sameLocationVisitCounter = new CounterMap<ID>();
 	
-	@Override
 	boolean isFulfilled(Hero hero) {
 		ExplorationLog explorationLog = hero.getExplorationLog();
 		for (ID locationID : killCounter.keySet()) {
