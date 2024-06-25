@@ -77,11 +77,6 @@ public class Achievement {
 	}
 	
 	void printAchievementUnlocked() {
-		StringBuilder sb = new StringBuilder(225);
-		sb.append(Utils.centerString(Constants.ACHIEVEMENT_UNLOCKED, '-')).append("\n");
-		sb.append(getName()).append("\n");
-		sb.append(getInfo()).append("\n");
-		
-		IO.writeString(sb.toString());
+		IO.writeString(Utils.centerString(Constants.ACHIEVEMENT_UNLOCKED, '-') + "\n" + getName() + "\n" + getInfo());
 	}
 }
