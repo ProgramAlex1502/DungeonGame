@@ -1,6 +1,5 @@
 package main.java.org.dungeon.io;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,7 +9,6 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JOptionPane;
 
-import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
@@ -45,23 +43,22 @@ public class Loader {
 		if (files != null) {
 			if (files.length != 0) {
 				DTable dTable = new DTable("Name", "Size");
+				int fileCount = 0;
+				int byteCount = 0;
 				for (File file : files) {
+					fileCount += 1;
+					byteCount += file.length();
 					dTable.insertRow(file.getName(), Utils.bytesToHuman(file.length()));
+				}
+				if (fileCount > 1) {
+					dTable.insertRow("Sum of these " + fileCount + " files", Utils.bytesToHuman(byteCount));
 				}
 				dTable.print();
 			} else {
-				if (Engine.RANDOM.nextBoolean()) {
-					IO.writeString("Saves folder is empty.", Color.RED);
-				} else {
-					IO.writeString("There is not even a single save game for you to see.", Color.RED);
-				}
+				IO.writeString("Saves folder is empty.");
 			}
 		} else {
-			if (Engine.RANDOM.nextBoolean()) {
-				IO.writeString("Saves folder does not exist.", Color.RED);
-			} else {
-				IO.writeString("What did you do to the saves folder?", Color.RED); 
-			}
+			IO.writeString("Saves folder does not exist.");
 		}
 	}
 	

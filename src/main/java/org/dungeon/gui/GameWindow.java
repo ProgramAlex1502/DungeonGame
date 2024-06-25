@@ -48,7 +48,7 @@ public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private static final int MARGIN = 5;
-	private static final int ROWS = 30;
+	public static final int ROWS = 30;
 	
 	private final SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 	private final StyledDocument document;
