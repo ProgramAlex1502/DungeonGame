@@ -21,11 +21,7 @@ public final class IO {
 	}
 	
 	public static void writeString(String string, Color color, boolean newLine) {
-		if (newLine) {
-			Game.getGameWindow().writeToTextPane(Utils.clearEnd(string) + '\n', color);
-		} else {
-			Game.getGameWindow().writeToTextPane(Utils.clearEnd(string), color);
-		}
+		writeString(string, color, newLine, 0);
 	}
 	
 	public static void writeString(String string, Color color, boolean newLine, long wait) {
