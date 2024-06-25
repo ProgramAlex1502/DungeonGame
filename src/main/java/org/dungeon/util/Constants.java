@@ -9,7 +9,6 @@ import main.java.org.dungeon.game.ID;
 public class Constants {
 		
 	public static final int COLS = 100;
-	public static final int ROWS = 30;
 	public static final String FILE_FOUND = "A saved campaign was found.";
 	public static final String ACHIEVEMENT_UNLOCKED = "Achievement Unlocked!";
 	

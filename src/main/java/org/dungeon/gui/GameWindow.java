@@ -48,15 +48,14 @@ public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private static final int MARGIN = 5;
+	private static final int ROWS = 30;
 	
 	private final SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 	private final StyledDocument document;
 	
 	private JTextField textField;
 	private JTextPane textPane;
-	
-	private int rows = Constants.ROWS;
-	
+		
 	private boolean idle;
 	
 	public GameWindow() {
@@ -176,21 +175,8 @@ public class GameWindow extends JFrame{
 	private Dimension calculateTextPaneSize() {
 		FontMetrics fontMetrics = getFontMetrics(GameData.monospaced);
 		int width = fontMetrics.charWidth(' ') * (Constants.COLS + 1);
-		int height = fontMetrics.getHeight() * rows;
+		int height = fontMetrics.getHeight() * ROWS;
 		return new Dimension(width, height);
-	}
-	
-	public boolean setRows(int rows) {
-		if (rows < 0) {
-			throw new IllegalArgumentException("rows should be positive.");
-		}
-		if (rows != this.rows) {
-			this.rows = rows;
-			resize();
-			return true;
-		}
-		
-		return false;
 	}
 	
 	private void textFieldActionPerformed() {

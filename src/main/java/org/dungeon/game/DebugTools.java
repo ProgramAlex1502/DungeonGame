@@ -7,7 +7,6 @@ import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.Loader;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.items.ItemBlueprint;
-import main.java.org.dungeon.util.Constants;
 import main.java.org.dungeon.util.Utils;
 
 public class DebugTools {
@@ -64,10 +63,6 @@ public class DebugTools {
                 }
             } else if (issuedCommand.firstArgumentEquals(args[3])) {
                 Loader.printFilesInSavesFolder();
-            } else if (issuedCommand.firstArgumentEquals("lines")) {
-                for (int i = 1; i <= Constants.ROWS; i++) {
-                    IO.writeString(Integer.toString(i));
-                }
             } else if (issuedCommand.firstArgumentEquals(args[4])) {
                 final int WIDTH = 20;
                 GameState gameState = Game.getGameState();
