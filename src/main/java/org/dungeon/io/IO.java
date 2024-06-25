@@ -1,9 +1,10 @@
 package main.java.org.dungeon.io;
 
-import java.awt.*;
+import java.awt.Color;
 
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.Percentage;
 import main.java.org.dungeon.util.Poem;
 import main.java.org.dungeon.util.Utils;
 
@@ -29,7 +30,7 @@ public final class IO {
 	
 	public static void writeString(String string, Color color, boolean newLine, long wait) {
 		if (color == null) {
-			throw new IllegalArgumentException("color should not be null.");
+			DLogger.warning("Passed null as a Color to writeString.");
 		}
 		
 		if (newLine) {
@@ -55,7 +56,7 @@ public final class IO {
 		int dots = Constants.COLS - key.length() - value.length();
 		
 		if (dots < 0) {
-			throw new IllegalArgumentException("strings are too large");
+			DLogger.warning("Passed too large strings to writeKeyValueString.");
 		}
 		
 		writeString(key, textColor, false);
@@ -73,19 +74,15 @@ public final class IO {
 		writeString(poem.getTitle() + "\n\n" + poem.getContent() + "\n\n" + poem.getAuthor());
 	}
 	
-	public static void writeNamedBar(String name, double percentage, Color fore) {
-		if (percentage < 0.0 || percentage > 1.0) {
-			throw new IllegalArgumentException("percentage must be in the range [0.0, 1.0]");
-		}
-		
+	public static void writeNamedBar(String name, Percentage percentage, Color fore) {
 		if (name.length() > Constants.BAR_NAME_LENGTH) {
-			throw new IllegalArgumentException("name is too long.");
+			DLogger.warning("Passed a too long bar name.");
 		}
 		
 		writeString(name, Constants.FORE_COLOR_NORMAL, false);
 		int size = Constants.COLS - Constants.BAR_NAME_LENGTH;
 		
-		int bars = (int) (size * percentage) + 1;
+		int bars = (int) (size * percentage.toDouble()) + 1;
 		
 		StringBuilder sb = new StringBuilder();
 		
