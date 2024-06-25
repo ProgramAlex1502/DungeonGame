@@ -221,5 +221,20 @@ public class Utils {
 	public static void printLicense() {
 		IO.writeString(GameData.LICENSE);
 	}
+	
+	public static String stringArrayToString(String[] strings, String separator) {
+		if (strings.length == 0) {
+			return "";
+		} else if (strings.length == 1) {
+			return strings[0];
+		} else {
+			StringBuilder builder = new StringBuilder(strings[0]);
+			for (int index = 1; index < strings.length; index++) {
+				builder.append(separator);
+				builder.append(strings[index]);
+			}
+			return builder.toString();
+		}
+	}
 
 }
