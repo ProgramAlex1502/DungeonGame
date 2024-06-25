@@ -103,8 +103,8 @@ class AttackAlgorithm {
 		
 		if (attacker.getSkillRotation().hasReadySkill()) {
 			Skill skill = attacker.getSkillRotation().getNextSkill();
-			hitDamage = skill.getDamage();
-			printSkillCast(attacker, skill, defender);
+			hitDamage = skill.getDamageAndStartCoolDown();
+			printSkillCast(attacker, hitDamage, skill, defender);
 		} else {
 			if (weapon != null && !weapon.isBroken()) {
 				if (weapon.rollForHit()) {
@@ -164,10 +164,10 @@ class AttackAlgorithm {
 		IO.writeBattleString(builder.toString(), attacker.getId().equals(Constants.HERO_ID) ? Color.GREEN : Color.RED);
 	}
 	
-	private static void printSkillCast(Creature attacker, Skill skill, Creature defender) {
+	private static void printSkillCast(Creature attacker, int hitDamage, Skill skill, Creature defender) {
 		String result = attacker.getName() + " casted " + 
 				skill.getName() + " and inflicted " + 
-				skill.getDamage() + " damage points to " + 
+				hitDamage + " damage points to " + 
 				defender.getName() + ".";
 		IO.writeString(result, attacker.getId().equals(Constants.HERO_ID) ? Color.GREEN : Color.RED);
 	}

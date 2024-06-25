@@ -14,16 +14,29 @@ public class SkillRotation implements Serializable {
 	}
 	
 	public boolean hasReadySkill() {
-		return true;
+		for (Skill skill : skillList) {
+			if (skill.isReady()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Skill getNextSkill() {
 		Skill selectedSkill;
-		if (skillList.isEmpty()) {
+		if (skillList.isEmpty() || !hasReadySkill()) {
 			selectedSkill = null;
 		} else {
-			selectedSkill = skillList.get(indexOfNextSkill);
-			incrementIndexOfNextSkill();
+			int indexOfSelectedSkill = indexOfNextSkill;
+			selectedSkill = skillList.get(indexOfSelectedSkill);
+			if (selectedSkill.isReady()) {				
+				incrementIndexOfNextSkill();
+			} else {
+				do {
+					indexOfSelectedSkill = (indexOfSelectedSkill + 1) % skillList.size();
+					selectedSkill = skillList.get(indexOfSelectedSkill);
+				} while (!selectedSkill.isReady());
+			}
 		}
 		
 		return selectedSkill;
@@ -37,6 +50,15 @@ public class SkillRotation implements Serializable {
 	
 	public void restartRotation() {
 		indexOfNextSkill = 0;
+		for (Skill skill : skillList) {
+			skill.reset();
+		}
+	}
+	
+	public void refresh() {
+		for (Skill skill : skillList) {
+			skill.refresh();
+		}
 	}
 
 }
