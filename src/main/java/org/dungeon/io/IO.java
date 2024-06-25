@@ -10,7 +10,7 @@ import main.java.org.dungeon.util.Utils;
 
 public final class IO {
 		
-	private static final long WRITE_BATTLE_STRING_WAIT = 300;
+	private static final int WRITE_BATTLE_STRING_WAIT = 300;
 	
 	public static void writeString(String string) {
 		writeString(string, Constants.FORE_COLOR_NORMAL);
@@ -28,16 +28,15 @@ public final class IO {
 		writeString(string, color, newLine, scrollDown, 0);
 	}
 	
-	public static void writeString(String string, Color color, boolean newLine, boolean scrollDown, long wait) {
+	public static void writeString(String string, Color color, boolean newLine, boolean scrollDown, int wait) {
 		if (color == null) {
 			DLogger.warning("Passed null as a Color to writeString.");
 		}
 		
 		String processedString = newLine ? Utils.clearEnd(string) + '\n' : Utils.clearEnd(string);
 		Game.getGameWindow().writeToTextPane(processedString, color, scrollDown);
-		try {
-			Thread.sleep(wait);
-		} catch (InterruptedException ignored) {
+		if (wait > 0) {
+			Sleeper.sleep(wait);
 		}
 	}
 	

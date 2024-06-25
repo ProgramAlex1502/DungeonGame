@@ -20,6 +20,7 @@ import main.java.org.dungeon.game.Point;
 import main.java.org.dungeon.game.TimeConstants;
 import main.java.org.dungeon.game.World;
 import main.java.org.dungeon.io.IO;
+import main.java.org.dungeon.io.Sleeper;
 import main.java.org.dungeon.items.CreatureInventory;
 import main.java.org.dungeon.items.FoodComponent;
 import main.java.org.dungeon.items.Item;
@@ -31,6 +32,7 @@ import main.java.org.dungeon.util.Utils;
 public class Hero extends Creature {
 	private static final long serialVersionUID = 1L;
 
+	private final static int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
 	private final double minimumLuminosity = 0.3;
 	
 	private final Date dateOfBirth;
@@ -101,6 +103,7 @@ public class Hero extends Creature {
 		if (pod == PartOfDay.EVENING || pod == PartOfDay.MIDNIGHT || pod == PartOfDay.NIGHT) {
 			IO.writeString("You fall asleep.");
 			seconds = PartOfDay.getSecondsToNext(world.getWorldDate(), PartOfDay.DAWN);
+			Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * seconds / 3600);
 			IO.writeString("You wake up.");
 		} else {
 			IO.writeString("You can only sleep at night.");
