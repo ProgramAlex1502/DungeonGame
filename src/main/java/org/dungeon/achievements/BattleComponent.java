@@ -8,7 +8,7 @@ import main.java.org.dungeon.util.CounterMap;
 public class BattleComponent extends AchievementComponent{
 	
 	final CounterMap<String> killsByCreatureType = new CounterMap<String>();
-	final CounterMap<ID> killsByCreatureId = new CounterMap<ID>();
+	final CounterMap<ID> killsByCreatureID = new CounterMap<ID>();
 	final CounterMap<ID> killsByWeapon = new CounterMap<ID>();
 
 	int battleCount;
@@ -23,7 +23,7 @@ public class BattleComponent extends AchievementComponent{
 		if (stats.getLongestBattleLength() < longestBattleLength) {
 			return false;
 		}
-		if (!stats.getKillsByCreatureId().fulfills(killsByCreatureId)) {
+		if (!stats.getKillsByCreatureID().fulfills(killsByCreatureID)) {
 			return false;
 		}
 		if (!stats.getKillsByCreatureType().fulfills(killsByCreatureType)) {

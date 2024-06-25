@@ -23,11 +23,18 @@ public final class ItemBlueprint {
 	
 	boolean clock;
 	
-	public ID getId() {
+	boolean book;
+	ID skill;
+	
+	public void setSkill(ID skill) {
+		this.skill = skill;
+	}
+	
+	public ID getID() {
 		return id;
 	}
 	
-	public void setId(ID id) {
+	public void setID(ID id) {
 		this.id = id;
 	}
 	
@@ -133,6 +140,22 @@ public final class ItemBlueprint {
 	
 	public void setClock(boolean clock) {
 		this.clock = clock;
+	}
+	
+	public ID getSkill() {
+		return skill;
+	}
+	
+	public void setSkill(String skill) {
+		this.skill = new ID(skill);
+	}
+	
+	public boolean isBook() {
+		return book;
+	}
+	
+	public void setBook(boolean book) {
+		this.book = book;
 	}
 
 }

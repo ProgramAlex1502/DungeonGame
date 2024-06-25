@@ -21,7 +21,7 @@ public class Achievement {
 		this.info = info;
 	}
 	
-	public ID getId() {
+	public ID getID() {
 		return id;
 	}
 	
@@ -45,8 +45,8 @@ public class Achievement {
 		battle.killsByWeapon.incrementCounter(new ID(id), amount);
 	}
 	
-	public void incrementKillsByCreatureId(String id, int amount) {
-		battle.killsByCreatureId.incrementCounter(new ID(id), amount);
+	public void incrementKillsByCreatureID(String id, int amount) {
+		battle.killsByCreatureID.incrementCounter(new ID(id), amount);
 	}
 	
 	public void incrementKillsByCreatureType(String id, int amount) {

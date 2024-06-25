@@ -1,9 +1,11 @@
 package main.java.org.dungeon.skill;
 
+import java.io.Serializable;
+
 import main.java.org.dungeon.game.Entity;
 import main.java.org.dungeon.game.ID;
 
-public class Skill extends Entity{
+public class Skill extends Entity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final Skill FIREBALL = new Skill("FIREBALL", "Skill", "Fireball", 10, 6);
@@ -18,9 +20,12 @@ public class Skill extends Entity{
 		this.coolDown = coolDown;
 	}
 	
-	public int getDamageAndStartCoolDown() {
-		remainingCoolDown = coolDown;
+	public int getDamage() {
 		return damage;
+	}
+	
+	public void startCoolDown() {
+		remainingCoolDown = coolDown;
 	}
 	
 	public boolean isReady() {

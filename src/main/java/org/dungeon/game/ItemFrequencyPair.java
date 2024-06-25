@@ -8,7 +8,7 @@ class ItemFrequencyPair {
 		this.pair = new Pair<ID, Double>(id, frequency);
 	}
 	
-	public ID getId() {
+	public ID getID() {
 		return pair.a;
 	}
 	

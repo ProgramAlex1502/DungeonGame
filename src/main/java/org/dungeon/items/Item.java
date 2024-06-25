@@ -9,20 +9,19 @@ import main.java.org.dungeon.util.Constants;
 public class Item extends Entity{
 	private static final long serialVersionUID = 1L;
 
-	private Creature owner;
 	
 	private final int maxIntegrity;
-	private int curIntegrity;
-	private final boolean repairable;
-	
+	private final boolean repairable;	
 	private final boolean weapon;
 	private final int damage;
 	private final double hitRate;
 	private final int integrityDecrementOnHit;
 	
-	private FoodComponent foodComponent;
-	
+	private Creature owner;
+	private int curIntegrity;
+	private FoodComponent foodComponent;	
 	private ClockComponent clockComponent;
+	private BookComponent bookComponent;
 	
 	public Item(ItemBlueprint bp) {
 		super(bp.id, bp.type, bp.name);
@@ -43,6 +42,10 @@ public class Item extends Entity{
 		if (bp.clock) {
 			clockComponent = new ClockComponent();
 			clockComponent.setMaster(this);
+		}
+		
+		if (bp.book) {
+			bookComponent = new BookComponent(bp.getSkill());
 		}
 	}
 	
@@ -124,6 +127,10 @@ public class Item extends Entity{
 	
 	public ClockComponent getClockComponent() {
 		return clockComponent;
+	}
+	
+	public BookComponent getBookComponent() {
+		return bookComponent;
 	}
 	
 	public boolean isBroken() {

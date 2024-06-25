@@ -16,11 +16,11 @@ public class CreatureBlueprint {
 		
 	}
 	
-	public ID getId() {
+	public ID getID() {
 		return id;
 	}
 	
-	public void setId(ID id) {
+	public void setID(ID id) {
 		this.id = id;
 	}
 	

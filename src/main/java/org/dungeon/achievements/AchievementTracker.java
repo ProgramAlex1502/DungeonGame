@@ -24,14 +24,14 @@ public class AchievementTracker implements Serializable {
 	public void unlock(Achievement achievement) {
 		Date now = Game.getGameState().getWorld().getWorldDate();
 		if (!isUnlocked(achievement)) {
-			unlockedAchievements.add(new UnlockedAchievement(achievement.getId(), achievement.getName(), now));
+			unlockedAchievements.add(new UnlockedAchievement(achievement.getID(), achievement.getName(), now));
 		} else {
 			DLogger.warning("Tried to unlock an already unlocked achievement!");
 		}
 	}
 	
 	UnlockedAchievement getUnlockedAchievement(Achievement achievement) {
-		ID id = achievement.getId();
+		ID id = achievement.getID();
 		
 		for (UnlockedAchievement ua : unlockedAchievements) {
 			if (ua.id.equals(id)) {

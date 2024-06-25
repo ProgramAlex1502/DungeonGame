@@ -3,6 +3,8 @@ package main.java.org.dungeon.skill;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import main.java.org.dungeon.io.IO;
+
 public class SkillRotation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -63,6 +65,18 @@ public class SkillRotation implements Serializable {
 	
 	public void resetRotation() {
 		skillList.clear();
+	}
+	
+	public void printSkillRotation() {
+		StringBuilder builder = new StringBuilder(skillList.size() * 20);
+		for (Skill skill : skillList) {
+			builder.append("> ").append(skill.getName()).append("\n");
+		}
+		IO.writeString(builder.toString());
+	}
+	
+	public boolean isEmpty() {
+		return skillList.isEmpty();
 	}
 
 }

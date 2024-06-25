@@ -33,7 +33,7 @@ class Spawner implements Serializable {
 	}
 	
 	public void notifyKill(Creature creature) {
-		if (id.equals(creature.getId()) && location.getCreatureCount(id) == populationLimit) {
+		if (id.equals(creature.getID()) && location.getCreatureCount(id) == populationLimit) {
 			lastChange = getWorldTime();
 		}
 	}

@@ -10,12 +10,14 @@ import main.java.org.dungeon.achievements.Achievement;
 import main.java.org.dungeon.creatures.CreatureBlueprint;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.items.ItemBlueprint;
+import main.java.org.dungeon.skill.Skill;
 import main.java.org.dungeon.util.StopWatch;
 
 public final class GameData {
 		
 	public static final HashMap<ID, CreatureBlueprint> CREATURE_BLUEPRINTS = new HashMap<ID, CreatureBlueprint>(20, 1f);
 	public static final HashMap<ID, ItemBlueprint> ITEM_BLUEPRINTS = new HashMap<ID, ItemBlueprint>(20, 1f);
+	public static final HashMap<ID, Skill> SKILLS = new HashMap<ID, Skill>(2, 1f);
 	
 	private static final PoetryLibrary poetryLibrary = new PoetryLibrary();
 	private static final HintLibrary hintLibrary = new HintLibrary();
@@ -46,6 +48,7 @@ public final class GameData {
 		
 		loadItemBlueprints();
 		loadCreatureBlueprints();
+		createSkills();
 		loadLocationPresets();
 		
 		createAchievements();
@@ -54,12 +57,20 @@ public final class GameData {
 		DLogger.info("Finished loading the game data. Took " + stopWatch.toString() + ".");
 	}
 	
+	private static void createSkills() {
+		Skill fireball = new Skill("FIREBALL", "Skill", "Fireball", 10, 6);
+		SKILLS.put(fireball.getID(), fireball);
+		
+		Skill burningGround = new Skill("BURNING_GROUND", "Skill", "Burning Ground", 18, 12);
+		SKILLS.put(burningGround.getID(), burningGround);
+	}
+	
 	private static void loadItemBlueprints() {
 		ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("items.txt"));
 		
 		while (resourceReader.readNextElement()) {
 			ItemBlueprint blueprint = new ItemBlueprint();
-			blueprint.setId(new ID(resourceReader.getValue("ID")));
+			blueprint.setID(new ID(resourceReader.getValue("ID")));
 			blueprint.setType(resourceReader.getValue("TYPE"));
 			blueprint.setName(resourceReader.getValue("NAME"));
 		    blueprint.setCurIntegrity(Integer.parseInt(resourceReader.getValue("CUR_INTEGRITY")));
@@ -76,11 +87,14 @@ public final class GameData {
 		    if (resourceReader.hasValue("INTEGRITY_DECREMENT_ON_EAT")) {
 		        blueprint.setIntegrityDecrementOnEat(Integer.parseInt(resourceReader.getValue("INTEGRITY_DECREMENT_ON_EAT")));
 		    }
-		    if (resourceReader.hasValue("CLOCK")) {
-		        blueprint.setClock(Integer.parseInt(resourceReader.getValue("CLOCK")) == 1);
+		    blueprint.setClock(Integer.parseInt(resourceReader.getValue("CLOCK")) == 1);
+		    blueprint.setBook(Integer.parseInt(resourceReader.getValue("BOOK")) == 1);
+		    if (resourceReader.hasValue("SKILL")) {
+		    	blueprint.setSkill(resourceReader.getValue("SKILL"));
 		    }
+		    
 			
-			ITEM_BLUEPRINTS.put(blueprint.getId(), blueprint);
+			ITEM_BLUEPRINTS.put(blueprint.getID(), blueprint);
 		}
 		
 		resourceReader.close();
@@ -92,14 +106,14 @@ public final class GameData {
         
         while (resourceReader.readNextElement()) {
         	CreatureBlueprint blueprint = new CreatureBlueprint();
-        	blueprint.setId(new ID(resourceReader.getValue("ID")));
+        	blueprint.setID(new ID(resourceReader.getValue("ID")));
         	blueprint.setType(resourceReader.getValue("TYPE"));
         	blueprint.setName(resourceReader.getValue("NAME"));
         	blueprint.setCurHealth(Integer.parseInt(resourceReader.getValue("CUR_HEALTH")));
         	blueprint.setMaxHealth(Integer.parseInt(resourceReader.getValue("MAX_HEALTH")));
         	blueprint.setAttack(Integer.parseInt(resourceReader.getValue("ATTACK")));
         	blueprint.setAttackAlgorithmID(resourceReader.getValue("ATTACK_ALGORITHM_ID"));
-        	CREATURE_BLUEPRINTS.put(blueprint.getId(), blueprint);
+        	CREATURE_BLUEPRINTS.put(blueprint.getID(), blueprint);
         }
         
         resourceReader.close();
@@ -142,7 +156,7 @@ public final class GameData {
 
         LocationPreset forest = new LocationPreset("FOREST", "Forest");
         forest.addSpawner(bear).addSpawner(frog).addSpawner(rabbit).addSpawner(whiteTiger).addSpawner(zombie);
-        forest.addItem("AXE", 0.2).addItem("POCKET_WATCH", 0.03).addItem("STICK", 0.5);
+        forest.addItem("AXE", 0.2).addItem("POCKET_WATCH", 0.03).addItem("STICK", 0.5).addItem("TOME_OF_FIREBALL", 0.8);
         forest.setLightPermittivity(0.7);
         forest.finish();
         locationPresets.add(forest);
@@ -258,7 +272,7 @@ public final class GameData {
         		try {
         			String killsByCreatureID = reader.getValue("KILLS_BY_CREATURE_ID");
         			String[] parts = killsByCreatureID.split(",");
-        			achievement.incrementKillsByCreatureId(parts[0].trim(), Integer.parseInt(parts[1].trim()));
+        			achievement.incrementKillsByCreatureID(parts[0].trim(), Integer.parseInt(parts[1].trim()));
         		} catch (NumberFormatException ignore) {
         		}
         	}
@@ -279,7 +293,7 @@ public final class GameData {
         		}
         	}
         	
-        	ACHIEVEMENTS.put(achievement.getId(), achievement);
+        	ACHIEVEMENTS.put(achievement.getID(), achievement);
         }
 
         DLogger.info("Created " + ACHIEVEMENTS.size() + " achievements.");
