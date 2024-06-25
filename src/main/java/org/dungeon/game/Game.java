@@ -1,5 +1,6 @@
 package main.java.org.dungeon.game;
 
+import main.java.org.dungeon.debug.DebugTools;
 import main.java.org.dungeon.gui.GameWindow;
 import main.java.org.dungeon.help.Help;
 import main.java.org.dungeon.io.DLogger;

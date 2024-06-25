@@ -1,15 +1,23 @@
-package main.java.org.dungeon.game;
+package main.java.org.dungeon.debug;
 
 import java.awt.Color;
 
 import main.java.org.dungeon.creatures.Creature;
+import main.java.org.dungeon.game.Engine;
+import main.java.org.dungeon.game.Game;
+import main.java.org.dungeon.game.GameData;
+import main.java.org.dungeon.game.GameState;
+import main.java.org.dungeon.game.ID;
+import main.java.org.dungeon.game.IssuedCommand;
+import main.java.org.dungeon.game.Location;
+import main.java.org.dungeon.game.Point;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.Loader;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.util.Utils;
 
-public class DebugTools {
+public abstract class DebugTools {
 	
 	private static final String[] args = {"exploration", "tomorrow", "holidays", "saves", "location", "generator",
 			"saved", "list", "time", "give", "dummy"
@@ -39,7 +47,7 @@ public class DebugTools {
 		IO.writeString("Spawned a dummy.");
 	}
 	
-	private static void printIsSaved() {
+	public static void printIsSaved() {
 		if (Game.getGameState().isSaved()) {
 			IO.writeString("The game is saved.");
 		} else {
@@ -47,11 +55,11 @@ public class DebugTools {
 		}
 	}
 	
-	private static void printTime() {
+	public static void printTime() {
 		IO.writeString(Game.getGameState().getWorld().getWorldDate().toTimeString());
 	}
 	
-	static void parseDebugCommand(IssuedCommand issuedCommand) {
+	public static void parseDebugCommand(IssuedCommand issuedCommand) {
         if (issuedCommand.hasArguments()) {
             if (issuedCommand.firstArgumentEquals(args[0])) {
                 IO.writeString(Game.getGameState().getHero().getExplorationLog().toString());
