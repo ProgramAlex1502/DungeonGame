@@ -5,6 +5,7 @@ import java.awt.Color;
 import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.items.Item;
+import main.java.org.dungeon.skill.Skill;
 import main.java.org.dungeon.util.Constants;
 import main.java.org.dungeon.util.Utils;
 
@@ -100,40 +101,50 @@ class AttackAlgorithm {
 		Item weapon = attacker.getWeapon();
 		int hitDamage;
 		
-		if (weapon != null && !weapon.isBroken()) {
-			if (weapon.rollForHit()) {
-				hitDamage = weapon.getDamage() + attacker.getAttack();
-				if (Utils.roll(HERO_CRITICAL_CHANCE)) {
+		if (attacker.getSkillList().hasSkill()) {
+			Skill skill = attacker.getSkillList().getFirstSkill();
+			hitDamage = skill.getDamage();
+			printSkillCast(attacker, skill, defender);
+		} else {
+			if (weapon != null && !weapon.isBroken()) {
+				if (weapon.rollForHit()) {
+					hitDamage = weapon.getDamage() + attacker.getAttack();
+					if (Utils.roll(HERO_CRITICAL_CHANCE)) {
+						hitDamage *= 2;
+						printInflictedDamage(attacker, hitDamage, defender, true);
+					} else {
+						printInflictedDamage(attacker, hitDamage, defender, false);
+					}
+					
+					weapon.decrementIntegrityByHit();
+					
+					if (weapon.isBroken()) {
+						printWeaponBreak(weapon);
+						if (!weapon.isRepairable()) {
+							attacker.getInventory().removeItem(weapon);
+						}
+					}
+				} else {
+					printMiss(attacker);
+					return;
+				}
+			} else {
+				hitDamage = attacker.getAttack();
+				
+				if (Utils.roll(HERO_CRITICAL_CHANCE_UNARMED)) {
 					hitDamage *= 2;
 					printInflictedDamage(attacker, hitDamage, defender, true);
 				} else {
 					printInflictedDamage(attacker, hitDamage, defender, false);
+					
 				}
-				
-				weapon.decrementIntegrityByHit();
-				
-				if (weapon.isBroken()) {
-					printWeaponBreak(weapon);
-					if (!weapon.isRepairable()) {
-						attacker.getInventory().removeItem(weapon);
-					}
-				}
-			} else {
-				printMiss(attacker);
-				return;
-			}
-		} else {
-			hitDamage = attacker.getAttack();
-			
-			if (Utils.roll(HERO_CRITICAL_CHANCE_UNARMED)) {
-				hitDamage *= 2;
-				printInflictedDamage(attacker, hitDamage, defender, true);
-			} else {
-				printInflictedDamage(attacker, hitDamage, defender, false);
-
 			}
 		}
 		defender.takeDamage(hitDamage);
+	}
+	
+	private static void printWeaponBreak(Item weapon) {
+		IO.writeString(weapon.getName() + " broke!", Color.RED);
 	}
 	
 	private static void printInflictedDamage(Creature attacker, int hitDamage, Creature defender, boolean criticalHit) {
@@ -153,8 +164,12 @@ class AttackAlgorithm {
 		IO.writeBattleString(builder.toString(), attacker.getId().equals(Constants.HERO_ID) ? Color.GREEN : Color.RED);
 	}
 	
-	private static void printWeaponBreak(Item weapon) {
-		IO.writeString(weapon.getName() + " broke!", Color.RED);
+	private static void printSkillCast(Creature attacker, Skill skill, Creature defender) {
+		String result = attacker.getName() + " casted " + 
+				skill.getName() + " and inflicted " + 
+				skill.getDamage() + " damage points to " + 
+				defender.getName() + ".";
+		IO.writeString(result, attacker.getId().equals(Constants.HERO_ID) ? Color.GREEN : Color.RED);
 	}
 	
 	private static void printMiss(Creature attacker) {

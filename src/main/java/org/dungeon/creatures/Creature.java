@@ -4,6 +4,7 @@ import main.java.org.dungeon.game.Entity;
 import main.java.org.dungeon.game.Location;
 import main.java.org.dungeon.items.CreatureInventory;
 import main.java.org.dungeon.items.Item;
+import main.java.org.dungeon.skill.SkillList;
 
 public class Creature extends Entity{
 	private static final long serialVersionUID = 1L;
@@ -14,6 +15,7 @@ public class Creature extends Entity{
 	private final int attack;
 	private final String attackAlgorithm;
 	
+	private final SkillList skillList = new SkillList();
 	private CreatureInventory inventory;
 	private Item weapon;
 	
@@ -25,6 +27,10 @@ public class Creature extends Entity{
 		attack = bp.getAttack();
 		maxHealth = bp.getMaxHealth();
 		curHealth = bp.getCurHealth();
+	}
+	
+	public SkillList getSkillList() {
+		return skillList;
 	}
 		
 	public String getType() {
