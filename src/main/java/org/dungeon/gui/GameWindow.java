@@ -237,11 +237,11 @@ public class GameWindow extends JFrame{
 		return textField.getText().trim();
 	}
 	
-	public void writeToTextPane(String string, Color color) {
-		writeToTextPane(string, color, textPane.getBackground());
+	public void writeToTextPane(String string, Color color, boolean scrollDown) {
+		writeToTextPane(string, color, textPane.getBackground(), scrollDown);
 	}
 	
-	void writeToTextPane(String string, Color fore, Color back) {
+	void writeToTextPane(String string, Color fore, Color back, boolean scrollDown) {
 		StyleConstants.setForeground(attributeSet, fore);
 		StyleConstants.setBackground(attributeSet, back);
 		
@@ -251,6 +251,9 @@ public class GameWindow extends JFrame{
 		
 		try {
 			document.insertString(document.getLength(), string, attributeSet);
+			if (!scrollDown) {
+				textPane.setCaretPosition(0);
+			}
 		} catch (BadLocationException ignored) {
 		}
 	}

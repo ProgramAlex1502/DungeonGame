@@ -21,23 +21,24 @@ public final class IO {
 	}
 	
 	public static void writeString(String string, Color color, boolean newLine) {
-		writeString(string, color, newLine, 0);
+		writeString(string, color, newLine, true, 0);
 	}
 	
-	public static void writeString(String string, Color color, boolean newLine, long wait) {
+	public static void writeString(String string, Color color, boolean newLine, boolean scrollDown) {
+		writeString(string, color, newLine, scrollDown, 0);
+	}
+	
+	public static void writeString(String string, Color color, boolean newLine, boolean scrollDown, long wait) {
 		if (color == null) {
 			DLogger.warning("Passed null as a Color to writeString.");
 		}
 		
-		if (newLine) {
-			Game.getGameWindow().writeToTextPane(Utils.clearEnd(string) + '\n', color);
-		} else {
-			Game.getGameWindow().writeToTextPane(Utils.clearEnd(string), color);
-		}
+		String processedString = newLine ? Utils.clearEnd(string) + '\n' : Utils.clearEnd(string);
+		Game.getGameWindow().writeToTextPane(processedString, color, scrollDown);
 	}
 	
 	public static void writeBattleString(String string, Color color) {
-		writeString(string, color, true, WRITE_BATTLE_STRING_WAIT);
+		writeString(string, color, true, true, WRITE_BATTLE_STRING_WAIT);
 	}
 	
 	public static void writeNewLine() {
@@ -67,7 +68,7 @@ public final class IO {
 	}
 	
 	public static void writePoem(Poem poem) {
-		writeString(poem.getTitle() + "\n\n" + poem.getContent() + "\n\n" + poem.getAuthor());
+		writeString(poem.toString(), Constants.FORE_COLOR_NORMAL, false, false);
 	}
 	
 	public static void writeNamedBar(String name, Percentage percentage, Color fore) {
