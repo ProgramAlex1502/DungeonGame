@@ -7,7 +7,7 @@ import main.java.org.dungeon.game.ID;
 public class ExplorationData implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	private ID locationID;
+	private final ID locationID;
 	private int visitCount;
 	private int killCount;
 	
@@ -25,16 +25,16 @@ public class ExplorationData implements Serializable{
 		return visitCount;
 	}
 	
-	public int addVisit() {
-		return ++this.visitCount;
+	public void addVisit() {
+		this.visitCount++;
 	}
 	
 	public int getKillCount() {
 		return killCount;
 	}
 	
-	public int addKill() {
-		return ++this.killCount;
+	public void addKill() {
+		this.killCount++;
 	}
 
 }

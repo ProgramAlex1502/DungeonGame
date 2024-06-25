@@ -24,7 +24,7 @@ public final class IO {
 		writeString(string, color, newLine, true, 0);
 	}
 	
-	public static void writeString(String string, Color color, boolean newLine, boolean scrollDown) {
+	private static void writeString(String string, Color color, boolean newLine, boolean scrollDown) {
 		writeString(string, color, newLine, scrollDown, 0);
 	}
 	
