@@ -2,6 +2,7 @@ package main.java.org.dungeon.game;
 
 import java.util.Arrays;
 
+import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.util.Utils;
 
 public final class IssuedCommand {
@@ -37,11 +38,12 @@ public final class IssuedCommand {
 		return tokens[1];
 	}
 	
-	public boolean firstArgumentEquals(String argument) {
+	public boolean firstArgumentEquals(String string) {
 		if (hasArguments()) {
-			return tokens[1].equalsIgnoreCase(argument);
+			return tokens[1].equalsIgnoreCase(string);
 		} else {
-			throw new IllegalArgumentException("this command does not have arguments.");
+			DLogger.warning("Called firstArgumentEquals on an IssuedCommand that does not have arguments.");
+			return false;
 		}
 	}
 	
