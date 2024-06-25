@@ -6,11 +6,11 @@ import java.util.logging.LogRecord;
 
 public class DFormatter extends Formatter {
 
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss]");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss]");
 	
 	@Override
 	public String format(LogRecord record) {
-		return dateFormat.format(record.getMillis()) + " (" + record.getLevel() + ") : " + record.getMessage() + "\n";
+		return DATE_FORMAT.format(record.getMillis()) + " (" + record.getLevel() + ") : " + record.getMessage() + "\n";
 	}
 
 }
