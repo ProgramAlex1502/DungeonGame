@@ -237,11 +237,11 @@ public class GameWindow extends JFrame{
 		return textField.getText().trim();
 	}
 	
-	public void writeToTextPane(String string, Color color, long wait) {
-		writeToTextPane(string, color, textPane.getBackground(), wait);
+	public void writeToTextPane(String string, Color color) {
+		writeToTextPane(string, color, textPane.getBackground());
 	}
 	
-	void writeToTextPane(String string, Color fore, Color back, long wait) {
+	void writeToTextPane(String string, Color fore, Color back) {
 		StyleConstants.setForeground(attributeSet, fore);
 		StyleConstants.setBackground(attributeSet, back);
 		
@@ -251,13 +251,6 @@ public class GameWindow extends JFrame{
 		
 		try {
 			document.insertString(document.getLength(), string, attributeSet);
-			try {
-				if (wait > 0) {
-					textPane.update(textPane.getGraphics());
-					Thread.sleep(wait);
-				}
-			} catch (InterruptedException ignored) {
-			}
 		} catch (BadLocationException ignored) {
 		}
 	}
