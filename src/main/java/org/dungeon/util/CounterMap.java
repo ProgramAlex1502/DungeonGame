@@ -1,4 +1,4 @@
-package main.java.org.dungeon.counters;
+package main.java.org.dungeon.util;
 
 import java.io.Serializable;
 import java.util.HashMap;

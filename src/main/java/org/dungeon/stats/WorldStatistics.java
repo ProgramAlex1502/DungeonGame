@@ -2,7 +2,7 @@ package main.java.org.dungeon.stats;
 
 import java.io.Serializable;
 
-import main.java.org.dungeon.counters.CounterMap;
+import main.java.org.dungeon.util.CounterMap;
 
 public class WorldStatistics implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -6,6 +6,7 @@ import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.CounterMap;
 
 public class BattleStatistics implements Serializable{
 	private static final long serialVersionUID = 1L;

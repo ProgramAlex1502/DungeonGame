@@ -1,9 +1,9 @@
 package main.java.org.dungeon.achievements;
 
-import main.java.org.dungeon.counters.CounterMap;
 import main.java.org.dungeon.counters.ExplorationLog;
 import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.game.ID;
+import main.java.org.dungeon.util.CounterMap;
 
 public class ExplorationComponent extends AchievementComponent{
 
