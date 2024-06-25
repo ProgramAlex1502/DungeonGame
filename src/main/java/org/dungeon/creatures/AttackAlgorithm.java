@@ -21,6 +21,8 @@ class AttackAlgorithm {
 			beastAttack(attacker, defender);
 		} else if (algorithmID.equals("CRITTER")) {
 			critterAttack(attacker);
+		} else if (algorithmID.equals("DUMMY")) {
+			dummyAttack(attacker);
 		} else if (algorithmID.equals("UNDEAD")) {
 			undeadAttack(attacker, defender);
 		} else if (algorithmID.equals("HERO")) {
@@ -63,6 +65,10 @@ class AttackAlgorithm {
 		} else {
 			IO.writeBattleString(attacker.getName() + " tries to run away.", Color.YELLOW);
 		}
+	}
+	
+	private static void dummyAttack(Creature attacker) {
+		IO.writeBattleString(attacker.getName() + " stands still.", Color.YELLOW);
 	}
 	
 	private static void undeadAttack(Creature attacker, Creature defender) {
