@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.org.dungeon.achievements.AchievementTracker;
-import main.java.org.dungeon.counters.BattleStatistics;
 import main.java.org.dungeon.counters.ExplorationLog;
 import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.date.Period;
@@ -41,7 +40,6 @@ public class Hero extends Creature {
 	
 	private final Date dateOfBirth;
 	private final ExplorationLog explorationLog;
-	private final BattleStatistics battleStatistics;
 	private final AchievementTracker achievementTracker;
 
 	public Hero(String name) {
@@ -49,7 +47,6 @@ public class Hero extends Creature {
 		setInventory(new CreatureInventory(this, 3));
 		dateOfBirth = new Date(432, 6, 4, 8, 30, 0);
 		explorationLog = new ExplorationLog();
-		battleStatistics = new BattleStatistics();
 		achievementTracker = new AchievementTracker();
 	}
 	
@@ -63,10 +60,6 @@ public class Hero extends Creature {
 		heroBlueprint.setMaxHealth(50);
 		heroBlueprint.setCurHealth(50);
 		return heroBlueprint;
-	}
-	
-	public BattleStatistics getBattleStatistics() {
-		return battleStatistics;
 	}
 	
 	public ExplorationLog getExplorationLog() {

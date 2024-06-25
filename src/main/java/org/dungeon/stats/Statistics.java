@@ -8,15 +8,20 @@ import main.java.org.dungeon.io.IO;
 public final class Statistics implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	private final BattleStatistics battleStatistics = new BattleStatistics();
 	private final WorldStatistics worldStatistics = new WorldStatistics();
-	private final CommandStatistics commandStats = new CommandStatistics();
+	private final CommandStatistics commandStatistics = new CommandStatistics();
+	
+	public BattleStatistics getBattleStatistics() {
+		return battleStatistics;
+	}
 	
 	public WorldStatistics getWorldStatistics() {
 		return worldStatistics;
 	}
 	
 	public void addCommand(IssuedCommand issuedCommand) {
-		commandStats.addCommand(issuedCommand);
+		commandStatistics.addCommand(issuedCommand);
 	}
 	
 	public void printAllStatistics() {
@@ -25,9 +30,9 @@ public final class Statistics implements Serializable {
 	}
 	
 	private void printCommandStatistics() {
-		int commandCount = commandStats.getCommandCount();
-		int chars = commandStats.getChars();
-		int words = commandStats.getWords();
+		int commandCount = commandStatistics.getCommandCount();
+		int chars = commandStatistics.getChars();
+		int words = commandStatistics.getWords();
 		IO.writeKeyValueString("Commands issued", String.valueOf(commandCount));
 		IO.writeKeyValueString("Characters entered", String.valueOf(chars));
 		IO.writeKeyValueString("Average characters per command", String.format("%.2f", (double) chars / commandCount));

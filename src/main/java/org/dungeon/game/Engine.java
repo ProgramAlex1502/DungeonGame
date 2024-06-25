@@ -106,7 +106,8 @@ public class Engine {
 		
 		if (attacker instanceof Hero) {
 			Hero hero = (Hero) attacker;
-			hero.getBattleStatistics().addBattle(attacker, defender, attacker == survivor, turns);
+			boolean attackerWon = attacker == survivor;
+			Game.getGameState().getStatistics().getBattleStatistics().addBattle(attacker, defender, attackerWon, turns);
 			hero.getExplorationLog().addKill(Game.getGameState().getHeroPosition());
 		}
 		

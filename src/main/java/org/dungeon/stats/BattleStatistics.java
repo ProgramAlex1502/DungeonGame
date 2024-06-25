@@ -1,4 +1,4 @@
-package main.java.org.dungeon.counters;
+package main.java.org.dungeon.stats;
 
 import java.io.Serializable;
 
