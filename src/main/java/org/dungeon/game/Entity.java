@@ -1,9 +1,6 @@
-package main.java.org.dungeon.creatures;
+package main.java.org.dungeon.game;
 
 import java.io.Serializable;
-
-import main.java.org.dungeon.game.ID;
-import main.java.org.dungeon.game.Selectable;
 
 public abstract class Entity implements Selectable, Serializable{
 	private static final long serialVersionUID = 1L;

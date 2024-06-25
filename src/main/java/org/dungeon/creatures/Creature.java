@@ -1,5 +1,6 @@
 package main.java.org.dungeon.creatures;
 
+import main.java.org.dungeon.game.Entity;
 import main.java.org.dungeon.game.Location;
 import main.java.org.dungeon.items.CreatureInventory;
 import main.java.org.dungeon.items.Item;

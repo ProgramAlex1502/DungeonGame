@@ -1,8 +1,8 @@
 package main.java.org.dungeon.items;
 
 import main.java.org.dungeon.creatures.Creature;
-import main.java.org.dungeon.creatures.Entity;
 import main.java.org.dungeon.game.Engine;
+import main.java.org.dungeon.game.Entity;
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.util.Constants;
 
