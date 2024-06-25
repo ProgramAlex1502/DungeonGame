@@ -1,18 +1,14 @@
 package main.java.org.dungeon.game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.java.org.dungeon.io.IO;
 
 public class WorldGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final World world;
-	
-	private final RiverGenerator riverGenerator;
-	
-	private int chunkSide;
-	private int generatedLocations;
 	
 	private static final int MIN_CHUNK_SIDE = 1;
 	private static final int DEF_CHUNK_SIDE = 5;
@@ -20,6 +16,11 @@ public class WorldGenerator implements Serializable {
 	
 	private static final int MIN_DIST_RIVER = 6;
 	private static final int MAX_DIST_RIVER = 11;
+
+	private final World world;
+	private final RiverGenerator riverGenerator;
+	private int chunkSide;
+	private int generatedLocations;
 	
 	public WorldGenerator(World world) {
 		this(world, DEF_CHUNK_SIDE);
@@ -45,16 +46,21 @@ public class WorldGenerator implements Serializable {
 		}
 	}
 	
-	private Location createRandomLocation() {
-		return new Location(GameData.LOCATION_PRESETS[Engine.RANDOM.nextInt(GameData.LOCATION_PRESETS.length)], world);
+	private Location createRandomLandLocation() {
+		List<LocationPreset> locationPresets = new ArrayList<LocationPreset>(GameData.getLocationPresets().values());
+		LocationPreset selectedLocation;
+		do {
+			selectedLocation = locationPresets.get(Engine.RANDOM.nextInt(locationPresets.size()));
+		} while (!"Land".equals(selectedLocation.getType()));
+		return new Location(selectedLocation, world);
 	}
 	
 	private Location createRiverLocation() {
-		return new Location(GameData.getRandomRiver(), world);
+		return new Location(GameData.getLocationPresets().get(new ID("RIVER")), world);
 	}
 	
 	private Location createBridgeLocation() {
-		return new Location(GameData.getRandomBridge(), world);
+		return new Location(GameData.getLocationPresets().get(new ID("BRIDGE")), world);
 	}
 
 	public void expand(Point point) {
@@ -75,7 +81,7 @@ public class WorldGenerator implements Serializable {
 					} else if (riverGenerator.isBridge(current_point)) {
 						world.addLocation(createBridgeLocation(), current_point);
 					} else {
-						world.addLocation(createRandomLocation(), current_point);
+						world.addLocation(createRandomLandLocation(), current_point);
 					}
 					generatedLocations++;
 				}
