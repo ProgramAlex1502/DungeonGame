@@ -66,7 +66,7 @@ public class Achievement {
 	}
 	
 	boolean isFulfilled(Hero hero) {
-		return battle.isFulfilled(hero) && exploration.isFulfilled(hero);
+		return battle.isFulfilled() && exploration.isFulfilled(hero);
 	}
 	
 	public final void update(Hero hero) {

@@ -13,5 +13,9 @@ public class Dimensions {
 	public boolean equals(Dimensions anotherObject) {
 		return Arrays.equals(dimensions, anotherObject.dimensions);
 	}
+	
+	public int get(int index) {
+		return dimensions[index];
+	}
 
 }

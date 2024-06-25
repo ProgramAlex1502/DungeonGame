@@ -42,18 +42,19 @@ public class Loader {
 		
 		if (files != null) {
 			if (files.length != 0) {
-				Table dTable = new Table("Name", "Size");
+				Table table = new Table("Name", "Size");
 				int fileCount = 0;
 				int byteCount = 0;
 				for (File file : files) {
 					fileCount += 1;
 					byteCount += file.length();
-					dTable.insertRow(file.getName(), Utils.bytesToHuman(file.length()));
+					table.insertRow(file.getName(), Utils.bytesToHuman(file.length()));
 				}
 				if (fileCount > 1) {
-					dTable.insertRow("Sum of these " + fileCount + " files", Utils.bytesToHuman(byteCount));
+					table.insertSeparator();
+					table.insertRow("Sum of these " + fileCount + " files", Utils.bytesToHuman(byteCount));
 				}
-				dTable.print();
+				table.print();
 			} else {
 				IO.writeString("Saves folder is empty.");
 			}
