@@ -36,7 +36,7 @@ class ResourceReader implements Closeable {
 		return new Pair<String, String>(parts[0], parts[1]);
 	}
 	
-	public boolean contains(String key) {
+	public boolean hasValue(String key) {
 		return map.containsKey(key);
 	}
 	

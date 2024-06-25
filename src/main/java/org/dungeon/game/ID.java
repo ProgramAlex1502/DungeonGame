@@ -12,30 +12,30 @@ public class ID implements Serializable {
 	public ID(String id) {
 		if (id == null) {
 			DLogger.warning("Tried to use a null String as an ID.");
-			this.id = "null";
-			return;
-		}
-		boolean invalid = false;
-		char[] idChars = id.toCharArray();
-		char currentChar;
-		
-		for (int i = 0; i < idChars.length; i++) {
-			currentChar = idChars[i];
-			if (Character.isLetter(currentChar)) {
-				if (Character.isLowerCase(idChars[i])) {
+			this.id = "NULL";
+		} else {
+			boolean invalid = false;
+			char[] idChars = id.toCharArray();
+			char currentChar;
+			
+			for (int i = 0; i < idChars.length; i++) {
+				currentChar = idChars[i];
+				if (Character.isLetter(currentChar)) {
+					if (Character.isLowerCase(idChars[i])) {
+						invalid = true;
+						idChars[i] = Character.toUpperCase(currentChar);
+					}
+				} else if (!(Character.isDigit(currentChar) || idChars[i] == '_')) {
 					invalid = true;
-					idChars[i] = Character.toUpperCase(currentChar);
+					idChars[i] = '_';
 				}
-			} else if (!(Character.isDigit(currentChar) || idChars[i] == '_')) {
-				invalid = true;
-				idChars[i] = '_';
 			}
+			if (invalid) {
+				DLogger.warning("Tried to use \"" + id + "\" as an ID.");
+			}
+			
+			this.id = new String(idChars);
 		}
-		if (invalid) {
-			DLogger.warning("Tried to use \"" + id + "\" as an ID.");
-		}
-		
-		this.id = new String(idChars);
 	}
 	
 	@Override
