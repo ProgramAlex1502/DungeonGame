@@ -58,8 +58,12 @@ public class SkillRotation implements Serializable {
 	}
 	
 	public void refresh() {
+		ArrayList<Skill> alreadyRefreshedSkills = new ArrayList<Skill>(skillList.size());
 		for (Skill skill : skillList) {
-			skill.refresh();
+			if (!alreadyRefreshedSkills.contains(skill)) {
+				skill.refresh();
+				alreadyRefreshedSkills.add(skill);
+			}
 		}
 	}
 	
