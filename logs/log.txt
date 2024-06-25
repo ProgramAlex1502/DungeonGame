@@ -242,3 +242,10 @@
 [2024-06-25 10:54:02] (INFO) : Created 20 achievements.
 [2024-06-25 10:54:02] (INFO) : Finished loading the game data. Took 56 ms ms.
 [2024-06-25 10:55:30] (INFO) : Exited with no problems.
+[2024-06-25 11:15:09] (INFO) : Started loading the game data.
+[2024-06-25 11:15:09] (INFO) : Loaded 13 item blueprints
+[2024-06-25 11:15:09] (INFO) : Loaded 17 creature blueprints.
+[2024-06-25 11:15:09] (INFO) : Created 9 location presets.
+[2024-06-25 11:15:09] (INFO) : Created 20 achievements.
+[2024-06-25 11:15:09] (INFO) : Finished loading the game data. Took 68 ms.
+[2024-06-25 11:17:06] (INFO) : Exited with no problems.
