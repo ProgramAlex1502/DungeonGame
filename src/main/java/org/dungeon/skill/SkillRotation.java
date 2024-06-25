@@ -60,5 +60,9 @@ public class SkillRotation implements Serializable {
 			skill.refresh();
 		}
 	}
+	
+	public void resetRotation() {
+		skillList.clear();
+	}
 
 }
