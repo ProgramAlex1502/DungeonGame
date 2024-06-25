@@ -107,7 +107,7 @@ public class Game {
             Help.printCommandList(issuedCommand);
         } else if (issuedCommand.firstTokenEquals("save")) {
             Loader.saveGame(gameState, issuedCommand);
-        } else if (issuedCommand.firstTokenEquals("saves")) {
+        } else if (issuedCommand.firstTokenEquals("saves") || issuedCommand.firstArgumentEquals("files")) {
         	Loader.printFilesInSavesFolder();
         } else if (issuedCommand.firstTokenEquals("load")) {
         

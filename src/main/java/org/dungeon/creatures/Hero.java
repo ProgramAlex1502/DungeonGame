@@ -93,7 +93,7 @@ public class Hero extends Creature {
 		} else {
 			double fractionHealed = healthFractionThroughRest - (double) getCurHealth() / (double) getMaxHealth();
 			IO.writeString("Resting...");
-			setCurHealth((int) healthFractionThroughRest * getMaxHealth());
+			setCurHealth((int) (healthFractionThroughRest * getMaxHealth()));
 			IO.writeString("You feel rested.");
 			return (int) (TimeConstants.HEAL_TEN_PERCENT * fractionHealed * 10);
 		}
