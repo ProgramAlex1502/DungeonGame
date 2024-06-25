@@ -36,9 +36,8 @@ import main.java.org.dungeon.util.Utils;
 public class Hero extends Creature {
 	private static final long serialVersionUID = 1L;
 
-	private final static int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
+	private static final int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
-	private final double minimumLuminosity = 0.3;
 	
 	private final Date dateOfBirth;
 	private final ExplorationLog explorationLog;
@@ -230,6 +229,7 @@ public class Hero extends Creature {
 	}
 	
 	boolean canSee() {
+		double minimumLuminosity = 0.3;
 		return getLocation().getLuminosity() >= minimumLuminosity;
 	}
 	
