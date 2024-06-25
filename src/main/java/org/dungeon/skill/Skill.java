@@ -3,29 +3,24 @@ package main.java.org.dungeon.skill;
 import java.io.Serializable;
 
 import main.java.org.dungeon.game.Entity;
-import main.java.org.dungeon.game.ID;
 
 public class Skill extends Entity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public static final Skill FIREBALL = new Skill("FIREBALL", "Skill", "Fireball", 10, 6);
-	public static final Skill BURNING_GROUND = new Skill("BURNING_GROUND", "Skill", "Burning Ground", 4, 12);
-	private final int damage;
-	private final int coolDown;
+	private final SkillDefinition definition;
 	private int remainingCoolDown;
 
-	public Skill(String id, String type, String name, int damage, int coolDown) {
-		super(new ID(id), type, name);
-		this.damage = damage;
-		this.coolDown = coolDown;
+	public Skill(SkillDefinition definition) {
+		super(definition.getID(), definition.getType(), definition.getName());
+		this.definition = definition;
 	}
 	
 	public int getDamage() {
-		return damage;
+		return definition.damage;
 	}
 	
 	public void startCoolDown() {
-		remainingCoolDown = coolDown;
+		remainingCoolDown = definition.coolDown;
 	}
 	
 	public boolean isReady() {

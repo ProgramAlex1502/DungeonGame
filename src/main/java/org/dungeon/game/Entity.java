@@ -19,6 +19,10 @@ public abstract class Entity implements Selectable, Serializable{
 		return id;
 	}
 	
+	public String getType() {
+		return type;
+	}
+	
 	@Override
 	public String getName() {
 		return name;
