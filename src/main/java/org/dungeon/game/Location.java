@@ -41,7 +41,7 @@ public class Location implements Serializable {
 		
 		for (ItemFrequencyPair pair : preset.getItems()) {
 			if (Engine.RANDOM.nextDouble() < pair.getFrequency()) {
-				ItemBlueprint blueprint = GameData.ITEM_BLUEPRINTS.get(pair.getID());
+				ItemBlueprint blueprint = GameData.getItemBlueprints().get(pair.getID());
 				if (blueprint != null) {
 					this.addItem(new Item(blueprint));
 				} else {
