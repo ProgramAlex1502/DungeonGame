@@ -13,7 +13,7 @@ import main.java.org.dungeon.util.Utils;
 public class DebugTools {
 	
 	private static final String[] args = {"exploration", "tomorrow", "holidays", "saves", "location", "generator",
-			"saved", "list", "time", "give"
+			"saved", "list", "time", "give", "dummy"
 	};
 	
 	private static void give(String itemId) {
@@ -32,6 +32,10 @@ public class DebugTools {
 		for(String arg : args) {
 			IO.writeString("\n  " + arg);
 		}
+	}
+	
+	private static void spawnDummyInHeroLocation() {
+		Game.getGameState().getHeroLocation().addCreature(new Creature(GameData.CREATURE_BLUEPRINTS.get(new ID("DUMMY"))));
 	}
 	
 	private static void printIsSaved() {
@@ -64,7 +68,7 @@ public class DebugTools {
                     IO.writeString(Integer.toString(i));
                 }
             } else if (issuedCommand.firstArgumentEquals(args[4])) {
-                final int WIDTH = 20;  // The width of the row's "tag".
+                final int WIDTH = 20;
                 GameState gameState = Game.getGameState();
                 Point heroPosition = gameState.getHeroPosition();
                 Location location = gameState.getWorld().getLocation(heroPosition);
@@ -99,6 +103,8 @@ public class DebugTools {
                 } else {
                     Utils.printMissingArgumentsMessage();
                 }
+            } else if (issuedCommand.firstArgumentEquals(args[10])) {
+            	spawnDummyInHeroLocation();
             } else {
                 switch (Engine.RANDOM.nextInt(4)) {
                     case 0:
