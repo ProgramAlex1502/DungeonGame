@@ -13,7 +13,7 @@ import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.util.Constants;
-import main.java.org.dungeon.util.DTable;
+import main.java.org.dungeon.util.Table;
 import main.java.org.dungeon.util.Utils;
 
 public class Loader {
@@ -42,7 +42,7 @@ public class Loader {
 		
 		if (files != null) {
 			if (files.length != 0) {
-				DTable dTable = new DTable("Name", "Size");
+				Table dTable = new Table("Name", "Size");
 				int fileCount = 0;
 				int byteCount = 0;
 				for (File file : files) {

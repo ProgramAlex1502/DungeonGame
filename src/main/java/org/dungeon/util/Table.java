@@ -6,11 +6,11 @@ import java.util.Arrays;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.IO;
 
-public class DTable {
+public class Table {
 	
 	private final ArrayList<Column> columns;
 	
-	public DTable(String... headers) {
+	public Table(String... headers) {
 		columns = new ArrayList<Column>(headers.length);
 		for (String header: headers) {
 			columns.add(new Column(header));
@@ -53,7 +53,7 @@ public class DTable {
 	
 	public void print() {
 		if (columns.size() == 0) {
-			DLogger.warning("Tried to print an empty DTable.");
+			DLogger.warning("Tried to print an empty Table.");
 			return;
 		}
 		
