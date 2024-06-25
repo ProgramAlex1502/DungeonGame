@@ -41,6 +41,7 @@ class ResourceParser implements Closeable {
 			StringBuilder sb = new StringBuilder();
 			sb.append(line.toString()).append('\n');
 			while (line.isContinued()) {
+				readLine();
 				if (line != null) {
 					sb.append(line.toString()).append('\n');
 				} else {

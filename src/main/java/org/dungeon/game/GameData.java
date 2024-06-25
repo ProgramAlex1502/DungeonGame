@@ -51,7 +51,7 @@ public final class GameData {
 		createAchievements();
 		loadLicense();
 		
-		DLogger.info("Finished loading the game data. Took " + stopWatch.toString() + " ms.");
+		DLogger.info("Finished loading the game data. Took " + stopWatch.toString() + ".");
 	}
 	
 	private static void loadItemBlueprints() {

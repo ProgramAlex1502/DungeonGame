@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -193,14 +194,31 @@ public class GameWindow extends JFrame{
 	}
 	
 	private void textFieldActionPerformed() {
-		String text = getTrimmedTextFieldText();
+		final String text = getTrimmedTextFieldText();
 		if (!text.isEmpty()) {
 			clearTextField();
 			setIdle(false);
-			Game.renderTurn(new IssuedCommand(text));
-			Game.getGameState().getCommandHistory().getCursor().moveToEnd();
-			textField.requestFocusInWindow();
-			setIdle(true);
+			
+			@SuppressWarnings("rawtypes")
+			SwingWorker inputRenderer = new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+					Game.renderTurn(new IssuedCommand(text));
+					Game.getGameState().getCommandHistory().getCursor().moveToEnd();
+					return null;
+				}
+				
+				@Override
+				protected void done() {
+					textField.requestFocusInWindow();
+					setIdle(true);
+				}
+			};
+			
+			inputRenderer.execute();
+			
+			
+			
 		}
 	}
 	
@@ -251,7 +269,9 @@ public class GameWindow extends JFrame{
 		
 		try {
 			document.insertString(document.getLength(), string, attributeSet);
-			if (!scrollDown) {
+			if (scrollDown) {
+				textPane.setCaretPosition(document.getLength());
+			} else {				
 				textPane.setCaretPosition(0);
 			}
 		} catch (BadLocationException ignored) {
