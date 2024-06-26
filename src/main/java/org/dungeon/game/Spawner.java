@@ -3,6 +3,7 @@ package main.java.org.dungeon.game;
 import java.io.Serializable;
 
 import main.java.org.dungeon.creatures.Creature;
+import main.java.org.dungeon.creatures.CreatureBlueprint;
 
 class Spawner implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,9 +25,11 @@ class Spawner implements Serializable {
 	
 	public void refresh() {
 		long worldTime = getWorldTime();
+		CreatureBlueprint blueprint = GameData.getCreatureBlueprints().get(id);
 		
 		while (worldTime - lastChange >= spawnDelay && location.getCreatureCount(id) < populationLimit) {
-			location.addCreature(new Creature(GameData.getCreatureBlueprints().get(id)));
+			location.addCreature(new Creature(blueprint));
+			Game.getGameState().getStatistics().getWorldStatistics().addSpawn(blueprint.getName());
 			
 			lastChange += spawnDelay;
 		}
