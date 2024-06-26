@@ -1,7 +1,6 @@
 package main.java.org.dungeon.io;
 
 import java.io.Closeable;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
@@ -13,10 +12,12 @@ public class ResourceReader implements Closeable {
 	private final ResourceParser resourceParser;
 	private final String filename;
 	
+	private static final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	
 	private Pair<String, String> lastPair;
 	
-	public ResourceReader(InputStream inputStream, String filename) {
-		resourceParser = new ResourceParser(new InputStreamReader(inputStream));
+	public ResourceReader(String filename) {
+		resourceParser = new ResourceParser(new InputStreamReader(classLoader.getResourceAsStream(filename)));
 		this.filename = filename;
 	}
 	

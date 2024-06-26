@@ -1,8 +1,6 @@
 package main.java.org.dungeon.game;
 
 import java.awt.Font;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,6 @@ public final class GameData {
 	private static Map<ID, ItemBlueprint> itemBlueprints = new HashMap<ID, ItemBlueprint>();
 	private static Map<ID, SkillDefinition> skillDefinitions = new HashMap<ID, SkillDefinition>();
 	private static Map<ID, LocationPreset> locationPresets = new HashMap<ID, LocationPreset>();
-	private static ClassLoader loader;
 	
 	public static PoetryLibrary getPoetryLibrary() {
 		return poetryLibrary;
@@ -46,7 +43,6 @@ public final class GameData {
 		StopWatch stopWatch = new StopWatch();
 		DLogger.info("Started loading the game data.");
 		
-		loader = Thread.currentThread().getContextClassLoader();
 		
 		monospaced = new Font("Monospaced", Font.PLAIN, 14);
 		
@@ -71,7 +67,7 @@ public final class GameData {
 	}
 	
 	private static void loadItemBlueprints() {
-		ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("items.txt"), "items.txt");
+		ResourceReader resourceReader = new ResourceReader("items.txt");
 		
 		while (resourceReader.readNextElement()) {
 			ItemBlueprint blueprint = new ItemBlueprint();
@@ -107,7 +103,7 @@ public final class GameData {
 	}
 	
 	private static void loadCreatureBlueprints() {        
-        ResourceReader resourceReader = new ResourceReader(loader.getResourceAsStream("creatures.txt"), "creatures.txt");
+        ResourceReader resourceReader = new ResourceReader("creatures.txt");
         
         while (resourceReader.readNextElement()) {
         	CreatureBlueprint blueprint = new CreatureBlueprint();
@@ -238,7 +234,7 @@ public final class GameData {
         ACHIEVEMENTS = new HashMap<ID, Achievement>();
         
         @SuppressWarnings("resource")
-		ResourceReader reader = new ResourceReader(loader.getResourceAsStream("achievements.txt"), "achievements.txt");
+		ResourceReader reader = new ResourceReader("achievements.txt");
         
         while (reader.readNextElement()) {
         	String id = reader.getValue("ID");
@@ -315,18 +311,9 @@ public final class GameData {
     }
 	
 	private static void loadLicense() {
-        final int CHARACTERS_IN_LICENSE = 513;
-        InputStreamReader isr = new InputStreamReader(loader.getResourceAsStream("license.txt"));
-        StringBuilder sb = new StringBuilder(CHARACTERS_IN_LICENSE);
-        char[] buffer = new char[CHARACTERS_IN_LICENSE];
-        int length;
-        try {
-            while ((length = isr.read(buffer)) != -1) {
-                sb.append(buffer, 0, length);
-            }
-        } catch (IOException ignore) {
-        }
-        LICENSE = sb.toString();
+        ResourceReader reader = new ResourceReader("license.txt");
+        reader.readNextElement();
+        LICENSE = reader.getValue(LICENSE);
     }
 	
 	public static Map<ID, CreatureBlueprint> getCreatureBlueprints() {
