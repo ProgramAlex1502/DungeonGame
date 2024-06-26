@@ -2,7 +2,9 @@ package main.java.org.dungeon.creatures;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import main.java.org.dungeon.achievements.AchievementTracker;
 import main.java.org.dungeon.date.Date;
@@ -13,7 +15,6 @@ import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameData;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.game.Location;
-import main.java.org.dungeon.game.Pair;
 import main.java.org.dungeon.game.PartOfDay;
 import main.java.org.dungeon.game.Point;
 import main.java.org.dungeon.game.Selectable;
@@ -181,33 +182,24 @@ public class Hero extends Creature {
 		World world = Game.getGameState().getWorld();
 		Point pos = Game.getGameState().getHeroPosition();
 		
-		ArrayList<Pair<String, ArrayList<Direction>>> pairs = new ArrayList<Pair<String, ArrayList<Direction>>>();
+		HashMap<String, ArrayList<Direction>> visibleLocations = new HashMap<String, ArrayList<Direction>>();
 		
 		for(Direction dir : Direction.values()) {
 			if (walkedInFrom == null || !dir.equals(walkedInFrom)) {
-				boolean pairWithNameNotFound = true;
 				String locationName = world.getLocation(new Point(pos, dir)).getName();
-				for (Pair<String, ArrayList<Direction>> pair : pairs) {
-					if (pair.a.equals(locationName)) {
-						pair.b.add(dir);
-						pairWithNameNotFound = false;
-						break;
-					}
+				if (!visibleLocations.containsKey(locationName)) {
+					visibleLocations.put(locationName, new ArrayList<Direction>());
 				}
-				if (pairWithNameNotFound) {
-					ArrayList<Direction> directionList = new ArrayList<Direction>();
-					directionList.add(dir);
-					pairs.add(new Pair<String, ArrayList<Direction>>(locationName, directionList));
-				}
+				visibleLocations.get(locationName).add(dir);
 			}
 		}
 		
 		StringBuilder stringBuilder = new StringBuilder(140);
-		for (Pair<String, ArrayList<Direction>> pair : pairs) {
+		for (Entry<String, ArrayList<Direction>> entry : visibleLocations.entrySet()) {
 			stringBuilder.append("To ");
-			stringBuilder.append(enumerateDirections(pair.b));
+			stringBuilder.append(enumerateDirections(entry.getValue()));
 			stringBuilder.append(" you see ");
-			stringBuilder.append(pair.a);
+			stringBuilder.append(entry.getKey());
 			stringBuilder.append(".\n");			
 		}
 		
