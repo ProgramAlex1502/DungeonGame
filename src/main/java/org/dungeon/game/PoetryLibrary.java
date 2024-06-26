@@ -32,7 +32,6 @@ public final class PoetryLibrary extends Library{
 	@Override
 	void load() {
 		ResourceReader reader = new ResourceReader("poems.txt");
-		final String IDENTIFIER_ID = "ID";
 		final String IDENTIFIER_TITLE = "TITLE";
 		final String IDENTIFIER_AUTHOR = "AUTHOR";
 		final String IDENTIFIER_CONTENT = "CONTENT";
@@ -45,7 +44,7 @@ public final class PoetryLibrary extends Library{
 			if (pb.isComplete()) {
 				poems.add(pb.createPoem());
 			} else {
-				DLogger.warning("Parsed incomplete poem! (ID = " + reader.getValue(IDENTIFIER_ID) + ")");
+				DLogger.warning("Parsed incomplete poem! Title is " + reader.getValue(IDENTIFIER_TITLE) + ")");
 			}
 		}
 		
