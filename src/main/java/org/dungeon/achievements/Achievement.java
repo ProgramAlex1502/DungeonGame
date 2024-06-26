@@ -65,12 +65,12 @@ public class Achievement {
 		exploration.sameLocationVisitCounter.incrementCounter(new ID(locationID), amount);
 	}
 	
-	boolean isFulfilled(Hero hero) {
-		return battle.isFulfilled() && exploration.isFulfilled(hero);
+	boolean isFulfilled() {
+		return battle.isFulfilled() && exploration.isFulfilled();
 	}
 	
 	public final void update(Hero hero) {
-		if (!hero.getAchievementTracker().isUnlocked(this) && isFulfilled(hero)) {
+		if (!hero.getAchievementTracker().isUnlocked(this) && isFulfilled()) {
 			printAchievementUnlocked();
 			hero.getAchievementTracker().unlock(this);
 		}

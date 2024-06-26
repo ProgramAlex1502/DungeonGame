@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.org.dungeon.achievements.AchievementTracker;
-import main.java.org.dungeon.counters.ExplorationLog;
 import main.java.org.dungeon.date.Date;
 import main.java.org.dungeon.date.Period;
 import main.java.org.dungeon.game.Direction;
@@ -41,14 +40,12 @@ public class Hero extends Creature {
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
 	
 	private final Date dateOfBirth;
-	private final ExplorationLog explorationLog;
 	private final AchievementTracker achievementTracker;
 
 	public Hero(String name) {
 		super(makeHeroBlueprint(name));
 		setInventory(new CreatureInventory(this, 3));
 		dateOfBirth = new Date(432, 6, 4, 8, 30, 0);
-		explorationLog = new ExplorationLog();
 		achievementTracker = new AchievementTracker();
 	}
 	
@@ -62,10 +59,6 @@ public class Hero extends Creature {
 		heroBlueprint.setMaxHealth(50);
 		heroBlueprint.setCurHealth(50);
 		return heroBlueprint;
-	}
-	
-	public ExplorationLog getExplorationLog() {
-		return explorationLog;
 	}
 	
 	public AchievementTracker getAchievementTracker() {

@@ -1,17 +1,17 @@
-package main.java.org.dungeon.counters;
+package main.java.org.dungeon.stats;
 
 import java.io.Serializable;
 
 import main.java.org.dungeon.game.ID;
 
-public class ExplorationData implements Serializable{
+public class ExplorationStatisticsEntry implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private final ID locationID;
 	private int visitCount;
 	private int killCount;
 	
-	public ExplorationData(ID locationID, int visitCount, int killCount) {
+	public ExplorationStatisticsEntry(ID locationID, int visitCount, int killCount) {
 		this.locationID = locationID;
 		this.visitCount = visitCount;
 		this.killCount = killCount;

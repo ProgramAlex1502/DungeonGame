@@ -1,13 +1,13 @@
 package main.java.org.dungeon.game;
 
-import java.util.Random;
-
 import java.awt.Color;
+import java.util.Random;
 
 import main.java.org.dungeon.achievements.Achievement;
 import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.io.IO;
+import main.java.org.dungeon.stats.ExplorationStatistics;
 import main.java.org.dungeon.util.Constants;
 
 public class Engine {
@@ -62,7 +62,9 @@ public class Engine {
 		refreshSpawners();
 		hero.setLocation(destination);
 		hero.look(dir.invert());
-		hero.getExplorationLog().addVisit(destinationPoint, world.getLocation(destinationPoint).getID());
+		ExplorationStatistics explorationStatistics = gameState.getStatistics().getExplorationStatistics();
+		
+		explorationStatistics.addVisit(destinationPoint, world.getLocation(destinationPoint).getID());
 		return TimeConstants.WALK_SUCCESS;
 	}
 	
@@ -108,7 +110,7 @@ public class Engine {
 			Hero hero = (Hero) attacker;
 			boolean attackerWon = attacker == survivor;
 			Game.getGameState().getStatistics().getBattleStatistics().addBattle(attacker, defender, attackerWon, turns);
-			hero.getExplorationLog().addKill(Game.getGameState().getHeroPosition());
+			Game.getGameState().getStatistics().getExplorationStatistics().addKill(Game.getGameState().getHeroPosition());
 		}
 		
 		battleCleanup(survivor, defeated);

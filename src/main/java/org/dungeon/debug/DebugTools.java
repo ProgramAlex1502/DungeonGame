@@ -43,7 +43,7 @@ public class DebugTools {
 		commands.add(new Command("exploration") {
 			@Override
 			void execute(IssuedCommand issuedCommand) {
-				IO.writeString(Game.getGameState().getHero().getExplorationLog().toString());
+				IO.writeString(Game.getGameState().getStatistics().getExplorationStatistics().toString());
 			}
 		});
 		commands.add(new Command("tomorrow") {

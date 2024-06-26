@@ -8,16 +8,21 @@ import main.java.org.dungeon.io.IO;
 public final class Statistics implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private final BattleStatistics battleStatistics = new BattleStatistics();
 	private final WorldStatistics worldStatistics = new WorldStatistics();
+	private final ExplorationStatistics explorationStatistics = new ExplorationStatistics();
+	private final BattleStatistics battleStatistics = new BattleStatistics();
 	private final CommandStatistics commandStatistics = new CommandStatistics();
-	
-	public BattleStatistics getBattleStatistics() {
-		return battleStatistics;
-	}
 	
 	public WorldStatistics getWorldStatistics() {
 		return worldStatistics;
+	}
+
+	public ExplorationStatistics getExplorationStatistics() {
+		return explorationStatistics;
+	}
+	
+	public BattleStatistics getBattleStatistics() {
+		return battleStatistics;
 	}
 	
 	public void addCommand(IssuedCommand issuedCommand) {
