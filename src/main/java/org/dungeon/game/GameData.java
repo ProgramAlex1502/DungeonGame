@@ -1,6 +1,9 @@
 package main.java.org.dungeon.game;
 
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +46,16 @@ public final class GameData {
 		StopWatch stopWatch = new StopWatch();
 		DLogger.info("Started loading the game data.");
 		
-		
-		monospaced = new Font("Monospaced", Font.PLAIN, 14);
+		try {
+			InputStream fontStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("DroidSansMono.ttf");
+			monospaced = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(16f);
+		} catch (FontFormatException bad) {
+			DLogger.warning(bad.getMessage());
+			Game.exit();
+		} catch (IOException bad) {
+			DLogger.warning(bad.getMessage());
+			Game.exit();
+		}
 		
 		loadItemBlueprints();
 		loadCreatureBlueprints();
