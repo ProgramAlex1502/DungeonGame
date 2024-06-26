@@ -73,9 +73,7 @@ public class Utils {
 	}
 	
 	public static boolean roll(double chance) {
-		if (chance < 0 || chance > 1) {
-			throw new IllegalArgumentException("chance must be nonnegative and smaller than or equal to 1.");
-		}
+		chance = (new Percentage(chance)).toDouble();
 		
 		return chance > Engine.RANDOM.nextDouble();
 	}
@@ -86,16 +84,6 @@ public class Utils {
 	
 	public static boolean startsWithIgnoreCase(String a, String b) {
 		return a.toLowerCase().startsWith(b.toLowerCase());
-	}
-	
-	public static String getAfterColon(String string) {
-		int colonPosition = string.indexOf(':');
-		
-		if (colonPosition == -1) {
-			throw new IllegalArgumentException("string does not have a colon.");
-		} else {
-			return string.substring(colonPosition + 1);
-		}
 	}
 	
 	public static String centerString(String string, char fill) {
