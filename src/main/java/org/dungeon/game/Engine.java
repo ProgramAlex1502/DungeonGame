@@ -68,7 +68,7 @@ public class Engine {
 		return TimeConstants.WALK_SUCCESS;
 	}
 	
-	public static int battle(Creature attacker, Creature defender) {
+	public static int battle(Hero attacker, Creature defender) {
 		if (attacker == defender) {
 			if(RANDOM.nextBoolean()) {
 				IO.writeString(Constants.SUICIDE_ATTEMPT_1);
@@ -105,13 +105,11 @@ public class Engine {
 		}
 		
 		IO.writeString(String.format("%s managed to kill %s.", survivor.getName(), defeated.getName()), Color.CYAN);
-		
-		if (attacker instanceof Hero) {
-			Hero hero = (Hero) attacker;
-			boolean attackerWon = attacker == survivor;
-			Game.getGameState().getStatistics().getBattleStatistics().addBattle(attacker, defender, attackerWon, turns);
-			Game.getGameState().getStatistics().getExplorationStatistics().addKill(Game.getGameState().getHeroPosition());
-		}
+
+		boolean attackerWon = attacker == survivor;
+		Game.getGameState().getStatistics().getBattleStatistics().addBattle(attacker, defender, attackerWon, turns);
+		Game.getGameState().getStatistics().getExplorationStatistics().addKill(Game.getGameState().getHeroPosition());
+
 		
 		battleCleanup(survivor, defeated);
 		
