@@ -1,9 +1,12 @@
 package main.java.org.dungeon.stats;
 
 import java.io.Serializable;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.io.IO;
+import main.java.org.dungeon.util.CounterMap;
 
 public final class Statistics implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -48,6 +51,14 @@ public final class Statistics implements Serializable {
 	private void printWorldStatistics() {
 		IO.writeKeyValueString("Created Locations", String.valueOf(worldStatistics.getLocationCount()));
 		IO.writeKeyValueString("Spawned Creatures", String.valueOf(worldStatistics.getCreatureCount()));
+	}
+	
+	public void printSpawnStatistics() {
+		CounterMap<String> spawnCounter = worldStatistics.getSpawnCounters();
+		SortedSet<String> sortedSet = new TreeSet<String>(spawnCounter.keySet());
+		for (String string : sortedSet) {
+			IO.writeKeyValueString(string, String.valueOf(spawnCounter.getCounter(string)));
+		}
 	}
 
 }
