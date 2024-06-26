@@ -28,7 +28,7 @@ public class ShuffledRange {
 		ArrayList<Integer> old = new ArrayList<Integer>(integers);
 		integers.clear();
 		
-		for (int i = old.size(); i > 0; i++) {
+		for (int i = old.size(); i > 0; i--) {
 			int randomIndex = Engine.RANDOM.nextInt(i);
 			integers.add(old.get(randomIndex));
 			old.remove(randomIndex);

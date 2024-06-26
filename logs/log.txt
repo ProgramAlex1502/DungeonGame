@@ -397,3 +397,69 @@
 [2024-06-26 13:46:50] (INFO) : Created 20 achievements.
 [2024-06-26 13:46:50] (INFO) : Finished loading the game data. Took 47 ms.
 [2024-06-26 13:47:18] (INFO) : Exited with no problems.
+[2024-06-26 14:30:24] (INFO) : Started loading the game data.
+[2024-06-26 14:30:24] (INFO) : Loaded 15 item blueprints
+[2024-06-26 14:30:24] (INFO) : Loaded 17 creature blueprints.
+[2024-06-26 14:30:24] (INFO) : Created 11 location presets.
+[2024-06-26 14:30:25] (INFO) : Created 20 achievements.
+[2024-06-26 14:30:25] (INFO) : Finished loading the game data. Took 81 ms.
+[2024-06-26 14:38:26] (INFO) : Exited with no problems.
+[2024-06-26 14:38:31] (INFO) : Started loading the game data.
+[2024-06-26 14:38:31] (INFO) : Loaded 15 item blueprints
+[2024-06-26 14:38:31] (INFO) : Loaded 17 creature blueprints.
+[2024-06-26 14:38:31] (INFO) : Created 11 location presets.
+[2024-06-26 14:38:31] (INFO) : Created 20 achievements.
+[2024-06-26 14:38:31] (INFO) : Finished loading the game data. Took 64 ms.
+[2024-06-26 14:41:46] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 14:41:48] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 14:41:49] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 14:42:03] (INFO) : Exited with no problems.
+[2024-06-26 15:00:56] (INFO) : Started loading the game data.
+[2024-06-26 15:00:56] (INFO) : Loaded 15 item blueprints
+[2024-06-26 15:00:56] (INFO) : Loaded 17 creature blueprints.
+[2024-06-26 15:00:56] (INFO) : Created 11 location presets.
+[2024-06-26 15:00:56] (INFO) : Created 20 achievements.
+[2024-06-26 15:00:56] (INFO) : Finished loading the game data. Took 56 ms.
+[2024-06-26 15:01:05] (INFO) : Exited with no problems.
+[2024-06-26 15:04:40] (INFO) : Started loading the game data.
+[2024-06-26 15:04:40] (INFO) : Loaded 15 item blueprints
+[2024-06-26 15:04:40] (INFO) : Loaded 17 creature blueprints.
+[2024-06-26 15:04:40] (INFO) : Created 11 location presets.
+[2024-06-26 15:04:40] (INFO) : Created 20 achievements.
+[2024-06-26 15:04:40] (INFO) : Finished loading the game data. Took 347 ms.
+[2024-06-26 15:04:44] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 15:04:46] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 15:04:47] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 15:04:48] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 15:06:22] (INFO) : Exited with no problems.
+[2024-06-26 15:07:31] (INFO) : Loaded 13 poems
+[2024-06-26 15:07:31] (INFO) : Loading took 25 ms.
+[2024-06-26 15:07:31] (INFO) : Started loading the game data.
+[2024-06-26 15:07:31] (INFO) : Loaded 15 item blueprints
+[2024-06-26 15:07:31] (INFO) : Loaded 17 creature blueprints.
+[2024-06-26 15:07:31] (INFO) : Created 11 location presets.
+[2024-06-26 15:07:31] (INFO) : Created 20 achievements.
+[2024-06-26 15:07:31] (INFO) : Finished loading the game data. Took 29 ms.
+[2024-06-26 15:07:37] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 15:10:49] (INFO) : Loaded 13 poems
+[2024-06-26 15:10:49] (INFO) : Loading took 31 ms.
+[2024-06-26 15:10:49] (INFO) : Started loading the game data.
+[2024-06-26 15:10:49] (INFO) : Loaded 15 item blueprints
+[2024-06-26 15:10:49] (INFO) : Loaded 17 creature blueprints.
+[2024-06-26 15:10:49] (INFO) : Created 11 location presets.
+[2024-06-26 15:10:49] (INFO) : Created 20 achievements.
+[2024-06-26 15:10:49] (INFO) : Finished loading the game data. Took 32 ms.
+[2024-06-26 15:10:54] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 15:11:02] (INFO) : Exited with no problems.
+[2024-06-26 15:11:55] (INFO) : Started loading the game data.
+[2024-06-26 15:11:55] (INFO) : Loaded 15 item blueprints
+[2024-06-26 15:11:55] (INFO) : Loaded 17 creature blueprints.
+[2024-06-26 15:11:55] (INFO) : Created 11 location presets.
+[2024-06-26 15:11:55] (INFO) : Created 20 achievements.
+[2024-06-26 15:11:55] (INFO) : Finished loading the game data. Took 52 ms.
+[2024-06-26 15:11:58] (WARNING) : Called firstArgumentEquals on an IssuedCommand that does not have arguments.
+[2024-06-26 15:11:58] (INFO) : Loaded 13 poems
+[2024-06-26 15:11:58] (INFO) : Loading took 20 ms.
+[2024-06-26 15:12:36] (INFO) : Loaded 5 dreams.
+[2024-06-26 15:12:36] (INFO) : Loading took 9 ms.
+[2024-06-26 15:12:46] (INFO) : Exited with no problems.

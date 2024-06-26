@@ -105,10 +105,13 @@ public class Hero extends Creature {
 					setCurHealth(getMaxHealth());
 				}
 			}
+			
 			final int dreamDurationInSeconds = 4 * 60 * 60;
 			while (seconds > 0) {
+				System.out.println(GameData.getDreamLibrary().getNextDream());
 				if (seconds > dreamDurationInSeconds) {
 					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * dreamDurationInSeconds / 3600);
+					
 					IO.writeString(GameData.getDreamLibrary().getNextDream());
 					seconds -= dreamDurationInSeconds;
 				} else {
