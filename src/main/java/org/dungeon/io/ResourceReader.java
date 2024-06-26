@@ -2,45 +2,84 @@ package main.java.org.dungeon.io;
 
 import java.io.Closeable;
 import java.io.InputStreamReader;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
-
-import main.java.org.dungeon.game.Pair;
+import java.util.Map.Entry;
 
 public class ResourceReader implements Closeable {
 
+	private static final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 	private final HashMap<String, String> map = new HashMap<String, String>();
 	private final ResourceParser resourceParser;
 	private final String filename;
-	
-	private static final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-	
-	private Pair<String, String> lastPair;
-	
+	private String delimiterField;
+	private Entry<String, String> entry;
+		
 	public ResourceReader(String filename) {
 		resourceParser = new ResourceParser(new InputStreamReader(classLoader.getResourceAsStream(filename)));
 		this.filename = filename;
 	}
 	
-	private Pair<String, String> makePairFromString(String string) {
-		String[] parts = {"", ""};
-		
-		int indexOfColon = string.indexOf(":");
-		if (indexOfColon == -1) {
-			logResourceStringWithoutColon();
-		} else {
-			parts[0] = string.substring(0, indexOfColon).trim();
-			if (indexOfColon == string.length() - 1) {
-				DLogger.warning("Resource String with nothing after the colon!");
+	public boolean readNextElement() {
+		if (delimiterField == null) {
+			readNextEntry();
+			if (entry != null) {
+				delimiterField = entry.getKey();
+				do {
+					if (map.containsKey(entry.getKey())) {
+						logRepeatedValue();
+					} else {
+						map.put(entry.getKey(), entry.getValue());
+					}
+					readNextEntry();
+				} while (entry != null && !delimiterField.equals(entry.getKey()));
+				return true;
 			} else {
-				parts[1] = string.substring(indexOfColon + 1).trim();
+				return false;
+			}
+		} else {
+			if (entry != null) {
+				map.clear();
+				do {
+					if (map.containsKey(entry.getKey()))  {
+						logRepeatedValue();
+					} else {
+						map.put(entry.getKey(), entry.getValue());
+					}
+					readNextEntry();
+				} while (entry != null && !delimiterField.equals(entry.getKey()));
+				return true;
+			} else {
+				return false;
 			}
 		}
-		return new Pair<String, String>(parts[0], parts[1]);
 	}
 	
-	private void logResourceStringWithoutColon() {
-		String location = "Line " + resourceParser.getLineNumber() + " of " + filename;
-		DLogger.warning(location + " does not have a colon!");
+	private void readNextEntry() {
+		String string = resourceParser.readString();
+		
+		if (string == null) {
+			entry = null;
+		} else {
+			entry = makeEntryFromString(string);
+		}
+	}
+	
+	private SimpleEntry<String, String> makeEntryFromString(String string) {
+		SimpleEntry<String, String> entry = null;
+		int indexOfColon = string.indexOf(":");
+		if (indexOfColon == -1) {
+			logMissingColon();
+		} else {
+			String key = string.substring(0, indexOfColon).trim();
+			entry = new SimpleEntry<String, String>(key, null);
+			if (indexOfColon == string.length() - 1) {
+				logMissingValue();
+			} else {
+				entry.setValue(string.substring(indexOfColon + 1).trim());
+			}
+		}
+		return entry;
 	}
 	
 	public boolean hasValue(String key) {
@@ -51,36 +90,16 @@ public class ResourceReader implements Closeable {
 		return map.get(identifier);
 	}
 	
-	public boolean readNextElement() {
-		map.clear();
-
-		if (lastPair != null) {
-			map.put(lastPair.a, lastPair.b);
-		}
-		
-		while (true) {
-			lastPair = readNextPair();
-			if (map.containsKey("ID")) {
-				if (lastPair == null || lastPair.a.equals("ID")) {
-					return true;
-				}
-			} else {
-				if (lastPair == null) {
-					return false;
-				}
-			}
-			map.put(lastPair.a, lastPair.b);
-		}
+	private void logRepeatedValue() {
+		DLogger.warning(filename, resourceParser.getLineNumber(), " repeats a value of its element!");
 	}
 	
-	private Pair<String, String> readNextPair() {
-		String string = resourceParser.readString();
-
-		if (string != null) {
-			return makePairFromString(string);
-		}
-		
-		return null;
+	private void logMissingColon() {
+		DLogger.warning(filename, resourceParser.getLineNumber(), " does not have a colon!");
+	}
+	
+	private void logMissingValue() {
+		DLogger.warning(filename, resourceParser.getLineNumber(), " does not have a value!");
 	}
 	
 	@Override
