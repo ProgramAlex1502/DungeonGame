@@ -51,7 +51,7 @@ public final class GameData {
 		createSkills();
 		loadLocationPresets();
 		
-		createAchievements();
+		loadAchievements();
 		loadLicense();
 		
 		DLogger.info("Finished loading the game data. Took " + stopWatch.toString() + ".");
@@ -230,7 +230,7 @@ public final class GameData {
         DLogger.info("Created " + locationPresets.size() + " location presets.");
     }
 	
-	private static void createAchievements() {
+	private static void loadAchievements() {
         ACHIEVEMENTS = new HashMap<ID, Achievement>();
         
         @SuppressWarnings("resource")
