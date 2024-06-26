@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.ResourceReader;
+import main.java.org.dungeon.util.AutomaticShuffledRange;
 import main.java.org.dungeon.util.Poem;
 import main.java.org.dungeon.util.PoemBuilder;
 
 public final class PoetryLibrary extends Library{
 	
 	private final ArrayList<Poem> poems = new ArrayList<Poem>();
+	
+	private AutomaticShuffledRange automaticShuffledRange;
 	
 	public int getPoemCount() {
 		if (!isInitialized()) {
@@ -20,6 +23,10 @@ public final class PoetryLibrary extends Library{
 	
 	public Poem getPoem(int index) {
 		return poems.get(index);
+	}
+	
+	public Poem getNextPoem() {
+		return poems.get(automaticShuffledRange.getNext());
 	}
 	
 	@Override
@@ -45,6 +52,7 @@ public final class PoetryLibrary extends Library{
 		
 		reader.close();
 		poems.trimToSize();
+		automaticShuffledRange = new AutomaticShuffledRange(0, poems.size());
 		DLogger.info("Loaded " + poems.size() + " poems");
 	}
 

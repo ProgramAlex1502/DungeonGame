@@ -28,8 +28,6 @@ public class GameState implements Serializable {
 	private boolean bold;
 	
 	transient private boolean saved;
-	private int nextHintIndex;
-	private int nextPoemIndex;
 	
 	public GameState() {
 		commandHistory = new CommandHistory();
@@ -89,46 +87,11 @@ public class GameState implements Serializable {
 		this.saved = saved;
 	}
 	
-	int getNextHintIndex() {
-		return nextHintIndex;
-	}
-	
-	private void setNextHintIndex(int nextHintIndex) {
-		this.nextHintIndex = nextHintIndex;
-	}
-	
-	private void incrementNextHintIndex() {
-		int newIndex = getNextHintIndex() + 1;
-		if (newIndex == GameData.getHintLibrary().getHintCount()) {
-			setNextHintIndex(0);
-		} else {
-			setNextHintIndex(newIndex);
-		}
-	}
-	
 	public void printNextHint() {
 		if (GameData.getHintLibrary().getHintCount() == 0) {
 			IO.writeString("No hints were loaded.");
 		} else {
-			IO.writeString(GameData.getHintLibrary().getHint(getNextHintIndex()));
-			incrementNextHintIndex();
-		}
-	}
-	
-	int getNextPoemIndex() {
-		return nextPoemIndex;
-	}
-	
-	private void setNextPoemIndex(int nextPoemIndex) {
-		this.nextPoemIndex = nextPoemIndex;
-	}
-	
-	private void incrementNextPoemIndex() {
-		int newIndex = getNextPoemIndex() + 1;
-		if (newIndex == GameData.getPoetryLibrary().getPoemCount()) {
-			setNextPoemIndex(0);
-		} else {
-			setNextPoemIndex(newIndex);
+			IO.writeString(GameData.getHintLibrary().getNextHint());
 		}
 	}
 	
@@ -147,8 +110,7 @@ public class GameState implements Serializable {
 				}
 				IO.writeString("Invalid poem index.");
 			} else {
-				IO.writePoem(GameData.getPoetryLibrary().getPoem(nextPoemIndex));
-				incrementNextPoemIndex();
+				IO.writePoem(GameData.getPoetryLibrary().getNextPoem());
 			}
 		}
 	}
