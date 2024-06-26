@@ -12,15 +12,25 @@ final class LocationPreset extends Entity {
 	private final ArrayList<SpawnerPreset> spawners = new ArrayList<SpawnerPreset>();
 	private final ArrayList<ItemFrequencyPair> items = new ArrayList<ItemFrequencyPair>();
 	private Percentage lightPermittivity;
+	private int blobSize;
 	
 	LocationPreset(String id, String type, String name) {
 		super(new ID(id), type, name);
 	}
 	
+	public List<SpawnerPreset> getSpawners() {
+		return spawners;
+	}
+	
+
 	public LocationPreset addSpawner(SpawnerPreset spawner) {
 		this.spawners.add(spawner);
 		
 		return this;
+	}
+
+	public List<ItemFrequencyPair> getItems() {
+		return items;
 	}
 	
 	public LocationPreset addItem(String id, Double likelihood) {
@@ -29,22 +39,14 @@ final class LocationPreset extends Entity {
 		return this;
 	}
 	
-	public LocationPreset block(Direction direction) {
-		blockedEntrances.block(direction);
-		
-		return this;
-	}
-	
 	public BlockedEntrances getBlockedEntrances() {
 		return blockedEntrances;
 	}
 
-	public List<SpawnerPreset> getSpawners() {
-		return spawners;
-	}
-	
-	public List<ItemFrequencyPair> getItems() {
-		return items;
+	public LocationPreset block(Direction direction) {
+		blockedEntrances.block(direction);
+		
+		return this;
 	}
 	
 	public Percentage getLightPermittivity() {
@@ -53,6 +55,14 @@ final class LocationPreset extends Entity {
 
 	public void setLightPermittivity(double lightPermittivity) {
 		this.lightPermittivity = new Percentage(lightPermittivity);
+	}
+	
+	public int getBlobSize() {
+		return blobSize;
+	}
+	
+	public void setBlobSize(int blobSize) {
+		this.blobSize = blobSize;
 	}
 	
 	void finish() {
