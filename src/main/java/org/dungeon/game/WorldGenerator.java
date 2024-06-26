@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.org.dungeon.io.IO;
-
 public class WorldGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -20,7 +18,6 @@ public class WorldGenerator implements Serializable {
 	private final World world;
 	private final RiverGenerator riverGenerator;
 	private int chunkSide;
-	private int generatedLocations;
 	
 	public WorldGenerator(World world) {
 		this(world, DEF_CHUNK_SIDE);
@@ -46,13 +43,13 @@ public class WorldGenerator implements Serializable {
 		}
 	}
 	
-	private Location createRandomLandLocation() {
+	private LocationPreset getRandomLandLocation() {
 		List<LocationPreset> locationPresets = new ArrayList<LocationPreset>(GameData.getLocationPresets().values());
-		LocationPreset selectedLocation;
+		LocationPreset selectedPreset;
 		do {
-			selectedLocation = locationPresets.get(Engine.RANDOM.nextInt(locationPresets.size()));
-		} while (!"Land".equals(selectedLocation.getType()));
-		return new Location(selectedLocation, world);
+			selectedPreset = locationPresets.get(Engine.RANDOM.nextInt(locationPresets.size()));
+		} while (!"Land".equals(selectedPreset.getType()));
+		return selectedPreset;
 	}
 	
 	private Location createRiverLocation() {
@@ -65,7 +62,10 @@ public class WorldGenerator implements Serializable {
 
 	public void expand(Point point) {
 		riverGenerator.expand(point, chunkSide);
-		Point current_point;
+		Point currentPoint;
+		
+		LocationPreset currentLocationPreset = null;
+		int remainingLocationsOfCurrentPreset = 0;
 		
 		int pX = point.getX();
 		int pY = point.getY();
@@ -74,25 +74,23 @@ public class WorldGenerator implements Serializable {
 		
 		for (int x = x_start; x < x_start + chunkSide; x++) {
 			for (int y = y_start; y < y_start + chunkSide; y++) {
-				current_point = new Point(x, y);
-				if (!world.hasLocation(current_point)) {
-					if (riverGenerator.isRiver(current_point)) {
-						world.addLocation(createRiverLocation(), current_point);
-					} else if (riverGenerator.isBridge(current_point)) {
-						world.addLocation(createBridgeLocation(), current_point);
+				currentPoint = new Point(x, y);
+				if (!world.hasLocation(currentPoint)) {
+					if (riverGenerator.isRiver(currentPoint)) {
+						world.addLocation(createRiverLocation(), currentPoint);
+					} else if (riverGenerator.isBridge(currentPoint)) {
+						world.addLocation(createBridgeLocation(), currentPoint);
 					} else {
-						world.addLocation(createRandomLandLocation(), current_point);
+						if (currentLocationPreset == null || remainingLocationsOfCurrentPreset == 0) {
+							currentLocationPreset = getRandomLandLocation();
+							remainingLocationsOfCurrentPreset = currentLocationPreset.getBlobSize();
+						}
+						world.addLocation(new Location(currentLocationPreset, world), currentPoint);
+						remainingLocationsOfCurrentPreset--;
 					}
-					generatedLocations++;
 				}
 			}
 		}
 	}
 	
-	public void printStatistics() {
-		IO.writeKeyValueString("Chunk side", String.valueOf(chunkSide));
-		IO.writeKeyValueString("Chunk size", String.valueOf(chunkSide * chunkSide));
-		IO.writeKeyValueString("Locations", String.valueOf(generatedLocations));
-	}
-
 }
