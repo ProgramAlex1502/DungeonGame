@@ -9,14 +9,15 @@ import main.java.org.dungeon.game.Pair;
 
 public class ResourceReader implements Closeable {
 
-	private final HashMap<String, String> map;
+	private final HashMap<String, String> map = new HashMap<String, String>();
 	private final ResourceParser resourceParser;
+	private final String filename;
 	
 	private Pair<String, String> lastPair;
 	
-	public ResourceReader(InputStream inputStream) {
-		map = new HashMap<String, String>();
+	public ResourceReader(InputStream inputStream, String filename) {
 		resourceParser = new ResourceParser(new InputStreamReader(inputStream));
+		this.filename = filename;
 	}
 	
 	private Pair<String, String> makePairFromString(String string) {
@@ -24,7 +25,7 @@ public class ResourceReader implements Closeable {
 		
 		int indexOfColon = string.indexOf(":");
 		if (indexOfColon == -1) {
-			DLogger.warning("Resource String without color!");
+			logResourceStringWithoutColon();
 		} else {
 			parts[0] = string.substring(0, indexOfColon).trim();
 			if (indexOfColon == string.length() - 1) {
@@ -34,6 +35,11 @@ public class ResourceReader implements Closeable {
 			}
 		}
 		return new Pair<String, String>(parts[0], parts[1]);
+	}
+	
+	private void logResourceStringWithoutColon() {
+		String location = "Line " + resourceParser.getLineNumber() + " of " + filename;
+		DLogger.warning(location + " does not have a colon!");
 	}
 	
 	public boolean hasValue(String key) {

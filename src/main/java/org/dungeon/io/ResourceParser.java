@@ -1,23 +1,27 @@
 package main.java.org.dungeon.io;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.io.Reader;
 
 class ResourceParser implements Closeable {
 	
-	private final BufferedReader br;
+	private final LineNumberReader reader;
 	private ResourceLine line;
 
+	int getLineNumber() {
+		return reader.getLineNumber();
+	}
+	
 	public ResourceParser(Reader in) {
-		br = new BufferedReader(in);
+		reader = new LineNumberReader(in);
 	}
 	
 	private void readLine() {
 		do {
 			try {
-				String text = br.readLine();
+				String text = reader.readLine();
 				
 				if (text == null) {
 					line = null;
@@ -55,7 +59,7 @@ class ResourceParser implements Closeable {
 	@Override
 	public void close() {
 		try {
-			br.close();			
+			reader.close();			
 		} catch (IOException e) {
 			DLogger.warning(e.getMessage());
 		}
