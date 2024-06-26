@@ -105,7 +105,17 @@ public class Hero extends Creature {
 					setCurHealth(getMaxHealth());
 				}
 			}
-			Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * seconds / 3600);
+			final int dreamDurationInSeconds = 4 * 60 * 60;
+			while (seconds > 0) {
+				if (seconds > dreamDurationInSeconds) {
+					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * dreamDurationInSeconds / 3600);
+					IO.writeString(GameData.getDreamLibrary().getNextDream());
+					seconds -= dreamDurationInSeconds;
+				} else {
+					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * seconds / 3600);
+					break;
+				}
+			}
 			IO.writeString("You wake up.");
 		} else {
 			IO.writeString("You can only sleep at night.");

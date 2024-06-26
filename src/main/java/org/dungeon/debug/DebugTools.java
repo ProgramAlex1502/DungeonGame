@@ -71,6 +71,12 @@ public class DebugTools {
 				listAllArguments();
 			}
 		});
+		commands.add(new Command("wait") {
+			@Override
+			void execute(IssuedCommand issuedCommand) {
+				DebugTools.wait(issuedCommand);
+			}
+		});
 		commands.add(new Command("time") {
 			@Override
 			void execute(IssuedCommand issuedCommand) {
@@ -150,6 +156,19 @@ public class DebugTools {
 			IO.writeString("The game is saved.");
 		} else {
 			IO.writeString("This game state is not saved.");
+		}
+	}
+	
+	public static void wait(IssuedCommand issuedCommand) {
+		if (issuedCommand.getTokenCount() > 2) {
+			try {
+				int seconds = Integer.parseInt(issuedCommand.getArguments()[1]);
+				Game.getGameState().getWorld().rollDate(seconds);
+			} catch (NumberFormatException warn){
+				IO.writeString("Not a valid amount of seconds.");
+			}
+		} else {
+			Utils.printMissingArgumentsMessage();
 		}
 	}
 	
