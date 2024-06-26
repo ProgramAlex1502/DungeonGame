@@ -10,6 +10,7 @@ import java.util.Map;
 import main.java.org.dungeon.achievements.Achievement;
 import main.java.org.dungeon.creatures.CreatureBlueprint;
 import main.java.org.dungeon.io.DLogger;
+import main.java.org.dungeon.io.ResourceReader;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.skill.SkillDefinition;
 import main.java.org.dungeon.util.StopWatch;

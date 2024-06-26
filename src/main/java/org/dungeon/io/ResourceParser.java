@@ -1,11 +1,9 @@
-package main.java.org.dungeon.game;
+package main.java.org.dungeon.io;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
-
-import main.java.org.dungeon.io.DLogger;
 
 class ResourceParser implements Closeable {
 	

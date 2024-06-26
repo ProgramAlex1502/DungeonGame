@@ -3,6 +3,7 @@ package main.java.org.dungeon.game;
 import java.util.ArrayList;
 
 import main.java.org.dungeon.io.DLogger;
+import main.java.org.dungeon.io.ResourceReader;
 
 public class HintLibrary extends Library{
 	

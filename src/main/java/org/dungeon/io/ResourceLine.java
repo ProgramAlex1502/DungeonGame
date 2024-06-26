@@ -1,6 +1,4 @@
-package main.java.org.dungeon.game;
-
-import main.java.org.dungeon.io.DLogger;
+package main.java.org.dungeon.io;
 
 final class ResourceLine {
 	

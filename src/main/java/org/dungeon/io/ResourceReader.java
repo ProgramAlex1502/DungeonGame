@@ -1,13 +1,13 @@
-package main.java.org.dungeon.game;
+package main.java.org.dungeon.io;
 
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
-import main.java.org.dungeon.io.DLogger;
+import main.java.org.dungeon.game.Pair;
 
-class ResourceReader implements Closeable {
+public class ResourceReader implements Closeable {
 
 	private final HashMap<String, String> map;
 	private final ResourceParser resourceParser;
