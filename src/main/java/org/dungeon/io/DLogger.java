@@ -43,6 +43,10 @@ public class DLogger {
 		}
 	}
 	
+	public static void warning(String filename, int lineNumber, String messageEnd) {
+		warning("Line " + lineNumber + " of " + filename + messageEnd);
+	}
+	
 	private static String getLogFilePath() {
 		File logFolder = new File(LOG_FILE_PATH);
 		
