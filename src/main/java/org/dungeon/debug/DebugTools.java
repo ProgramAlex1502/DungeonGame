@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.org.dungeon.creatures.Creature;
+import main.java.org.dungeon.game.Command;
 import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameData;
 import main.java.org.dungeon.game.GameState;
@@ -28,7 +29,7 @@ public class DebugTools {
 			}
 			
 			for (Command command : commands) {
-				if (issuedCommand.firstArgumentEquals(command.getName())) {
+				if (issuedCommand.firstArgumentEquals(command.name)) {
 					command.execute(issuedCommand);
 					return;
 				}
@@ -42,50 +43,50 @@ public class DebugTools {
 	private static void initialize() {
 		commands.add(new Command("exploration") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				IO.writeString(Game.getGameState().getStatistics().getExplorationStatistics().toString());
 			}
 		});
 		commands.add(new Command("tomorrow") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				Game.getGameState().getWorld().rollDate(24 * 60 * 60);
 				IO.writeString("A day has passed.");
 			}
 		});
 		commands.add(new Command("location") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				printCurrentLocationInformation();
 			}
 		});
 		commands.add(new Command("saved") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				printIsSaved();
 			}
 		});
 		commands.add(new Command("list") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				listAllArguments();
 			}
 		});
 		commands.add(new Command("wait") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				DebugTools.wait(issuedCommand);
 			}
 		});
 		commands.add(new Command("time") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				printTime();
 			}
 		});
 		commands.add(new Command("give") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				if (issuedCommand.getTokenCount() >= 3) {
 					give(issuedCommand.getArguments()[1]);
 				} else {
@@ -95,7 +96,7 @@ public class DebugTools {
 		});
 		commands.add(new Command("dummy") {
 			@Override
-			void execute(IssuedCommand issuedCommand) {
+			public void execute(IssuedCommand issuedCommand) {
 				spawnDummyInHeroLocation();
 			}
 		});
@@ -140,7 +141,7 @@ public class DebugTools {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Valid commands:");
 		for (Command command : commands) {
-			builder.append("\n ").append(command.getName());
+			builder.append("\n ").append(command.name);
 		}
 		IO.writeString(builder.toString());
 	}
