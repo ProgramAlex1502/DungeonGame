@@ -13,12 +13,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -39,7 +37,6 @@ import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameData;
 import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
-import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.Loader;
 import main.java.org.dungeon.util.CommandHistory;
 import main.java.org.dungeon.util.Constants;
@@ -47,8 +44,8 @@ import main.java.org.dungeon.util.Constants;
 public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
-	private static final int MARGIN = 5;
 	public static final int ROWS = 30;
+	private static final int MARGIN = 5;
 	
 	private final SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 	private final StyledDocument document;
@@ -136,14 +133,6 @@ public class GameWindow extends JFrame{
 		
 		textField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), "SAVE");
 		textField.getActionMap().put("SAVE", save);
-		
-		URL icon = Thread.currentThread().getContextClassLoader().getResource("icon.png");
-		
-		if (icon != null) {
-			setIconImage(new ImageIcon(icon).getImage());
-		} else {
-			DLogger.warning("Could not find the icon.");
-		}
 		
 		add(panel);
 		
