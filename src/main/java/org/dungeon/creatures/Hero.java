@@ -36,6 +36,8 @@ public class Hero extends Creature {
 	private static final long serialVersionUID = 1L;
 
 	private static final int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
+	private static final int SECONDS_TO_LOOK_AT_THE_COVER_OF_THE_BOOK = 6;
+	private static final int SECONDS_TO_LEARN_A_SKILL = 60;
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
 	
 	private final Date dateOfBirth;
@@ -371,11 +373,11 @@ public class Hero extends Creature {
 				Skill skill = new Skill(GameData.getSkillDefinitions().get(book.getSkillID()));
 				if (getSkillList().hasSkill(skill.getID())) {
 					IO.writeString("You already know " + skill.getName() + ".");
-					return 6;
+					return SECONDS_TO_LOOK_AT_THE_COVER_OF_THE_BOOK;
 				} else {
 					getSkillList().addSkill(skill);
 					IO.writeString("You learned " + skill.getName() + ".");
-					return 60;
+					return SECONDS_TO_LEARN_A_SKILL;
 				}
 			} else {
 				IO.writeString("You can only read books.");
