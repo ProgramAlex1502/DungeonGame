@@ -174,13 +174,8 @@ public class Hero extends Creature {
 				}
 			}
 			
-			if (getLocation().getItemCount() != 0) {
-				IO.writeNewLine();
-				
-				for(Item curItem : getLocation().getItemList()) {
-					IO.writeString(curItem.toListEntry());
-				}
-			}
+			IO.writeNewLine();
+			lookItems();
 		} else {
 			IO.writeString(Constants.CANT_SEE_ANYTHING);
 		}
@@ -205,7 +200,7 @@ public class Hero extends Creature {
 		StringBuilder stringBuilder = new StringBuilder(140);
 		for (Entry<String, ArrayList<Direction>> entry : visibleLocations.entrySet()) {
 			stringBuilder.append("To ");
-			stringBuilder.append(enumerateDirections(entry.getValue()));
+			stringBuilder.append(enumerate(entry.getValue()));
 			stringBuilder.append(" you see ");
 			stringBuilder.append(entry.getKey());
 			stringBuilder.append(".\n");			
@@ -215,13 +210,22 @@ public class Hero extends Creature {
 		IO.writeNewLine();
 	}
 	
-	private String enumerateDirections(List<Direction> directions) {
+	private void lookItems() {
+		if (getLocation().getItemCount() != 0) {
+			IO.writeString("On the ground you see " + enumerate(getLocation().getItemList()) + ".");
+		}
+	}
+	
+	private String enumerate(final List list) {
 		StringBuilder stringBuilder = new StringBuilder();
-		for (int i = 0; i < directions.size(); i++) {
-			stringBuilder.append(directions.get(i).toString().toLowerCase());
-			if (i < directions.size() - 2) {
+		for (int i = 0; i < list.size(); i++) {
+			stringBuilder.append(list.get(i).toString());
+			if (i < list.size() - 2) {
 				stringBuilder.append(", ");
-			} else if (i == directions.size() - 2) {
+			} else if (i == list.size() - 2) {
+				if (list.size() >= 3) {
+					stringBuilder.append(",");
+				}
 				stringBuilder.append(" and ");
 			}
 		}

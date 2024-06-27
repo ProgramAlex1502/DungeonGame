@@ -4,7 +4,6 @@ import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.game.Engine;
 import main.java.org.dungeon.game.Entity;
 import main.java.org.dungeon.game.Game;
-import main.java.org.dungeon.util.Constants;
 
 public class Item extends Entity{
 	private static final long serialVersionUID = 1L;
@@ -167,8 +166,9 @@ public class Item extends Entity{
 		return weaponIntegrity;
 	}
 	
-	public String toListEntry() {
-		return String.format(Constants.LIST_ENTRY_FORMAT, String.format("[%s]", getType()), getName());
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }
