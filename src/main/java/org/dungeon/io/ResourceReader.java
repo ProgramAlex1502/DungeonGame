@@ -61,8 +61,8 @@ public class ResourceReader implements Closeable {
 	}
 	
 	private String[] toArray(String data) {
-		if (data.startsWith("[")) {
-			data = data.substring(1, data.length() - 1);
+		if (data.startsWith("[") && data.endsWith("]")) {
+			data = data.substring(1, data.length() - 1).trim();
 			return data.split("\\s*\\|\\s*");
 		} else {
 			return new String[] {data};

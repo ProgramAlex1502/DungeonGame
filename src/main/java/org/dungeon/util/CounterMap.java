@@ -23,6 +23,10 @@ public class CounterMap<K> implements Serializable {
 		return map.keySet();
 	}
 	
+	public boolean isNotEmpty() {
+		return !map.isEmpty();
+	}
+	
 	public void incrementCounter(K key) {
 		incrementCounter(key, 1);
 	}

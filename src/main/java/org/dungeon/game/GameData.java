@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import main.java.org.dungeon.achievements.Achievement;
+import main.java.org.dungeon.achievements.AchievementBuilder;
 import main.java.org.dungeon.creatures.CreatureBlueprint;
 import main.java.org.dungeon.io.DLogger;
 import main.java.org.dungeon.io.ResourceReader;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.skill.SkillDefinition;
+import main.java.org.dungeon.util.CounterMap;
 import main.java.org.dungeon.util.StopWatch;
 
 public final class GameData {
@@ -22,6 +24,7 @@ public final class GameData {
 	private static final PoetryLibrary poetryLibrary = new PoetryLibrary();
 	private static final DreamLibrary dreamLibrary = new DreamLibrary();
 	private static final HintLibrary hintLibrary = new HintLibrary();
+	private static final String COUNTER_MAP_KEY_VALUE_SEPARATOR = ",";
 
 	public static HashMap<ID, Achievement> ACHIEVEMENTS;
 	public static String LICENSE;
@@ -146,6 +149,7 @@ public final class GameData {
         SpawnerPreset crocodile = new SpawnerPreset("CROCODILE", 1, 6);
         SpawnerPreset fox = new SpawnerPreset("FOX", 4, 4);
         SpawnerPreset frog = new SpawnerPreset("FROG", 2, 2);
+        SpawnerPreset fruitBat = new SpawnerPreset("FRUIT_BAT", 2, 2);
         SpawnerPreset komodoDragon = new SpawnerPreset("KOMODO_DRAGON", 1, 4);
         SpawnerPreset orc = new SpawnerPreset("ORC", 2, 2);
         SpawnerPreset rabbit = new SpawnerPreset("RABBIT", 8, 1);
@@ -175,6 +179,7 @@ public final class GameData {
 
         LocationPreset forest = new LocationPreset("FOREST", "Land", "Forest");
         forest.addSpawner(bear).addSpawner(frog).addSpawner(rabbit).addSpawner(whiteTiger).addSpawner(zombie);
+        forest.addSpawner(fruitBat);
         forest.addItem("AXE", 0.2).addItem("POCKET_WATCH", 0.03).addItem("STICK", 0.5).addItem("TOME_OF_FIREBALL", 0.1);
         forest.setLightPermittivity(0.7);
         forest.setBlobSize(25);
@@ -207,7 +212,7 @@ public final class GameData {
 
         LocationPreset swamp = new LocationPreset("SWAMP", "Land", "Swamp");
         swamp.addSpawner(frog).addSpawner(snake).addSpawner(komodoDragon).addSpawner(crocodile);
-        swamp.addItem("STICK", 0.9).addItem("WATERMELON", 0.12);
+        swamp.addItem("STICK", 0.9).addItem("WATERMELON", 0.12).addItem("CLUB", 0.4);
         swamp.setLightPermittivity(0.7);
         swamp.setBlobSize(10);
         swamp.finish();
@@ -253,75 +258,34 @@ public final class GameData {
 		ResourceReader reader = new ResourceReader("achievements.txt");
         
         while (reader.readNextElement()) {
-        	String id = reader.getValue("ID");
-        	String name = reader.getValue("NAME");
-        	String info = reader.getValue("INFO");
-        	Achievement achievement = new Achievement(id, name, info);
-        	if (reader.hasValue("MINIMUM_BATTLE_COUNT")) {
-        		try {
-        			String minimumBattleCount = reader.getValue("MINIMUM_BATTLE_COUNT");
-        			achievement.setMinimumBattleCount(Integer.parseInt(minimumBattleCount));
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
-        	if (reader.hasValue("LONGEST_BATTLE_LENGTH")) {
-        		try {
-        			String longestBattleLength = reader.getValue("LONGEST_BATTLE_LENGTH");
-        			achievement.setLongestBattleLength(Integer.parseInt(longestBattleLength));
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
-        	if (reader.hasValue("KILLS_BY_LOCATION_ID")) {
-        		try {
-        			String killsByLocationID = reader.getValue("KILLS_BY_LOCATION_ID");
-        			String[] parts = killsByLocationID.split(",");
-        			achievement.incrementKillsByLocationID(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
-        	if (reader.hasValue("VISITS_TO_THE_SAME_LOCATION")) {
-        		try {
-        			String visitsToTheSameLocation = reader.getValue("VISITS_TO_THE_SAME_LOCATION");
-        			String[] parts = visitsToTheSameLocation.split(",");
-        			achievement.incrementVisitsToTheSameLocation(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
-        	if (reader.hasValue("VISITS_TO_DISTINCT_LOCATIONS")) {
-        		try {
-        			String visitsToDistinctLocations = reader.getValue("VISITS_TO_DISTINCT_LOCATIONS");
-        			String[] parts = visitsToDistinctLocations.split(",");
-        			achievement.incrementVisitsToDistinctLocations(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
-        	if (reader.hasValue("KILLS_BY_CREATURE_ID")) {
-        		try {
-        			String[] values = reader.getArrayOfValues("KILLS_BY_CREATURE_ID");
-        			for (String value : values) {
-        				String[] parts = value.split(",");
-        				achievement.incrementKillsByCreatureID(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-        			}
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
-        	if (reader.hasValue("KILLS_BY_CREATURE_TYPE")) {
-        		try {
-        			String killsByCreatureType = reader.getValue("KILLS_BY_CREATURE_TYPE");
-        			String[] parts = killsByCreatureType.split(",");
-        			achievement.incrementKillsByCreatureType(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
-        	if (reader.hasValue("KILLS_BY_WEAPON")) {
-        		try {
-        			String killsByWeapon = reader.getValue("KILLS_BY_WEAPON");
-        			String[] parts = killsByWeapon.split(",");
-        			achievement.incrementKillsByWeapon(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-        		} catch (NumberFormatException ignore) {
-        		}
-        	}
+        	AchievementBuilder builder = new AchievementBuilder();
+        	builder.setID(reader.getValue("ID"));
+        	builder.setName(reader.getValue("NAME"));
+        	builder.setInfo(reader.getValue("INFO"));
+        	builder.setText(reader.getValue("TEXT"));
+
+        	builder.setMinimumBattleCount(readIntegerFromResourceReader(reader, "MINIMUM_BATTLE_COUNT"));
+        	builder.setLongestBattleLength(readIntegerFromResourceReader(reader, "LONGEST_BATTLE_LENGTH"));
+
+        	CounterMap<ID> killsByCreatureID = readIDCounterMap(reader, "KILLS_BY_CREATURE_ID");
+        	builder.setKillsByCreatureID(killsByCreatureID);
+
+        	CounterMap<String> killsByCreatureType = readStringCounterMap(reader, "KILLS_BY_CREATURE_TYPE");
+        	builder.setKillsByCreatureType(killsByCreatureType);
         	
+        	CounterMap<ID> killsByWeapon = readIDCounterMap(reader, "KILLS_BY_WEAPON");
+        	builder.setKillsByWeapon(killsByWeapon);
+        	
+        	CounterMap<ID> killsByLocationID = readIDCounterMap(reader, "KILLS_BY_LOCATION_ID");
+        	builder.setKillsByLocationID(killsByLocationID);
+        	
+        	CounterMap<ID> visitsToDistinctLocations = readIDCounterMap(reader, "VISITS_TO_DISTINCT_LOCATIONS");
+        	builder.setDistinctLocationsVisitCount(visitsToDistinctLocations);
+        	
+        	CounterMap<ID> visitsToTheSameLocation = readIDCounterMap(reader, "VISITS_TO_THE_SAME_LOCATION");
+        	builder.setSameLocationVisitCounter(visitsToTheSameLocation);
+        	
+        	Achievement achievement = builder.createAchievement();
         	ACHIEVEMENTS.put(achievement.getID(), achievement);
         }
         
@@ -329,10 +293,53 @@ public final class GameData {
         DLogger.info("Created " + ACHIEVEMENTS.size() + " achievements.");
     }
 	
+	private static int readIntegerFromResourceReader(ResourceReader reader, String key) {
+		if (reader.hasValue(key)) {
+			try {
+				return Integer.parseInt(reader.getValue(key));				
+			} catch (NumberFormatException log) {
+				DLogger.warning("Could not parse the value of " + key + ".");
+			}
+		}
+		
+		return 0;
+	}
+	
+	private static CounterMap<String> readStringCounterMap(ResourceReader reader, String key) {
+		CounterMap<String> counterMap = new CounterMap<String>();
+		
+		if (reader.hasValue(key)) {
+			try {
+				String[] values = reader.getArrayOfValues(key);
+				for (String value : values) {
+					String[] parts = value.split(COUNTER_MAP_KEY_VALUE_SEPARATOR);
+					counterMap.incrementCounter(parts[0].trim(), Integer.parseInt(parts[1].trim()));
+				}
+			} catch (NumberFormatException log) {
+				DLogger.warning("Could not parse the value of " + key + ".");
+			}
+		}
+		
+		return counterMap;
+	}
+	
+	private static CounterMap<ID> toIDCounterMap(CounterMap<String> stringCounterMap) {
+		CounterMap<ID> idCounterMap = new CounterMap<ID>();
+		for (String key : stringCounterMap.keySet()) {
+			idCounterMap.incrementCounter(new ID(key), stringCounterMap.getCounter(key));
+		}
+		
+		return idCounterMap;
+	}
+	
+	private static CounterMap<ID> readIDCounterMap(ResourceReader reader, String key) {
+		return toIDCounterMap(readStringCounterMap(reader, key));
+	}
+	
 	private static void loadLicense() {
         ResourceReader reader = new ResourceReader("license.txt");
         reader.readNextElement();
-        LICENSE = reader.getValue(LICENSE);
+        LICENSE = reader.getValue("LICENSE");
         reader.close();
     }
 	

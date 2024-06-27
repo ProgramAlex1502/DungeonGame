@@ -1,4 +1,3 @@
-ID: 1
 LICENSE: Copyright (C) 2024 Alexis DUBOIS                                                                             \\
                                                                                                                       \\
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public     \

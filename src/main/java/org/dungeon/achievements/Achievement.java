@@ -3,22 +3,29 @@ package main.java.org.dungeon.achievements;
 import main.java.org.dungeon.creatures.Hero;
 import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.io.IO;
-import main.java.org.dungeon.util.Constants;
-import main.java.org.dungeon.util.Utils;
+import main.java.org.dungeon.util.CounterMap;
 
 public class Achievement {
 
 	private final ID id;
 	private final String name;
 	private final String info;
+	private final String text;
 	
-	private final BattleComponent battle = new BattleComponent();
-	private final ExplorationComponent exploration = new ExplorationComponent();
+	private final BattleComponent battle;
+	private final ExplorationComponent exploration;
 	
-	public Achievement(String id, String name, String info) {
+	public Achievement(String id, String name, String info, String text, int minimumBattleCount, int longestBattleLength,
+			CounterMap<ID> killsByCreatureID, CounterMap<String> killsByCreatureType, CounterMap<ID> killsByWeapon,
+			CounterMap<ID> killsByLocationID, CounterMap<ID> distinctLocationsVisitCount,
+			CounterMap<ID> sameLocationVisitCounter) {
 		this.id = new ID(id);
 		this.name = name;
 		this.info = info;
+		this.text = text;
+		battle = new BattleComponent(minimumBattleCount, longestBattleLength, killsByCreatureID, killsByCreatureType,
+				killsByWeapon);
+		exploration = new ExplorationComponent(killsByLocationID, distinctLocationsVisitCount, sameLocationVisitCounter);
 	}
 	
 	public ID getID() {
@@ -33,38 +40,6 @@ public class Achievement {
 		return info;
 	}
 	
-	public void setMinimumBattleCount(int minimumBattleCount) {
-		battle.battleCount = minimumBattleCount;
-	}
-	
-	public void setLongestBattleLength(int longestBattleLength) {
-		battle.longestBattleLength = longestBattleLength;
-	}
-	
-	public void incrementKillsByWeapon(String id, int amount) {
-		battle.killsByWeapon.incrementCounter(new ID(id), amount);
-	}
-	
-	public void incrementKillsByCreatureID(String id, int amount) {
-		battle.killsByCreatureID.incrementCounter(new ID(id), amount);
-	}
-	
-	public void incrementKillsByCreatureType(String id, int amount) {
-		battle.killsByCreatureType.incrementCounter(id, amount);
-	}
-	
-	public void incrementKillsByLocationID(String locationID, int amount) {
-		exploration.killCounter.incrementCounter(new ID(locationID), amount);
-	}
-	
-	public void incrementVisitsToDistinctLocations(String locationID, int amount) {
-		exploration.distinctLocationsVisitCount.incrementCounter(new ID(locationID), amount);
-	}
-	
-	public void incrementVisitsToTheSameLocation(String locationID, int amount) {
-		exploration.sameLocationVisitCounter.incrementCounter(new ID(locationID), amount);
-	}
-	
 	boolean isFulfilled() {
 		return battle.isFulfilled() && exploration.isFulfilled();
 	}
@@ -77,6 +52,6 @@ public class Achievement {
 	}
 	
 	void printAchievementUnlocked() {
-		IO.writeString(Utils.centerString(Constants.ACHIEVEMENT_UNLOCKED, '-') + "\n" + getName() + "\n" + getInfo());
+		IO.writeString("You unlocked the achievement " + getName() + " because you " + text + ".");
 	}
 }
