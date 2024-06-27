@@ -4,12 +4,13 @@ import java.io.Closeable;
 import java.io.InputStreamReader;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 public class ResourceReader implements Closeable {
 
 	private static final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-	private final HashMap<String, String> map = new HashMap<String, String>();
+	private final Map<String, String[]> map = new HashMap<String, String[]>();
 	private final ResourceParser resourceParser;
 	private final String filename;
 	private String delimiterField;
@@ -29,7 +30,7 @@ public class ResourceReader implements Closeable {
 					if (map.containsKey(entry.getKey())) {
 						logRepeatedValue();
 					} else {
-						map.put(entry.getKey(), entry.getValue());
+						addToMap(entry.getKey(), entry.getValue());
 					}
 					readNextEntry();
 				} while (entry != null && !delimiterField.equals(entry.getKey()));
@@ -44,7 +45,7 @@ public class ResourceReader implements Closeable {
 					if (map.containsKey(entry.getKey()))  {
 						logRepeatedValue();
 					} else {
-						map.put(entry.getKey(), entry.getValue());
+						addToMap(entry.getKey(), entry.getValue());
 					}
 					readNextEntry();
 				} while (entry != null && !delimiterField.equals(entry.getKey()));
@@ -52,6 +53,19 @@ public class ResourceReader implements Closeable {
 			} else {
 				return false;
 			}
+		}
+	}
+	
+	private void addToMap(String key, String value) {
+		map.put(key, toArray(value));
+	}
+	
+	private String[] toArray(String data) {
+		if (data.startsWith("[")) {
+			data = data.substring(1, data.length() - 1);
+			return data.split("\\s*\\|\\s*");
+		} else {
+			return new String[] {data};
 		}
 	}
 	
@@ -86,8 +100,16 @@ public class ResourceReader implements Closeable {
 		return map.containsKey(key);
 	}
 	
-	public String getValue(String identifier) {
-		return map.get(identifier);
+	public String getValue(String key) {
+		String[] value = map.get(key);
+		if (value.length > 1) {
+			DLogger.warning("Used getValue with a nontrivial array.");
+		}
+		return value[0];
+	}
+	
+	public String[] getArrayOfValues(String key) {
+		return map.get(key);
 	}
 	
 	private void logRepeatedValue() {
