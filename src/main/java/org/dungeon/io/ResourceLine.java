@@ -3,7 +3,7 @@ package main.java.org.dungeon.io;
 final class ResourceLine {
 	
 	private static final char LINE_BREAK = '\\';
-	private static final String[] COMMENT_ESCAPES = {"//", "#"};
+	private static final String COMMENT_ESCAPES = "//";
 	
 	private final String text;
 	private final boolean valid;
@@ -43,15 +43,7 @@ final class ResourceLine {
 	}
 	
 	boolean isComment() {
-		if (valid) {
-			for (String escape : COMMENT_ESCAPES) {
-				if (text.startsWith(escape)) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
+		return valid && text.startsWith(COMMENT_ESCAPES);
 	}
 	
 	public String toString() {
