@@ -29,6 +29,19 @@ final class ResourceLine {
 		return valid && text.charAt(text.length() - 1) == LINE_BREAK;
 	}
 	
+	int countLineBreaks() {
+		int count = 0;
+		for (int i = text.length() - 1; i >= 0; i--) {
+			if (text.charAt(i) == LINE_BREAK) {
+				count++;
+			} else {
+				break;
+			}
+		}
+		
+		return count;
+	}
+	
 	boolean isComment() {
 		if (valid) {
 			for (String escape : COMMENT_ESCAPES) {
@@ -54,9 +67,10 @@ final class ResourceLine {
 	
 	private void makeReturnText() {
 		returnText = text;
+		int lineBreakCount = countLineBreaks();
 		
 		if (isContinued()) {
-			returnText = text.substring(0, text.length() - 1);
+			returnText = text.substring(0, text.length() - lineBreakCount);
 		}
 		
 		if (!returnText.isEmpty() && Character.isWhitespace(returnText.charAt(returnText.length() - 1))) {
@@ -71,6 +85,12 @@ final class ResourceLine {
 			}
 			
 			returnText = returnText.substring(0, indexOfFirstTrailingWhitespace);
+		}
+		
+		if (lineBreakCount == 1) {
+			returnText += ' ';
+		} else if (lineBreakCount > 1) {
+			returnText += '\n';
 		}
 	}
 

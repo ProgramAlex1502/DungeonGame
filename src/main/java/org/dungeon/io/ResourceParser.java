@@ -10,12 +10,13 @@ class ResourceParser implements Closeable {
 	private final LineNumberReader reader;
 	private ResourceLine line;
 
-	int getLineNumber() {
-		return reader.getLineNumber();
-	}
 	
 	public ResourceParser(Reader in) {
 		reader = new LineNumberReader(in);
+	}
+
+	int getLineNumber() {
+		return reader.getLineNumber();
 	}
 	
 	private void readLine() {
