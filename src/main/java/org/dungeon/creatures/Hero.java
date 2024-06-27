@@ -36,11 +36,14 @@ public class Hero extends Creature {
 	private static final long serialVersionUID = 1L;
 
 	private static final int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
-	private static final int SECONDS_TO_LOOK_AT_THE_COVER_OF_THE_BOOK = 6;
-	private static final int SECONDS_TO_PICK_UP_AN_ITEM = 20;
-	private static final int SECONDS_TO_DESTROY_AN_ITEM = 180;
+	private static final int SECONDS_TO_LOOK_AT_THE_COVER_OF_A_BOOK = 6;
+	private static final int SECONDS_TO_PICK_UP_AN_ITEM = 10;
+	private static final int SECONDS_TO_DESTROY_AN_ITEM = 120;
 	private static final int SECONDS_TO_LEARN_A_SKILL = 60;
-	private static final int SECONDS_TO_EAT_AN_ITEM = 120;
+	private static final int SECONDS_TO_EAT_AN_ITEM = 30;
+	private static final int SECONDS_TO_DROP_AN_ITEM = 2;
+	private static final int SECONDS_TO_UNEQUIP = 4;
+	private static final int SECONDS_TO_EQUIP = 6;
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
 	
 	private final Date dateOfBirth;
@@ -300,38 +303,45 @@ public class Hero extends Creature {
 				} else {
 					getInventory().addItem(selectedItem);
 					getLocation().removeItem(selectedItem);
+					return SECONDS_TO_PICK_UP_AN_ITEM;
 				}
 			}
 		} else {
 			IO.writeString("It is too dark for you too see anything.");
 		}
-		return SECONDS_TO_PICK_UP_AN_ITEM;
+		return 0;
 	}
 	
-	public void parseEquip(IssuedCommand issuedCommand) {
+	public int parseEquip(IssuedCommand issuedCommand) {
 		Item selectedItem = selectInventoryItem(issuedCommand);
 		
 		if (selectedItem != null) {
 			if (selectedItem.isWeapon()) {
 				equipWeapon(selectedItem);
+				return SECONDS_TO_EQUIP;
 			} else {
 				IO.writeString("You cannot equip that.");
 			}
 		}
+		
+		return 0;
 	}
 	
-	public void dropItem(IssuedCommand issuedCommand) {
+	public int dropItem(IssuedCommand issuedCommand) {
 		Item selectedItem = selectInventoryItem(issuedCommand);
 		
 		if (selectedItem != null) {
+			int totalTime = SECONDS_TO_DROP_AN_ITEM;
 			if (selectedItem == getWeapon()) {
-				unequipWeapon();
+				totalTime += unequipWeapon();
 			}
 			
 			getInventory().removeItem(selectedItem);
 			getLocation().addItem(selectedItem);
 			IO.writeString("Dropped " + selectedItem.getName() + ".");
+			return totalTime;
 		}
+		return 0;
 	}
 	
 	public void printInventory() {
@@ -364,11 +374,12 @@ public class Hero extends Creature {
 				if (isCompletelyHealed()) {
 					IO.writeString("You are completely healed.");
 				}
+				return SECONDS_TO_EAT_AN_ITEM;
 			} else {
 				IO.writeString("You can only eat food.");
 			}
 		}
-		return SECONDS_TO_EAT_AN_ITEM;
+		return 0;
 	}
 	
 	public int readItem(IssuedCommand issuedCommand) {
@@ -379,7 +390,7 @@ public class Hero extends Creature {
 				Skill skill = new Skill(GameData.getSkillDefinitions().get(book.getSkillID()));
 				if (getSkillList().hasSkill(skill.getID())) {
 					IO.writeString("You already know " + skill.getName() + ".");
-					return SECONDS_TO_LOOK_AT_THE_COVER_OF_THE_BOOK;
+					return SECONDS_TO_LOOK_AT_THE_COVER_OF_A_BOOK;
 				} else {
 					getSkillList().addSkill(skill);
 					IO.writeString("You learned " + skill.getName() + ".");
@@ -451,13 +462,15 @@ public class Hero extends Creature {
 		IO.writeString(getName() + " equipped " + weapon.getName() + ".");
 	}
 	
-	public void unequipWeapon() {
+	public int unequipWeapon() {
 		if (hasWeapon()) {
 			IO.writeString(getName() + " unequipped " + getWeapon().getName() + ".");
 			setWeapon(null);
+			return SECONDS_TO_UNEQUIP;
 		} else {
 			IO.writeString(Constants.NOT_EQUIPPING_A_WEAPON);
 		}
+		return 0;
 	}
 	
 	public void printAllStatus() {
