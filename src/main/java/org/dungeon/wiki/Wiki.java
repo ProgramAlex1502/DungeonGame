@@ -6,6 +6,7 @@ import java.util.List;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.ResourceReader;
+import main.java.org.dungeon.util.Math;
 import main.java.org.dungeon.util.Utils;
 
 public abstract class Wiki {
@@ -61,10 +62,36 @@ public abstract class Wiki {
 	}
 	
 	private static List<Article> findMatches(String[] searchArguments) {
-		List<Article> matches = new ArrayList<Article>();
+		List<Article> listOfMatches = new ArrayList<Article>();
+		double maximumSimilarity = 1e-6;
 		for (Article article : articleList) {
-			if (Utils.checkQueryMatch(searchArguments, Utils.split(article.title))) {
-				matches.add(article);
+			String[] titleWords = Utils.split(article.title);
+			int matches = countMatches(searchArguments, titleWords);
+			double matchesOverTitleWords = matches / (double) titleWords.length;
+			double matchesOverSearchArgs = matches / (double) searchArguments.length;
+			double similarity = Math.mean(matchesOverTitleWords, matchesOverSearchArgs);
+			int comparisonResult = Math.fuzzyCompare(similarity, maximumSimilarity);
+			if (comparisonResult > 0) {
+				maximumSimilarity -= similarity;
+				listOfMatches.clear();
+				listOfMatches.add(article);
+			} else if (comparisonResult == 0) {
+				listOfMatches.add(article);
+			}
+		}
+		
+		return listOfMatches;
+	}
+	
+	private static int countMatches(String[] query, String[] entry) {
+		int matches = 0;
+		int indexOfLastMatchPlusOne = 0;
+		for (int i = 0; i < query.length && indexOfLastMatchPlusOne < entry.length; i++) {
+			for (int j = indexOfLastMatchPlusOne; j < entry.length; j++) {
+				if (Utils.startsWithIgnoreCase(entry[j], query[i])) {
+					indexOfLastMatchPlusOne = j + 1;
+					matches++;
+				}
 			}
 		}
 		

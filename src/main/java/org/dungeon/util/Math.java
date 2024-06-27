@@ -9,6 +9,29 @@ import main.java.org.dungeon.io.IO;
 public class Math {
 	
 	private static final int FIBONACCI_MAX = 65535;
+	private static final double DEFAULT_DOUBLE_TOLERANCE = 1e-8;
+	
+	public static double mean(double... values) {
+		double sum = 0;
+		for (double value : values) {
+			sum += value;
+		}
+		return sum / values.length;
+	}
+	
+	public static int fuzzyCompare(Double d1, Double d2) {
+		return fuzzyCompare(d1, d2, DEFAULT_DOUBLE_TOLERANCE);
+	}
+	
+	public static int fuzzyCompare(Double d1, Double d2, Double epsilon) {
+		if (d1 + epsilon < d2) {
+			return -1;
+		} else if (d1 - epsilon > d2) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 	
 	public static void fibonacci(IssuedCommand issuedCommand) {
 		int intArgument;
