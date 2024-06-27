@@ -2,6 +2,7 @@ package main.java.org.dungeon.debug;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import main.java.org.dungeon.creatures.Creature;
 import main.java.org.dungeon.game.Command;
@@ -11,10 +12,13 @@ import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.ID;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.game.Location;
+import main.java.org.dungeon.game.LocationPreset;
 import main.java.org.dungeon.game.Point;
 import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.items.ItemBlueprint;
+import main.java.org.dungeon.stats.ExplorationStatistics;
+import main.java.org.dungeon.util.Table;
 import main.java.org.dungeon.util.Utils;
 
 public class DebugTools {
@@ -44,7 +48,7 @@ public class DebugTools {
 		commands.add(new Command("exploration") {
 			@Override
 			public void execute(IssuedCommand issuedCommand) {
-				IO.writeString(Game.getGameState().getStatistics().getExplorationStatistics().toString());
+				printExplorationStatistics();
 			}
 		});
 		commands.add(new Command("tomorrow") {
@@ -101,6 +105,19 @@ public class DebugTools {
 			}
 		});
 		uninitialized = false;
+	}
+	
+	private static void printExplorationStatistics() {
+		ExplorationStatistics explorationStatistics = Game.getGameState().getStatistics().getExplorationStatistics();
+		Table table = new Table("Name", "Kills", "Discovered so far", "Maximum number of visits");
+		for (Entry<ID, LocationPreset> entry : GameData.getLocationPresets().entrySet()) {
+			String name = entry.getValue().getName();
+			String kills = String.valueOf(explorationStatistics.getKillCount(entry.getKey()));
+			String discoveredSoFar = String.valueOf(explorationStatistics.getDistinctVisitCount(entry.getKey()));
+			String maximumNumberOfVisits = String.valueOf(explorationStatistics.getSameLocationVisitCount(entry.getKey()));
+			table.insertRow(name, kills, discoveredSoFar, maximumNumberOfVisits);
+		}
+		table.print();
 	}
 	
 	private static void printCurrentLocationInformation() {

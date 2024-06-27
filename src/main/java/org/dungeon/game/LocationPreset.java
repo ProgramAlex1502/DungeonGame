@@ -5,7 +5,7 @@ import java.util.List;
 
 import main.java.org.dungeon.util.Percentage;
 
-final class LocationPreset extends Entity {
+public final class LocationPreset extends Entity {
 	private static final long serialVersionUID = 1L;
 	
 	private final BlockedEntrances blockedEntrances = new BlockedEntrances();

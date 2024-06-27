@@ -59,20 +59,5 @@ public class ExplorationStatistics implements Serializable {
 		}
 		return count;
 	}
-	
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		ExplorationStatisticsEntry explorationStatisticsEntry;
-		
-		for (Point point : entries.keySet()) {
-			explorationStatisticsEntry = entries.get(point);
-			builder.append(point.toString());
-			builder.append(" Visits: ").append(explorationStatisticsEntry.getVisitCount());
-			builder.append(" Kills: ").append(explorationStatisticsEntry.getKillCount());
-			builder.append("\n");
-		}
-		
-		return builder.toString();
-	}
 
 }
