@@ -12,6 +12,7 @@ import main.java.org.dungeon.util.CommandHelp;
 import main.java.org.dungeon.util.Math;
 import main.java.org.dungeon.util.SystemInfo;
 import main.java.org.dungeon.util.Utils;
+import main.java.org.dungeon.wiki.Wiki;
 
 public class Game {
 	
@@ -231,6 +232,12 @@ public class Game {
 			@Override
 			public void execute(IssuedCommand issuedCommand) {
 				gameState.getHero().unequipWeapon();
+			}
+		});
+		commandList.add(new Command("wiki", "Searches the wiki for an article.") {
+			@Override
+			public void execute(IssuedCommand issuedCommand) {
+				Wiki.search(issuedCommand);
 			}
 		});
 	}
