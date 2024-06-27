@@ -37,7 +37,10 @@ public class Hero extends Creature {
 
 	private static final int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
 	private static final int SECONDS_TO_LOOK_AT_THE_COVER_OF_THE_BOOK = 6;
+	private static final int SECONDS_TO_PICK_UP_AN_ITEM = 20;
+	private static final int SECONDS_TO_DESTROY_AN_ITEM = 180;
 	private static final int SECONDS_TO_LEARN_A_SKILL = 60;
+	private static final int SECONDS_TO_EAT_AN_ITEM = 120;
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
 	
 	private final Date dateOfBirth;
@@ -288,7 +291,7 @@ public class Hero extends Creature {
 		return null;
 	}
 	
-	public void pickItem(IssuedCommand issuedCommand) {
+	public int pickItem(IssuedCommand issuedCommand) {
 		if (canSee()) {
 			Item selectedItem = selectLocationItem(issuedCommand);
 			if (selectedItem != null) {
@@ -302,6 +305,7 @@ public class Hero extends Creature {
 		} else {
 			IO.writeString("It is too dark for you too see anything.");
 		}
+		return SECONDS_TO_PICK_UP_AN_ITEM;
 	}
 	
 	public void parseEquip(IssuedCommand issuedCommand) {
@@ -335,7 +339,7 @@ public class Hero extends Creature {
 		getInventory().printItems();
 	}
 	
-	public void eatItem(IssuedCommand issuedCommand) {
+	public int eatItem(IssuedCommand issuedCommand) {
 		Item selectedItem = selectInventoryItem(issuedCommand);
 		
 		if (selectedItem != null) {
@@ -364,6 +368,7 @@ public class Hero extends Creature {
 				IO.writeString("You can only eat food.");
 			}
 		}
+		return SECONDS_TO_EAT_AN_ITEM;
 	}
 	
 	public int readItem(IssuedCommand issuedCommand) {
@@ -387,7 +392,7 @@ public class Hero extends Creature {
 		return 0;
 	}
 	
-	public void destroyItem(IssuedCommand issuedCommand) {
+	public int destroyItem(IssuedCommand issuedCommand) {
 		Item target;
 		
 		if (issuedCommand.hasArguments()) {
@@ -407,7 +412,9 @@ public class Hero extends Creature {
 				getLocation().removeItem(target);
 				IO.writeString(getName() + " destroyed " + target.getName() + ".");
 			}
+			return SECONDS_TO_DESTROY_AN_ITEM;
 		}
+		return 0;
 	}
 	
 	boolean hasClock() {
@@ -453,27 +460,18 @@ public class Hero extends Creature {
 		}
 	}
 	
-	public void printHeroStatus() {
+	public void printAllStatus() {
 		IO.writeString(getName());
 		
 		IO.writeNamedBar("Health", new Percentage(getCurHealth() / (double) getMaxHealth()), Constants.HEALTH_BAR_COLOR);
 		IO.writeKeyValueString("Attack", Integer.toString(getAttack()));
-	}
-	
-	public void printWeaponStatus() {
+		
 		if (hasWeapon()) {
 			Item heroWeapon = getWeapon();
 			IO.writeString(heroWeapon.getQualifiedName());
 			IO.writeKeyValueString("Damage", Integer.toString(heroWeapon.getDamage()));
 		} else {
 			IO.writeString(Constants.NOT_EQUIPPING_A_WEAPON);
-		}
-	}
-	
-	public void printAllStatus() {
-		printHeroStatus();
-		if (getWeapon() != null) {
-			printWeaponStatus();
 		}
 	}
 	

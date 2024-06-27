@@ -17,7 +17,6 @@ public class Constants {
 	
 	public static final String INVALID_INPUT = "Invalid input.";
 	
-	public static final String COMMAND_HELP_FORMAT = "%-20s %s";
 	public static final String LIST_ENTRY_FORMAT = "%-15s%s";
 	
 	public static final String INVENTORY_FULL = "Inventory is full.";
