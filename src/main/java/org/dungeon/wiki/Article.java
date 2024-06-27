@@ -1,6 +1,6 @@
 package main.java.org.dungeon.wiki;
 
-public class Article {
+final class Article {
 	
 	public final String title;
 	public final String content;
@@ -8,6 +8,11 @@ public class Article {
 	public Article(String title, String content) {
 		this.title = title;
 		this.content = content;
+	}
+	
+	@Override
+	public String toString() {
+		return title + "\n\n" + content;
 	}
 
 }
