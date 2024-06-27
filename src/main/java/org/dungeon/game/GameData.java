@@ -250,7 +250,6 @@ public final class GameData {
 	private static void loadAchievements() {
         ACHIEVEMENTS = new HashMap<ID, Achievement>();
         
-        @SuppressWarnings("resource")
 		ResourceReader reader = new ResourceReader("achievements.txt");
         
         while (reader.readNextElement()) {
@@ -323,7 +322,8 @@ public final class GameData {
         	
         	ACHIEVEMENTS.put(achievement.getID(), achievement);
         }
-
+        
+        reader.close();
         DLogger.info("Created " + ACHIEVEMENTS.size() + " achievements.");
     }
 	
@@ -331,6 +331,7 @@ public final class GameData {
         ResourceReader reader = new ResourceReader("license.txt");
         reader.readNextElement();
         LICENSE = reader.getValue(LICENSE);
+        reader.close();
     }
 	
 	public static Map<ID, CreatureBlueprint> getCreatureBlueprints() {
