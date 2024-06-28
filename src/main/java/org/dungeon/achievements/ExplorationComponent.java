@@ -9,15 +9,15 @@ public class ExplorationComponent {
 
 	final CounterMap<ID> killsByLocationID;
 	
-	final CounterMap<ID> distinctLocationsVisitCount;
+	final CounterMap<ID> discoveredLocations;
 	
-	final CounterMap<ID> sameLocationVisitCounter;
+	final CounterMap<ID> maximumNumberOfVisits;
 	
-	ExplorationComponent(CounterMap<ID> killsByLocationID, CounterMap<ID> distinctLocationsVisitCount,
-			CounterMap<ID> sameLocationVisitCounter) {
+	ExplorationComponent(CounterMap<ID> killsByLocationID, CounterMap<ID> discoveredLocations,
+			CounterMap<ID> maximumNumberOfVisits) {
 		this.killsByLocationID = killsByLocationID;
-		this.distinctLocationsVisitCount = distinctLocationsVisitCount;
-		this.sameLocationVisitCounter = sameLocationVisitCounter;
+		this.discoveredLocations = discoveredLocations;
+		this.maximumNumberOfVisits = maximumNumberOfVisits;
 	}
 	
 	boolean isFulfilled() {
@@ -29,16 +29,16 @@ public class ExplorationComponent {
 				}
 			}			
 		}
-		if (distinctLocationsVisitCount != null) {
-			for (ID locationID : distinctLocationsVisitCount.keySet()) {
-				if (explorationStatistics.getDistinctVisitCount(locationID) < distinctLocationsVisitCount.getCounter(locationID)) {
+		if (discoveredLocations != null) {
+			for (ID locationID : discoveredLocations.keySet()) {
+				if (explorationStatistics.getDiscoveredLocations(locationID) < discoveredLocations.getCounter(locationID)) {
 					return false;
 				}
 			}			
 		}
-		if (sameLocationVisitCounter != null) {
-			for (ID locationID : sameLocationVisitCounter.keySet()) {
-				if (explorationStatistics.getSameLocationVisitCount(locationID) < sameLocationVisitCounter.getCounter(locationID)) {
+		if (maximumNumberOfVisits != null) {
+			for (ID locationID : maximumNumberOfVisits.keySet()) {
+				if (explorationStatistics.getMaximumNumberOfVisits(locationID) < maximumNumberOfVisits.getCounter(locationID)) {
 					return false;
 				}
 			}			

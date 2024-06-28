@@ -27,29 +27,6 @@ public class ExplorationStatistics implements Serializable {
 		entries.get(point).addKill();
 	}
 	
-	public int getDistinctVisitCount(ID locationID) {
-		int count = 0;
-		for (ExplorationStatisticsEntry entry : entries.values()) {
-			if (entry.getLocationID().equals(locationID)) {
-				count++;
-			}
-		}
-		return count;
-	}
-	
-	public int getSameLocationVisitCount(ID locationID) {
-		int maximumVisitsToLocationWithThisID = 0;
-		for (ExplorationStatisticsEntry entry : entries.values()) {
-			if (entry.getLocationID().equals(locationID)) {
-				if (entry.getVisitCount() > maximumVisitsToLocationWithThisID) {
-					maximumVisitsToLocationWithThisID = entry.getVisitCount();
-				}
-			}
-		}
-		
-		return maximumVisitsToLocationWithThisID;
-	}
-	
 	public int getKillCount(ID locationID) {
 		int count = 0;
 		for (ExplorationStatisticsEntry entry : entries.values()) {
@@ -58,6 +35,29 @@ public class ExplorationStatistics implements Serializable {
 			}
 		}
 		return count;
+	}
+	
+	public int getDiscoveredLocations(ID locationID) {
+		int count = 0;
+		for (ExplorationStatisticsEntry entry : entries.values()) {
+			if (entry.getLocationID().equals(locationID)) {
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	public int getMaximumNumberOfVisits(ID locationID) {
+		int maximumVisitsToLocationWithThisID = 0;
+		for (ExplorationStatisticsEntry entry : entries.values()) {
+			if (entry.getLocationID().equals(locationID)) {
+				if (entry.getVisitCount() > maximumVisitsToLocationWithThisID) {
+					maximumVisitsToLocationWithThisID = entry.getVisitCount();
+				}
+			}
+		}
+		return maximumVisitsToLocationWithThisID;
 	}
 
 }
