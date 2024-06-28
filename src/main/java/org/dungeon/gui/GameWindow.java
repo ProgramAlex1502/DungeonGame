@@ -238,10 +238,6 @@ public class GameWindow extends JFrame{
 		StyleConstants.setForeground(attributeSet, fore);
 		StyleConstants.setBackground(attributeSet, back);
 		
-		if (Game.getGameState() != null) {
-			StyleConstants.setBold(attributeSet, Game.getGameState().isBold());
-		}
-		
 		try {
 			document.insertString(document.getLength(), string, attributeSet);
 			if (scrollDown) {

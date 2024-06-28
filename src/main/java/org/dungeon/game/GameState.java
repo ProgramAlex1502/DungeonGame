@@ -25,8 +25,6 @@ public class GameState implements Serializable {
 	private Hero hero;
 	private Point heroPosition;
 	
-	private boolean bold;
-	
 	transient private boolean saved;
 	
 	public GameState() {
@@ -69,14 +67,6 @@ public class GameState implements Serializable {
 	
 	public void setHeroPosition(Point heroPosition) {
 		this.heroPosition = heroPosition;
-	}
-	
-	public boolean isBold() {
-		return bold;
-	}
-	
-	public void setBold(boolean bold) {
-		this.bold = bold;
 	}
 	
 	public boolean isSaved() {
