@@ -8,28 +8,34 @@ public class WorldStatistics implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final CounterMap<String> spawnCounter = new CounterMap<String>();
-	private int locations;
-	private int creatures;
-	
-	public void addLocation(String location) {
-		locations++;
-	}
+	private final CounterMap<String> locationCounter = new CounterMap<String>();
+	private int locationCount;
+	private int spawnCount;
 	
 	public void addSpawn(String creature) {
-		creatures++;
+		spawnCount++;
 		spawnCounter.incrementCounter(creature);
 	}
 	
+	public void addLocation(String location) {
+		locationCount++;
+		locationCounter.incrementCounter(location);
+	}
+	
+	public int getSpawnCount() {
+		return spawnCount;
+	}
+	
 	public int getLocationCount() {
-		return locations;
+		return locationCount;
 	}
 	
-	public int getCreatureCount() {
-		return creatures;
-	}
-	
-	public CounterMap<String> getSpawnCounters() {
+	public CounterMap<String> getSpawnCounter() {
 		return spawnCounter;
+	}
+	
+	public CounterMap<String> getLocationCounter() {
+		return locationCounter;
 	}
 
 }

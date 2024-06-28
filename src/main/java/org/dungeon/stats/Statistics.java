@@ -5,8 +5,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import main.java.org.dungeon.game.IssuedCommand;
-import main.java.org.dungeon.io.IO;
-import main.java.org.dungeon.util.CounterMap;
+import main.java.org.dungeon.util.Table;
 
 public final class Statistics implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -32,32 +31,36 @@ public final class Statistics implements Serializable {
 		commandStatistics.addCommand(issuedCommand);
 	}
 	
-	public void printAllStatistics() {
-		printCommandStatistics();
-		printWorldStatistics();
+	public void printStatistics() {
+		Table statistics = new Table("Property", "Value");
+		insertCommandStatistics(statistics);
+		statistics.insertSeparator();
+		insertWorldStatistics(statistics);
+		statistics.print();
 	}
 	
-	private void printCommandStatistics() {
+	private void insertCommandStatistics(Table statistics) {
 		int commandCount = commandStatistics.getCommandCount();
 		int chars = commandStatistics.getChars();
 		int words = commandStatistics.getWords();
-		IO.writeKeyValueString("Commands issued", String.valueOf(commandCount));
-		IO.writeKeyValueString("Characters entered", String.valueOf(chars));
-		IO.writeKeyValueString("Average characters per command", String.format("%.2f", (double) chars / commandCount));
-		IO.writeKeyValueString("Words entered", String.valueOf(words));
-		IO.writeKeyValueString("Average words per command", String.format("%.2f", (double) words / commandCount));
+		statistics.insertRow("Commands issued", String.valueOf(commandCount));
+		statistics.insertRow("Characters entered", String.valueOf(chars));
+		statistics.insertRow("Average characters per command", String.format("%.2f", (double) chars / commandCount));
+		statistics.insertRow("Words entered", String.valueOf(words));
+		statistics.insertRow("Average words per command", String.format("%.2f", (double) words / commandCount));
 	}
 	
-	private void printWorldStatistics() {
-		IO.writeKeyValueString("Created Locations", String.valueOf(worldStatistics.getLocationCount()));
-		IO.writeKeyValueString("Spawned Creatures", String.valueOf(worldStatistics.getCreatureCount()));
-	}
-	
-	public void printSpawnStatistics() {
-		CounterMap<String> spawnCounter = worldStatistics.getSpawnCounters();
-		SortedSet<String> sortedSet = new TreeSet<String>(spawnCounter.keySet());
-		for (String string : sortedSet) {
-			IO.writeKeyValueString(string, String.valueOf(spawnCounter.getCounter(string)));
+	private void insertWorldStatistics(Table statistics) {
+		statistics.insertRow("Created Locations", String.valueOf(worldStatistics.getLocationCount()));
+		SortedSet<String> locationNames = new TreeSet<String>(worldStatistics.getLocationCounter().keySet());
+		for (String name : locationNames) {
+			statistics.insertRow("  " + name, String.valueOf(worldStatistics.getLocationCounter().getCounter(name)));
+		}
+		statistics.insertSeparator();
+		statistics.insertRow("Spawned Creatures", String.valueOf(worldStatistics.getSpawnCount()));
+		SortedSet<String> spawnNames = new TreeSet<String>(worldStatistics.getSpawnCounter().keySet());
+		for(String name : spawnNames) {
+			statistics.insertRow("  " + name, String.valueOf(worldStatistics.getSpawnCounter().getCounter(name)));
 		}
 	}
 

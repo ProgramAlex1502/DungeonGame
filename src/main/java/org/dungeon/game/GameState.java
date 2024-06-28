@@ -134,14 +134,6 @@ public class GameState implements Serializable {
 		}
 	}
 	
-	public void printStatistics(IssuedCommand issuedCommand) {
-		if (issuedCommand.hasArguments() && issuedCommand.firstArgumentEquals("spawns")) {
-			statistics.printSpawnStatistics();
-		} else {
-			statistics.printAllStatistics();
-		}
-	}
-	
 	public Location getHeroLocation() {
 		return world.getLocation(heroPosition);
 	}
