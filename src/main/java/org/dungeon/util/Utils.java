@@ -1,6 +1,5 @@
 package main.java.org.dungeon.util;
 
-import java.awt.Color;
 import java.util.List;
 
 import main.java.org.dungeon.game.Engine;
@@ -24,11 +23,6 @@ public class Utils {
 		} else {
 			return original;
 		}
-	}
-	
-	public static void printInvalidCommandMessage(String command) {
-		IO.writeString(String.format(Constants.INVALID_COMMAND, command), Color.RED);
-		IO.writeString(Constants.SUGGEST_COMMANDS, Color.ORANGE);
 	}
 	
 	public static <T extends Selectable> SelectionResult<T> selectFromList(List<T> candidates, String[] tokens) {
@@ -75,39 +69,8 @@ public class Utils {
 		return chance > Engine.RANDOM.nextDouble();
 	}
 	
-	public static void printMissingArgumentsMessage() {
-		IO.writeString("This command requires arguments.");
-	}
-	
 	public static boolean startsWithIgnoreCase(String a, String b) {
 		return a.toLowerCase().startsWith(b.toLowerCase());
-	}
-	
-	public static String centerString(String string, char fill) {
-		return centerString(string, Constants.COLS, fill);
-	}
-	
-	private static String centerString(String string, int width, char fill) {
-		int length = string.length();
-		
-		if (length > width) {
-			throw new IllegalArgumentException("String is bigger than the desired width.");
-		} else {
-			StringBuilder builder = new StringBuilder();
-			for(int i = 0; i < (width - length) / 2; i++) {
-				builder.append(fill);
-			}
-			builder.append(string);
-			
-			for (int i = 0; i < (width - length) / 2; i++) {
-				builder.append(fill);
-			}
-			if (builder.length() < width) {
-				builder.append(fill);
-			}
-			
-			return builder.toString();
-		}
 	}
 	
 	public static String makeRepeatedCharacterString(int repetitions, char character) {
@@ -166,14 +129,6 @@ public class Utils {
 		}
 		
 		return sb.toString();
-	}
-	
-	public static void printAmbiguousSelectionMessage() {
-		IO.writeString("Provided input is ambiguous");
-	}
-	
-	public static void printFailedToCreateDirectoryMessage(String directory) {
-		IO.writeString("Failed to create the " + directory + " directory.");
 	}
 	
 	public static String bytesToHuman(long bytes) {

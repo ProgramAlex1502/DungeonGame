@@ -18,6 +18,7 @@ import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.items.Item;
 import main.java.org.dungeon.items.ItemBlueprint;
 import main.java.org.dungeon.stats.ExplorationStatistics;
+import main.java.org.dungeon.util.Messenger;
 import main.java.org.dungeon.util.Table;
 import main.java.org.dungeon.util.Utils;
 
@@ -40,7 +41,7 @@ public class DebugTools {
 			}
 			IO.writeString("Command not recognized.");
 		} else {
-			Utils.printMissingArgumentsMessage();
+			Messenger.printMissingArgumentsMessage();
 		}
 	}
 	
@@ -94,7 +95,7 @@ public class DebugTools {
 				if (issuedCommand.getTokenCount() >= 3) {
 					give(issuedCommand.getArguments()[1]);
 				} else {
-					Utils.printMissingArgumentsMessage();
+					Messenger.printMissingArgumentsMessage();
 				}
 			}
 		});
@@ -186,7 +187,7 @@ public class DebugTools {
 				IO.writeString("Not a valid amount of seconds.");
 			}
 		} else {
-			Utils.printMissingArgumentsMessage();
+			Messenger.printMissingArgumentsMessage();
 		}
 	}
 	

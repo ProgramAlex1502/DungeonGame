@@ -10,6 +10,7 @@ import main.java.org.dungeon.io.IO;
 import main.java.org.dungeon.io.Loader;
 import main.java.org.dungeon.util.CommandHelp;
 import main.java.org.dungeon.util.Math;
+import main.java.org.dungeon.util.Messenger;
 import main.java.org.dungeon.util.SystemInfo;
 import main.java.org.dungeon.util.Utils;
 import main.java.org.dungeon.wiki.Wiki;
@@ -278,7 +279,7 @@ public class Game {
         	}
         }
         
-        Utils.printInvalidCommandMessage(issuedCommand.getFirstToken());
+        Messenger.printInvalidCommandMessage(issuedCommand.getFirstToken());
 
 	}
 	

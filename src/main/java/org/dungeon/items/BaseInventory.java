@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.org.dungeon.io.IO;
+import main.java.org.dungeon.util.Messenger;
 import main.java.org.dungeon.util.SelectionResult;
 import main.java.org.dungeon.util.Utils;
 
@@ -41,7 +42,7 @@ public abstract class BaseInventory implements Serializable {
 		} else if (selectionResult.size() == 1 || selectionResult.getDifferentNames() == 1) {
 			return selectionResult.getMatch(0);
 		} else {
-			Utils.printAmbiguousSelectionMessage();
+			Messenger.printAmbiguousSelectionMessage();
 		}
 		
 		return null;

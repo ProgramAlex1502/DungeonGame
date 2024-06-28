@@ -7,7 +7,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import main.java.org.dungeon.util.Utils;
+import main.java.org.dungeon.util.Messenger;
 
 public class DLogger {
 	
@@ -52,7 +52,7 @@ public class DLogger {
 		
 		if (!logFolder.exists()) {
 			if (!logFolder.mkdir()) {
-				Utils.printFailedToCreateDirectoryMessage(LOG_FILE_PATH);
+				Messenger.printFailedToCreateDirectoryMessage(LOG_FILE_PATH);
 			}
 		}
 		

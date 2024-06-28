@@ -13,6 +13,7 @@ import main.java.org.dungeon.game.Game;
 import main.java.org.dungeon.game.GameState;
 import main.java.org.dungeon.game.IssuedCommand;
 import main.java.org.dungeon.util.Constants;
+import main.java.org.dungeon.util.Messenger;
 import main.java.org.dungeon.util.Table;
 import main.java.org.dungeon.util.Utils;
 
@@ -150,7 +151,7 @@ public class Loader {
 		try {
 			if (!SAVES_FOLDER.exists()) {
 				if (!SAVES_FOLDER.mkdir()) {
-					Utils.printFailedToCreateDirectoryMessage(DEFAULT_SAVE_PATH);
+					Messenger.printFailedToCreateDirectoryMessage(DEFAULT_SAVE_PATH);
 					return;
 				}
 			}
