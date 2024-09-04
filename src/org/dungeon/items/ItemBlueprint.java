@@ -74,8 +74,16 @@ public final class ItemBlueprint {
 		this.tags = tags;
 	}
 	
+	public int getMaxIntegrity() {
+		return maxIntegrity;
+	}
+	
 	public void setMaxIntegrity(int maxIntegrity) {
 		this.maxIntegrity = maxIntegrity;
+	}
+	
+	public int getCurIntegrity() {
+		return curIntegrity;
 	}
 	
 	public void setCurIntegrity(int curIntegrity) {
@@ -88,6 +96,10 @@ public final class ItemBlueprint {
 	
 	public void setHitRate(double hitRate) {
 		this.hitRate = hitRate;
+	}
+	
+	public int getIntegrityDecrementOnHit() {
+		return integrityDecrementOnHit;
 	}
 	
 	public void setIntegrityDecrementOnHit(int integrityDecrementOnHit) {

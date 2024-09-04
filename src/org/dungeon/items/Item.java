@@ -44,8 +44,7 @@ public class Item extends Entity {
 		}
 		
 		if (hasTag(Tag.CLOCK)) {
-			clockComponent = new ClockComponent();
-			clockComponent.setMaster(this);
+			clockComponent = new ClockComponent(this);
 		}
 		
 		if (hasTag(Tag.BOOK)) {
@@ -85,14 +84,17 @@ public class Item extends Entity {
 	}
 	
 	public void setCurIntegrity(int curIntegrity) {
-		if (curIntegrity > 0) {
-			this.curIntegrity = curIntegrity;
+		if (curIntegrity <= 0) {
+			setIntegrityToZero();
 		} else {
-			this.curIntegrity = 0;
-			
-			if (hasTag(Tag.CLOCK)) {
-				clockComponent.setLastTime(Game.getGameState().getWorld().getWorldDate());
-			}
+			this.curIntegrity = Math.min(curIntegrity, maxIntegrity);
+		}
+	}
+	
+	private void setIntegrityToZero() {
+		this.curIntegrity = 0;
+		if (hasTag(Tag.CLOCK)) {
+			clockComponent.setLastTime(Game.getGameState().getWorld().getWorldDate());
 		}
 	}
 	
@@ -121,7 +123,7 @@ public class Item extends Entity {
 	}
 	
 	public void incrementIntegrity(int integrityIncrement) {
-		setCurIntegrity(Math.min(getCurIntegrity() + integrityIncrement, getMaxIntegrity()));
+		setCurIntegrity(getCurIntegrity() + integrityIncrement);
 	}
 	
 	public void decrementIntegrityByHit() {
@@ -134,7 +136,7 @@ public class Item extends Entity {
 	}
 	
 	public boolean rollForHit() {
-		return weaponComponent.getHitRate() > Engine.RANDOM.nextDouble();
+		return Engine.roll(weaponComponent.getHitRate());
 	}
 	
 	String getIntegrityString() {

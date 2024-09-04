@@ -141,7 +141,6 @@ public final class GameData {
         }
         
         reader.close();
-        itemBlueprints = Collections.unmodifiableMap(itemBlueprints);
         DLogger.info("Loaded " + itemBlueprints.size() + " item blueprints.");
     }
 
@@ -161,11 +160,34 @@ public final class GameData {
         		preset.setItems(readIDList(reader, "ITEMS"));
         	}
         	creaturesPresets.put(preset.getID(), preset);
+        	
+        	ItemBlueprint corpse = makeCorpseBlueprint(preset);
+        	itemBlueprints.put(corpse.getID(), corpse);
         }
         
         reader.close();
+        itemBlueprints = Collections.unmodifiableMap(itemBlueprints);
         creaturesPresets = Collections.unmodifiableMap(creaturesPresets);
         DLogger.info("Loaded " + creaturesPresets.size() + " creature blueprints.");
+    }
+    
+    public static ItemBlueprint makeCorpseBlueprint(CreaturePreset preset) {
+    	ItemBlueprint corpse = new ItemBlueprint();
+    	corpse.setID(new ID(preset.getID() + "_CORPSE"));
+    	corpse.setType("CORPSE");
+    	corpse.setName(Name.newInstance(preset.getName().getName() + " Corpse"));
+    	corpse.setWeight(preset.getWeight());
+    	corpse.setPutrefactionPeriod(24 * 60 * 60);
+    	int integrity = (int) Math.ceil(preset.getHealth() / (double) 2);
+    	corpse.setMaxIntegrity(integrity);
+    	corpse.setCurIntegrity(integrity);
+    	corpse.setIntegrityDecrementOnHit(5);
+    	Set<Item.Tag> tags = new HashSet<Item.Tag>();
+    	tags.add(Item.Tag.WEAPON);
+    	tags.add(Item.Tag.WEIGHT_PROPORTIONAL_TO_INTEGRITY);
+    	tags.add(Item.Tag.DECOMPOSES);
+    	corpse.setTags(tags);
+    	return corpse;
     }
 
     private static void loadLocationPresets() {

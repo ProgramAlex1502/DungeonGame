@@ -9,11 +9,11 @@ import org.dungeon.game.Game;
 public class ClockComponent implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Item master;
+	private final Item master;
 	
 	private Date lastTime;
 	
-	public void setMaster(Item master) {
+	ClockComponent(Item master) {
 		this.master = master;
 	}
 	
