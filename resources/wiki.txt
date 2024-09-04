@@ -13,6 +13,10 @@ will either do nothing (if the command history is empty), get the last similar c
 field (if there is one), or return the last command (if the text field is empty and there is at least one command on\
 the command history).
 
+ARTICLE: Corpses
+CONTENT: Corpses weight as much as the creature and will eventually decompose. The integrity of a corpse is directly\
+proportional to the health of the creature when it was uninjured.
+
 ARTICLE: Eating
 CONTENT: As of 0.0.7, eating only heals you until you are uninjured (better than resting, as good as sleeping). There\
 are no bonuses for eating regularly neither do the character ever feels hungry.
