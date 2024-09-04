@@ -34,7 +34,6 @@ import org.dungeon.items.FoodComponent;
 import org.dungeon.items.Item;
 import org.dungeon.skill.Skill;
 import org.dungeon.stats.ExplorationStatistics;
-import org.dungeon.util.Constants;
 import org.dungeon.util.Matches;
 import org.dungeon.util.Messenger;
 import org.dungeon.util.Percentage;
@@ -55,14 +54,13 @@ public class Hero extends Creature {
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
 	private static final Percentage LUMINOSITY_TO_SEE_ADJACENT_LOCATIONS = new Percentage(0.4);
 	
-	private final AchievementTracker achievementTracker;
+	private final AchievementTracker achievementTracker = new AchievementTracker();
 	private final Date dateOfBirth;
 	
-	public Hero() {
-		super(Constants.HERO_ID, "Hero", Name.newInstance("Seth"), 50, 5, "HERO");
+	Hero(CreaturePreset preset) {
+		super(preset);
 		setInventory(new CreatureInventory(this, 12, 10));
 		dateOfBirth = new Date(432, 6, 4, 8, 30, 0);
-		achievementTracker = new AchievementTracker();
 	}
 	
 	public AchievementTracker getAchievementTracker() {
@@ -368,7 +366,7 @@ public class Hero extends Creature {
 		if (canSeeAnItem()) {
 			Item selectedItem = selectLocationItem(issuedCommand);
 			if (selectedItem != null) {
-				if (getInventory().addItem(selectedItem)) {
+				if (addItem(selectedItem)) {
 					getLocation().removeItem(selectedItem);
 					return SECONDS_TO_PICK_UP_AN_ITEM;
 				}
@@ -401,8 +399,7 @@ public class Hero extends Creature {
 				
 			}
 			
-			getInventory().removeItem(selectedItem);
-			getLocation().addItem(selectedItem);
+			dropItem(selectedItem);
 			IO.writeString("Dropped " + selectedItem.getName() + ".");
 			return totalTime;
 		}

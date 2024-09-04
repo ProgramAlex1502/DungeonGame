@@ -4,15 +4,17 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.dungeon.achievements.Achievement;
 import org.dungeon.achievements.AchievementBuilder;
-import org.dungeon.creatures.Creature;
+import org.dungeon.creatures.CreaturePreset;
 import org.dungeon.io.DLogger;
 import org.dungeon.io.ResourceReader;
 import org.dungeon.items.Item;
@@ -35,9 +37,9 @@ public final class GameData {
     public static HashMap<ID, Achievement> ACHIEVEMENTS;
     
     public static String LICENSE;
-    private static Map<ID, Creature> creatures = new HashMap<ID, Creature>(20, 1f);
-    private static Map<ID, ItemBlueprint> itemBlueprints = new HashMap<ID, ItemBlueprint>(20, 1f);
-    private static Map<ID, SkillDefinition> skillDefinitions = new HashMap<ID, SkillDefinition>(2, 1f);
+    private static Map<ID, CreaturePreset> creaturesPresets = new HashMap<ID, CreaturePreset>();
+    private static Map<ID, ItemBlueprint> itemBlueprints = new HashMap<ID, ItemBlueprint>();
+    private static Map<ID, SkillDefinition> skillDefinitions = new HashMap<ID, SkillDefinition>();
     private static Map<ID, LocationPreset> locationPresets = new HashMap<ID, LocationPreset>();
     
     private GameData() {
@@ -83,7 +85,7 @@ public final class GameData {
     	DLogger.info("Started loading the game data.");
 
         loadItemBlueprints();
-        loadCreatureBlueprints();
+        loadCreaturePresets();
         createSkills();
         loadLocationPresets();
         loadAchievements();
@@ -140,22 +142,26 @@ public final class GameData {
         DLogger.info("Loaded " + itemBlueprints.size() + " item blueprints.");
     }
 
-    private static void loadCreatureBlueprints() {
+    private static void loadCreaturePresets() {
 		ResourceReader resourceReader = new ResourceReader("creatures.txt");
         
         while (resourceReader.readNextElement()) {
-        	ID id = new ID(resourceReader.getValue("ID"));
-        	String type = resourceReader.getValue("TYPE");
-        	Name name = nameFromArray(resourceReader.getArrayOfValues("NAME"));
-        	int health = readIntegerFromResourceReader(resourceReader, "HEALTH");
-        	int attack = readIntegerFromResourceReader(resourceReader, "ATTACK");
-        	String attackAlgorithmID = resourceReader.getValue("ATTACK_ALGORITHM_ID");
-        	creatures.put(id, new Creature(id, type, name, health, attack, attackAlgorithmID));
+        	CreaturePreset preset = new CreaturePreset();
+        	preset.setID(new ID(resourceReader.getValue("ID")));
+        	preset.setType(resourceReader.getValue("TYPE"));
+        	preset.setName(nameFromArray(resourceReader.getArrayOfValues("NAME")));
+        	preset.setHealth(readIntegerFromResourceReader(resourceReader, "HEALTH"));
+        	preset.setAttack(readIntegerFromResourceReader(resourceReader, "ATTACK"));
+        	preset.setAttackAlgorithm(resourceReader.getValue("ATTACK_ALGORITHM_ID"));
+        	if (resourceReader.hasValue("ITEMS")) {
+        		preset.setItems(readIDList(resourceReader, "ITEMS"));
+        	}
+        	creaturesPresets.put(preset.getID(), preset);
         }
         
         resourceReader.close();
-        creatures = Collections.unmodifiableMap(creatures);
-        DLogger.info("Loaded " + creatures.size() + " creature blueprints.");
+        creaturesPresets = Collections.unmodifiableMap(creaturesPresets);
+        DLogger.info("Loaded " + creaturesPresets.size() + " creature blueprints.");
     }
 
     private static void loadLocationPresets() {
@@ -331,6 +337,14 @@ public final class GameData {
     	}
     	return set;
     }
+    
+    private static List<ID> readIDList(ResourceReader reader, String key) {
+    	List<ID> list = new ArrayList<ID>();
+    	for (String id : reader.getArrayOfValues(key)) {
+    		list.add(new ID(id));
+    	}
+    	return list;
+    }
 
     private static void loadLicense() {
         ResourceReader reader = new ResourceReader("license.txt");
@@ -349,8 +363,8 @@ public final class GameData {
     	reader.close();
     }
     
-    public static Map<ID, Creature> getCreatureModels() {
-    	return creatures;
+    public static Map<ID, CreaturePreset> getCreaturePresets() {
+    	return creaturesPresets;
     }
     
     public static Map<ID, ItemBlueprint> getItemBlueprints() {

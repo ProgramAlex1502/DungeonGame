@@ -3,16 +3,37 @@ package org.dungeon.creatures;
 import org.dungeon.game.Game;
 import org.dungeon.game.GameData;
 import org.dungeon.game.ID;
+import org.dungeon.io.DLogger;
+import org.dungeon.items.CreatureInventory.AdditionResult;
+import org.dungeon.items.Item;
+import org.dungeon.util.Constants;
 
 public class CreatureFactory {
 	
 	public static Creature makeCreature(ID id) {
-		Creature model = GameData.getCreatureModels().get(id);
-		if (model != null) {
-			Game.getGameState().getStatistics().getWorldStatistics().addSpawn(model.getName());
-			return new Creature(model);
+		CreaturePreset preset = GameData.getCreaturePresets().get(id);
+		if (preset != null) {
+			Game.getGameState().getStatistics().getWorldStatistics().addSpawn(preset.getName().getName());
+			Creature creature = new Creature(preset);
+			giveItems(creature, id);
+			return creature;
 		} else {
 			return null;
+		}
+	}
+	
+	public static Hero makeHero() {
+		Hero hero = new Hero(GameData.getCreaturePresets().get(Constants.HERO_ID));
+		giveItems(hero, Constants.HERO_ID);
+		return hero;
+	}
+	
+	private static void giveItems(Creature creature, ID id) {
+		for (ID itemID : GameData.getCreaturePresets().get(id).getItems()) {
+			AdditionResult result = creature.getInventory().addItem(new Item(GameData.getItemBlueprints().get(itemID)));
+			if (result != AdditionResult.SUCCESSFUL) {
+				DLogger.warning("Could not add " + itemID + " to " + id + "! Got " + result + ".");
+			}
 		}
 	}
 
