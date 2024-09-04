@@ -15,10 +15,12 @@ import java.util.Set;
 import org.dungeon.achievements.Achievement;
 import org.dungeon.achievements.AchievementBuilder;
 import org.dungeon.creatures.CreaturePreset;
+import org.dungeon.date.Date;
 import org.dungeon.io.DLogger;
 import org.dungeon.io.ResourceReader;
 import org.dungeon.items.Item;
 import org.dungeon.items.ItemBlueprint;
+import org.dungeon.items.ItemFactory;
 import org.dungeon.skill.SkillDefinition;
 import org.dungeon.stats.CauseOfDeath;
 import org.dungeon.stats.TypeOfCauseOfDeath;
@@ -28,6 +30,7 @@ import org.dungeon.util.StopWatch;
 public final class GameData {
 
     public static final Font FONT = getMonospacedFont();
+    private static final double CORPSE_HIT_RATE = 0.5;
     private static final PoetryLibrary poetryLibrary = new PoetryLibrary();
     private static final DreamLibrary dreamLibrary = new DreamLibrary();
     private static final HintLibrary hintLibrary = new HintLibrary();
@@ -173,13 +176,14 @@ public final class GameData {
     
     public static ItemBlueprint makeCorpseBlueprint(CreaturePreset preset) {
     	ItemBlueprint corpse = new ItemBlueprint();
-    	corpse.setID(new ID(preset.getID() + "_CORPSE"));
+    	corpse.setID(ItemFactory.makeCorpseIDFromCreatureID(preset.getID()));
     	corpse.setType("CORPSE");
     	corpse.setName(Name.newInstance(preset.getName().getName() + " Corpse"));
     	corpse.setWeight(preset.getWeight());
-    	corpse.setPutrefactionPeriod(24 * 60 * 60);
+    	corpse.setPutrefactionPeriod(Date.SECONDS_IN_DAY);
     	int integrity = (int) Math.ceil(preset.getHealth() / (double) 2);
     	corpse.setMaxIntegrity(integrity);
+    	corpse.setHitRate(CORPSE_HIT_RATE);
     	corpse.setCurIntegrity(integrity);
     	corpse.setIntegrityDecrementOnHit(5);
     	Set<Item.Tag> tags = new HashSet<Item.Tag>();

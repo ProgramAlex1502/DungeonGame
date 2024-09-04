@@ -1,5 +1,6 @@
 package org.dungeon.items;
 
+import org.dungeon.creatures.Creature;
 import org.dungeon.date.Date;
 import org.dungeon.game.GameData;
 import org.dungeon.game.ID;
@@ -13,6 +14,14 @@ public abstract class ItemFactory {
 		} else {
 			return null;
 		}
+	}
+	
+	public static Item makeCorpse(Creature creature, Date date) {
+		return makeItem(makeCorpseIDFromCreatureID(creature.getID()), date);
+	}
+	
+	public static ID makeCorpseIDFromCreatureID(ID id) {
+		return new ID(id + "_CORPSE");
 	}
 
 }
