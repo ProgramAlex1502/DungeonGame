@@ -2,6 +2,8 @@ package org.dungeon.items;
 
 import java.util.Set;
 
+import org.dungeon.date.Date;
+import org.dungeon.date.Period;
 import org.dungeon.game.Engine;
 import org.dungeon.game.Entity;
 import org.dungeon.game.Game;
@@ -11,25 +13,24 @@ import org.dungeon.util.Percentage;
 public class Item extends Entity {
 	private static final long serialVersionUID = 1L;
 	
-	public enum Tag { WEAPON, FOOD, CLOCK, BOOK, REPAIRABLE, WEIGHT_PROPORTIONAL_TO_INTEGRITY }
-	
 	private final Set<Tag> tags;
 	private final int maxIntegrity;
+	private final Date dateOfCreation;
+	private final long decompositionPeriod;
 	
-	private final Weight weight;
-
 	private int curIntegrity;
 	private WeaponComponent weaponComponent;
 	private FoodComponent foodComponent;
 	private ClockComponent clockComponent;
 	private BookComponent bookComponent;
 
-	public Item(ItemBlueprint bp) {
-		super(bp.id, bp.type, bp.name);
+	public Item(ItemBlueprint bp, Date date) {
+		super(bp.id, bp.type, bp.name, bp.weight);
 		
 		tags = bp.tags;
 		
-		weight = bp.weight;
+		dateOfCreation = date;
+		decompositionPeriod = bp.putrefactionPeriod;
 		
 		maxIntegrity = bp.maxIntegrity;
 		curIntegrity = bp.curIntegrity;
@@ -52,6 +53,7 @@ public class Item extends Entity {
 		}
 	}
 	
+	@Override
 	public Weight getWeight() {
 		if (hasTag(Tag.WEIGHT_PROPORTIONAL_TO_INTEGRITY)) {
 			Percentage integrityPercentage = new Percentage(curIntegrity / (double) maxIntegrity);
@@ -59,6 +61,11 @@ public class Item extends Entity {
 		} else {
 			return weight;
 		}
+	}
+	
+	public long getAge() {
+		Period existence = new Period(dateOfCreation, Game.getGameState().getWorld().getWorldDate());
+		return existence.getSeconds();
 	}
 	
 	public String getQualifiedName() {
@@ -131,26 +138,18 @@ public class Item extends Entity {
 	}
 	
 	String getIntegrityString() {
-		String weaponIntegrity;
-		
-		if (getCurIntegrity() == getMaxIntegrity()) {
-			weaponIntegrity = "";
-		} else if (getCurIntegrity() >= getMaxIntegrity() * 0.65) {
-			weaponIntegrity = "Slightly Damaged";
-		} else if (getCurIntegrity() >= getMaxIntegrity() * 0.3) {
-			weaponIntegrity = "Damaged";
-		} else if (getCurIntegrity() > 0) {
-			weaponIntegrity = "Severely Damaged";
-		} else {
-			weaponIntegrity = "Broken";
-		}
-		
-		return weaponIntegrity;
+		return IntegrityState.getIntegrityState(getCurIntegrity(), getMaxIntegrity()).toString();
 	}
 	
 	@Override
 	public String toString() {
 		return getName();
 	}
+	
+	public long getDecompositionPeriod() {
+		return decompositionPeriod;
+	}
+	
+	public enum Tag { WEAPON, FOOD, CLOCK, BOOK, DECOMPOSES, REPAIRABLE, WEIGHT_PROPORTIONAL_TO_INTEGRITY }
 
 }

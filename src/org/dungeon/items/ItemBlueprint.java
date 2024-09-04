@@ -27,7 +27,12 @@ public final class ItemBlueprint {
 	int nutrition;
 	int integrityDecrementOnEat;
 	
+	long putrefactionPeriod;
 	private ID skill;
+	
+	public void setPutrefactionPeriod(long putrefactionPeriod) {
+		this.putrefactionPeriod = putrefactionPeriod;
+	}
 	
 	public void setSkill(ID skill) {
 		this.skill = skill;

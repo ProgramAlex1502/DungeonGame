@@ -11,10 +11,8 @@ class ExplorationStatisticsEntry implements Serializable {
 	private int visitCount;
 	private int killCount;
 	
-	public ExplorationStatisticsEntry(ID locationID, int visitCount, int killCount) {
+	public ExplorationStatisticsEntry(ID locationID) {
 		this.locationID = locationID;
-		this.visitCount = visitCount;
-		this.killCount = killCount;
 	}
 	
 	public ID getLocationID() {

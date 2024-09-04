@@ -119,6 +119,9 @@ public final class GameData {
             blueprint.setType(reader.getValue("TYPE"));
             blueprint.setName(nameFromArray(reader.getArrayOfValues("NAME")));
             blueprint.setTags(itemTagSetFromArray(reader.getArrayOfValues("TAGS")));
+            if (reader.hasValue("DECOMPOSITION_PERIOD")) {
+            	blueprint.setPutrefactionPeriod(readIntegerFromResourceReader(reader, "DECOMPOSITION_PERIOD"));
+            }
             blueprint.setCurIntegrity(readIntegerFromResourceReader(reader, "CUR_INTEGRITY"));
             blueprint.setMaxIntegrity(readIntegerFromResourceReader(reader, "MAX_INTEGRITY"));
             blueprint.setWeight(Weight.newInstance(readDoubleFromResourceReader(reader, "WEIGHT")));
@@ -143,38 +146,39 @@ public final class GameData {
     }
 
     private static void loadCreaturePresets() {
-		ResourceReader resourceReader = new ResourceReader("creatures.txt");
+		ResourceReader reader = new ResourceReader("creatures.txt");
         
-        while (resourceReader.readNextElement()) {
+        while (reader.readNextElement()) {
         	CreaturePreset preset = new CreaturePreset();
-        	preset.setID(new ID(resourceReader.getValue("ID")));
-        	preset.setType(resourceReader.getValue("TYPE"));
-        	preset.setName(nameFromArray(resourceReader.getArrayOfValues("NAME")));
-        	preset.setHealth(readIntegerFromResourceReader(resourceReader, "HEALTH"));
-        	preset.setAttack(readIntegerFromResourceReader(resourceReader, "ATTACK"));
-        	preset.setAttackAlgorithm(resourceReader.getValue("ATTACK_ALGORITHM_ID"));
-        	if (resourceReader.hasValue("ITEMS")) {
-        		preset.setItems(readIDList(resourceReader, "ITEMS"));
+        	preset.setID(new ID(reader.getValue("ID")));
+        	preset.setType(reader.getValue("TYPE"));
+        	preset.setName(nameFromArray(reader.getArrayOfValues("NAME")));
+        	preset.setHealth(readIntegerFromResourceReader(reader, "HEALTH"));
+        	preset.setWeight(Weight.newInstance(readDoubleFromResourceReader(reader, "WEIGHT")));
+        	preset.setAttack(readIntegerFromResourceReader(reader, "ATTACK"));
+        	preset.setAttackAlgorithm(reader.getValue("ATTACK_ALGORITHM_ID"));
+        	if (reader.hasValue("ITEMS")) {
+        		preset.setItems(readIDList(reader, "ITEMS"));
         	}
         	creaturesPresets.put(preset.getID(), preset);
         }
         
-        resourceReader.close();
+        reader.close();
         creaturesPresets = Collections.unmodifiableMap(creaturesPresets);
         DLogger.info("Loaded " + creaturesPresets.size() + " creature blueprints.");
     }
 
     private static void loadLocationPresets() {
-        ResourceReader resourceReader = new ResourceReader("locations.txt");
-        while (resourceReader.readNextElement()) {
-        	ID id = new ID(resourceReader.getValue("ID"));
-        	String type = resourceReader.getValue("TYPE");
-        	Name name = nameFromArray(resourceReader.getArrayOfValues("NAME"));
+        ResourceReader reader = new ResourceReader("locations.txt");
+        while (reader.readNextElement()) {
+        	ID id = new ID(reader.getValue("ID"));
+        	String type = reader.getValue("TYPE");
+        	Name name = nameFromArray(reader.getArrayOfValues("NAME"));
         	LocationPreset preset = new LocationPreset(id, type, name);
-        	preset.setBlobSize(readIntegerFromResourceReader(resourceReader, "BLOB_SIZE"));
-        	preset.setLightPermittivity(readDoubleFromResourceReader(resourceReader, "LIGHT_PERMITTIVITY"));
-        	if (resourceReader.hasValue("SPAWNERS")) {
-        		for (String dungeonList : resourceReader.getArrayOfValues("SPAWNERS")) {
+        	preset.setBlobSize(readIntegerFromResourceReader(reader, "BLOB_SIZE"));
+        	preset.setLightPermittivity(readDoubleFromResourceReader(reader, "LIGHT_PERMITTIVITY"));
+        	if (reader.hasValue("SPAWNERS")) {
+        		for (String dungeonList : reader.getArrayOfValues("SPAWNERS")) {
         			String[] spawner = ResourceReader.toArray(dungeonList);
         			String spawnerID = spawner[0];
         			int population = Integer.parseInt(spawner[1]);
@@ -182,16 +186,16 @@ public final class GameData {
         			preset.addSpawner(new SpawnerPreset(spawnerID, population, delay));
         		}
         	}
-        	if (resourceReader.hasValue("ITEMS")) {
-        		for (String dungeonList : resourceReader.getArrayOfValues("ITEMS")) {
+        	if (reader.hasValue("ITEMS")) {
+        		for (String dungeonList : reader.getArrayOfValues("ITEMS")) {
         			String[] item = ResourceReader.toArray(dungeonList);
         			String itemID = item[0];
         			double frequency = Double.parseDouble(item[1]);
         			preset.addItem(itemID, frequency);
         		}
         	}
-        	if (resourceReader.hasValue("BLOCKED_ENTRANCES")) {
-        		for (String dungeonList : resourceReader.getArrayOfValues("BLOCKED_ENTRANCES")) {
+        	if (reader.hasValue("BLOCKED_ENTRANCES")) {
+        		for (String dungeonList : reader.getArrayOfValues("BLOCKED_ENTRANCES")) {
         			String[] entrances = ResourceReader.toArray(dungeonList);
         			for (String entrance : entrances) {
         				preset.block(Direction.fromAbbreviation(entrance));
@@ -200,7 +204,7 @@ public final class GameData {
         	}
         	locationPresets.put(preset.getID(), preset);
         }
-        resourceReader.close();
+        reader.close();
         
         locationPresets = Collections.unmodifiableMap(locationPresets);
         

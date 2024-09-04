@@ -9,6 +9,7 @@ import org.dungeon.achievements.Achievement;
 import org.dungeon.achievements.AchievementTracker;
 import org.dungeon.creatures.Creature;
 import org.dungeon.creatures.CreatureFactory;
+import org.dungeon.date.Date;
 import org.dungeon.game.Command;
 import org.dungeon.game.Game;
 import org.dungeon.game.GameData;
@@ -21,12 +22,12 @@ import org.dungeon.game.PartOfDay;
 import org.dungeon.game.Point;
 import org.dungeon.io.IO;
 import org.dungeon.items.Item;
-import org.dungeon.items.ItemBlueprint;
+import org.dungeon.items.ItemFactory;
 import org.dungeon.stats.CauseOfDeath;
 import org.dungeon.stats.ExplorationStatistics;
-import org.dungeon.util.Messenger;
 import org.dungeon.util.CounterMap;
 import org.dungeon.util.Matches;
+import org.dungeon.util.Messenger;
 import org.dungeon.util.Table;
 import org.dungeon.util.Utils;
 
@@ -190,14 +191,15 @@ public class DebugTools {
 		}
 		sb.append(Utils.padString("Luminosity:", WIDTH)).append(location.getLuminosity()).append('\n');
 		sb.append(Utils.padString("Permittivity:", WIDTH)).append(location.getLightPermittivity()).append('\n');
-		//TODO: Uncomment this : sb.append(Utils.padString("Blocked Entrances:", WIDTH)).append(location.getBlockedEntrances()).append('\n');
+		sb.append(Utils.padString("Blocked Entrances:", WIDTH)).append(location.getBlockedEntrances()).append('\n');
 		IO.writeString(sb.toString());
 	}
 
     private static void give(String itemID) {
-		ItemBlueprint bp = GameData.getItemBlueprints().get(new ID(itemID.toUpperCase()));
-        if (bp != null) {
-            if (Game.getGameState().getHero().addItem(new Item(bp))) {
+    	Date date = Game.getGameState().getWorld().getWorldDate();
+		Item item = ItemFactory.makeItem(new ID(itemID.toUpperCase()), date);
+        if (item != null) {
+            if (Game.getGameState().getHero().addItem(item)) {
                 return;
             }
         }

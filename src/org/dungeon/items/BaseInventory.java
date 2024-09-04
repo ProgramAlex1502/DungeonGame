@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dungeon.items.Item.Tag;
+
 public abstract class BaseInventory implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -23,6 +25,16 @@ public abstract class BaseInventory implements Serializable {
 	
 	boolean hasItem(Item itemObject) {
 		return items.contains(itemObject);
+	}
+	
+	public abstract void removeItem(Item item);
+	
+	public void refreshItems() {
+		for (Item item : items) {
+			if (item.hasTag(Tag.DECOMPOSES) && item.getAge() > item.getDecompositionPeriod()) {
+				removeItem(item);
+			}
+		}
 	}
 
 }

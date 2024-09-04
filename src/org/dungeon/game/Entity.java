@@ -9,18 +9,16 @@ public abstract class Entity implements Selectable, Serializable {
 	
 	protected final String type;
 	protected final Name name;
+	protected final Weight weight;
 	private final ID id;
 	private final Percentage visibility;
 	
-	protected Entity(ID id, String type, Name name) {
+	protected Entity(ID id, String type, Name name, Weight weight) {
 		this.id = id;
 		this.type = type;
 		this.name = name;
+		this.weight = weight;
 		this.visibility = new Percentage(0.3);
-	}
-	
-	protected Entity(Entity original) {
-		this (original.id, original.type, original.name);
 	}
 	
 	public ID getID() {
@@ -38,6 +36,10 @@ public abstract class Entity implements Selectable, Serializable {
 	
 	public String getQuantifiedName(int quantity) {
 		return name.getQuantifiedName(quantity, QuantificationMode.WORD);
+	}
+	
+	public Weight getWeight() {
+		return weight;
 	}
 	
 	public Percentage getVisibility() {

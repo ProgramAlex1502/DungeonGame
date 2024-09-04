@@ -1,9 +1,7 @@
 package org.dungeon.creatures;
 
 import org.dungeon.game.Entity;
-import org.dungeon.game.ID;
 import org.dungeon.game.Location;
-import org.dungeon.game.Name;
 import org.dungeon.io.IO;
 import org.dungeon.items.CreatureInventory;
 import org.dungeon.items.CreatureInventory.AdditionResult;
@@ -29,18 +27,11 @@ public class Creature extends Entity {
 	private Location location;
 	
 	public Creature(CreaturePreset preset) {
-		super(preset.getID(), preset.getType(), preset.getName());
+		super(preset.getID(), preset.getType(), preset.getName(), preset.getWeight());
 		maxHealth = preset.getHealth();
 		curHealth = preset.getHealth();
 		attack = preset.getAttack();
 		attackAlgorithm = preset.getAttackAlgorithm();
-	}
-	
-	public Creature(ID id, String type, Name name, int health, int attack, String attackAlgorithm) {
-		super(id, type, name);
-		maxHealth =	curHealth = health;
-		this.attackAlgorithm = attackAlgorithm;
-		this.attack = attack;
 	}
 	
 	SkillList getSkillList() {
