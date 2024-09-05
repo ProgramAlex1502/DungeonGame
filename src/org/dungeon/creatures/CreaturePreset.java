@@ -5,18 +5,20 @@ import java.util.List;
 
 import org.dungeon.game.ID;
 import org.dungeon.game.Name;
+import org.dungeon.game.TagSet;
 import org.dungeon.game.Weight;
 import org.dungeon.io.DLogger;
 
 public final class CreaturePreset {
 	
+	private final TagSet<Creature.Tag> tagSet = TagSet.makeEmptyTagSet(Creature.Tag.class);
 	private ID id;
 	private String type;
 	private Name name;
 	private Weight weight;
 	private int health;
 	private int attack;
-	private String attackAlgorithm;
+	private ID attackAlgorithmID;
 	private List<ID> items = new ArrayList<ID>();
 	
 	private static int validate(int value, int minimum, String attributeName) {
@@ -27,6 +29,18 @@ public final class CreaturePreset {
 			DLogger.warning(s);
 			return minimum;
 		}
+	}
+	
+	TagSet<Creature.Tag> getTagSet() {
+		return tagSet;
+	}
+	
+	public boolean hasTag(Creature.Tag corpse) {
+		return tagSet.hasTag(corpse);
+	}
+	
+	public void addTag(Creature.Tag tag) {
+		tagSet.addTag(tag);
 	}
 	
 	public ID getID() {
@@ -79,12 +93,12 @@ public final class CreaturePreset {
 		this.attack = attack;
 	}
 	
-	public String getAttackAlgorithm() {
-		return attackAlgorithm;
+	public ID getAttackAlgorithmID() {
+		return attackAlgorithmID;
 	}
 	
-	public void setAttackAlgorithm(String attackAlgorithm) {
-		this.attackAlgorithm = attackAlgorithm;
+	public void setAttackAlgorithmID(ID attackAlgorithmID) {
+		this.attackAlgorithmID = attackAlgorithmID;
 	}
 	
 	public List<ID> getItems() {

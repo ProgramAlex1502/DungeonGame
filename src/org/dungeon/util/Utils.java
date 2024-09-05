@@ -33,14 +33,6 @@ public final class Utils {
 	public static boolean startsWithIgnoreCase(String a, String b) {
 		return a.toLowerCase().startsWith(b.toLowerCase());
 	}
-
-	public static String makeRepeatedCharacterString(int repetitions, char character) {
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < repetitions; i++) {
-			builder.append(character);
-		}
-		return builder.toString();
-	}
 	
 	public static String[] split(String string) {
 		return string.split("\\s+");
@@ -73,18 +65,6 @@ public final class Utils {
 			sb.append(delimiter).append(elements[i]);
 		}
 		return sb.toString();
-	}
-	
-	public static String bytesToHuman(long bytes) {
-		if (bytes < 1024) {
-			return bytes + " B";
-		}
-		
-		int bitsUsed = 63 - Long.numberOfLeadingZeros(bytes);
-		double significand = (double) bytes / (1L << (bitsUsed - bitsUsed % 10));
-		char prefix = "kMGTPE".charAt(bitsUsed / 10 - 1);
-		
-		return String.format("%.1f %sB", significand, prefix);
 	}
 	
 	public static void printLicense() {

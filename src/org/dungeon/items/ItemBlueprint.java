@@ -1,21 +1,19 @@
 package org.dungeon.items;
 
-import java.util.Set;
-
 import org.dungeon.game.ID;
 import org.dungeon.game.Name;
+import org.dungeon.game.TagSet;
 import org.dungeon.game.Weight;
 import org.dungeon.items.Item.Tag;
 
 public final class ItemBlueprint {
 	
+	final TagSet<Item.Tag> tagSet = TagSet.makeEmptyTagSet(Item.Tag.class);
 	ID id;
 	String type;
 	Name name;
 	
 	Weight weight;
-	
-	Set<Item.Tag> tags;
 	
 	int maxIntegrity;
 	int curIntegrity;
@@ -28,6 +26,9 @@ public final class ItemBlueprint {
 	int integrityDecrementOnEat;
 	
 	long putrefactionPeriod;
+	
+	String text;
+	
 	private ID skill;
 	
 	public void setPutrefactionPeriod(long putrefactionPeriod) {
@@ -54,6 +55,10 @@ public final class ItemBlueprint {
 		this.type = type;
 	}
 	
+	public void setText(String text) {
+		this.text = text;
+	}
+	
 	public Name getName() {
 		return name;
 	}
@@ -66,12 +71,12 @@ public final class ItemBlueprint {
 		this.weight = weight;
 	}
 	
-	public Set<Item.Tag> getTags() {
-		return tags;
+	public boolean hasTag(Item.Tag tag) {
+		return tagSet.hasTag(tag);
 	}
 	
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
+	public void addTag(Tag tag) {
+		tagSet.addTag(tag);
 	}
 	
 	public int getMaxIntegrity() {

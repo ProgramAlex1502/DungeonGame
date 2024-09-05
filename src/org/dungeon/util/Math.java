@@ -7,6 +7,7 @@ import org.dungeon.io.IO;
 
 public class Math {
 	
+	private static final int SECOND_IN_NANOSECONDS = 1000000000;
 	private static final double DEFAULT_DOUBLE_TOLERANCE = 1e-8;
 	private static final String TIMEOUT = "TIMEOUT";
 	
@@ -63,7 +64,7 @@ public class Math {
 	}
 	
 	private static String fibonacci(int n) {
-		final long interruptTime = System.nanoTime() + 1000000000;
+		final long interruptTime = System.nanoTime() + SECOND_IN_NANOSECONDS;
 		
 		BigInteger a = BigInteger.ZERO;
 		BigInteger b = BigInteger.ONE;

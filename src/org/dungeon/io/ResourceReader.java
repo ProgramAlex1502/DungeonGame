@@ -128,7 +128,8 @@ public class ResourceReader implements Closeable {
 	}
 	
 	private void logRepeatedValue() {
-		DLogger.warning(filename, resourceParser.getLineNumber(), " repeats a value of its element!");
+		String message = " repeats a value of its element (first occurence was used)!";
+		DLogger.warning(filename, resourceParser.getLineNumber(), message);
 	}
 	
 	private void logMissingColon() {

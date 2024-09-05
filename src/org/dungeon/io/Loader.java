@@ -16,9 +16,8 @@ import org.dungeon.game.GameState;
 import org.dungeon.game.IssuedCommand;
 import org.dungeon.util.Messenger;
 import org.dungeon.util.Table;
-import org.dungeon.util.Utils;
 
-public class Loader {
+public final class Loader {
 	
 	private static final File SAVES_FOLDER = new File("saves/");
 	
@@ -29,6 +28,10 @@ public class Loader {
 	private static final String LOAD_CONFIRM = "Do you want to load the game?";
 	
 	private static final SimpleDateFormat LAST_MODIFIED_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	private Loader() {
+		throw new AssertionError();
+	}
 	
 	public static void printFilesInSavesFolder() {
 		File[] files = SAVES_FOLDER.listFiles();
@@ -41,11 +44,11 @@ public class Loader {
 					fileCount += 1;
 					byteCount += file.length();
 					Date lastModified = new Date(file.lastModified());
-					table.insertRow(file.getName(), Utils.bytesToHuman(file.length()), LAST_MODIFIED_FORMAT.format(lastModified));
+					table.insertRow(file.getName(), bytesToHuman(file.length()), LAST_MODIFIED_FORMAT.format(lastModified));
 				}
 				if (fileCount > 1) {
 					table.insertSeparator();
-					table.insertRow("Sum of these " + fileCount + " files", Utils.bytesToHuman(byteCount));
+					table.insertRow("Sum of these " + fileCount + " files", bytesToHuman(byteCount));
 				}
 				table.print();
 			} else {
@@ -61,7 +64,7 @@ public class Loader {
 	}
 	
 	private static boolean checkForDefaultSave() {
-		File defaultSave = new File(SAVES_FOLDER, DEFAULT_SAVE_NAME);
+		File defaultSave = createFileFromName(DEFAULT_SAVE_NAME);
 		return isSaveFile(defaultSave);
 	}
 	
@@ -95,7 +98,7 @@ public class Loader {
 	public static GameState loadGame() {
 		if (checkForDefaultSave()) {
 			if (confirmOperation(LOAD_CONFIRM)) {
-				return loadFile(new File(SAVES_FOLDER, DEFAULT_SAVE_NAME));
+				return loadFile(createFileFromName(DEFAULT_SAVE_NAME));
 			}
 		} else if (checkForAnySave()) {
 			if (confirmOperation(LOAD_CONFIRM)) {
@@ -118,7 +121,7 @@ public class Loader {
 		if (issuedCommand.hasArguments()) {
 			String argument = issuedCommand.getFirstArgument();
 			argument = ensureSaveEndsWithExtension(argument);
-			File save = new File(SAVES_FOLDER, argument);
+			File save = createFileFromName(argument);
 			if (isSaveFile(save)) {
 				return loadFile(save);
 			} else {
@@ -131,18 +134,16 @@ public class Loader {
 	}
 	
 	public static void saveGame(GameState gameState) {
-		if (confirmOperation(SAVE_CONFIRM)) {
-			saveFile(gameState, DEFAULT_SAVE_NAME);
-		}
+		saveFile(gameState, null);
 	}
 	
 	public static void saveGame(GameState gameState, IssuedCommand issuedCommand) {
-		if (issuedCommand.hasArguments()) {
-			if (confirmOperation(SAVE_CONFIRM)) {
-				saveFile(gameState, issuedCommand.getFirstArgument());
-			}
-		} else {
-			saveGame(gameState);
+		String saveName = DEFAULT_SAVE_NAME;
+		if (issuedCommand != null && issuedCommand.hasArguments()) {
+			saveName = issuedCommand.getFirstArgument();
+		}
+		if (saveFileDoesNotExist(saveName) || confirmOperation(SAVE_CONFIRM)) {
+			saveFile(gameState, saveName);
 		}
 	}
 	
@@ -155,7 +156,7 @@ public class Loader {
 			GameState loadedGameState = (GameState) objectInStream.readObject();
 			objectInStream.close();
 			String formatString = "Successfully loaded the game (read %s from %s).";
-			IO.writeString(String.format(formatString, Utils.bytesToHuman(file.length()), file.getName()));
+			IO.writeString(String.format(formatString, bytesToHuman(file.length()), file.getName()));
 			return loadedGameState;
 		} catch (Exception bad) {
 			IO.writeString("Could not load the saved game.");
@@ -163,9 +164,16 @@ public class Loader {
 		}
 	}
 	
+	private static boolean saveFileDoesNotExist(String name) {
+		return !createFileFromName(name).exists();
+	}
+	
+	private static File createFileFromName(String name) {
+		return new File(SAVES_FOLDER, ensureSaveEndsWithExtension(name));
+	}
+	
 	private static void saveFile(GameState state, String name) {
-		name = ensureSaveEndsWithExtension(name);
-		File file = new File(SAVES_FOLDER, name);
+		File file = createFileFromName(name);
 		FileOutputStream fileOutStream;
 		ObjectOutputStream objectOutStream;
 		try {
@@ -182,10 +190,21 @@ public class Loader {
 			state.setSaved(true);
 			long bytes = file.length();
 			String formatString = "Successfully saved the game (wrote %s to %s).";
-			IO.writeString(String.format(formatString, Utils.bytesToHuman(bytes), file.getName()));
+			IO.writeString(String.format(formatString, bytesToHuman(bytes), file.getName()));
 		} catch (IOException bad) {
 			IO.writeString("Could not save the game.");
 		}
+	}
+	
+	private static String bytesToHuman(long bytes) {
+		if (bytes < 1024) {
+			return bytes + " B";
+		}
+		
+		int bitsUsed = 63 - Long.numberOfLeadingZeros(bytes);
+		double significand = (double) bytes / (1L << (bitsUsed - bitsUsed % 10));
+		char prefix = "kMGTPE".charAt(bitsUsed / 10 - 1);
+		return String.format("%.1f %sB", significand, prefix);
 	}
 
 }

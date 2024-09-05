@@ -1,22 +1,21 @@
 package org.dungeon.items;
 
-import java.util.Set;
-
 import org.dungeon.date.Date;
 import org.dungeon.date.Period;
 import org.dungeon.game.Engine;
 import org.dungeon.game.Entity;
 import org.dungeon.game.Game;
+import org.dungeon.game.TagSet;
 import org.dungeon.game.Weight;
 import org.dungeon.util.Percentage;
 
 public class Item extends Entity {
 	private static final long serialVersionUID = 1L;
 	
-	private final Set<Tag> tags;
 	private final int maxIntegrity;
 	private final Date dateOfCreation;
 	private final long decompositionPeriod;
+	private final TagSet<Tag> tagSet;
 	
 	private int curIntegrity;
 	private WeaponComponent weaponComponent;
@@ -27,7 +26,7 @@ public class Item extends Entity {
 	public Item(ItemBlueprint bp, Date date) {
 		super(bp.id, bp.type, bp.name, bp.weight);
 		
-		tags = bp.tags;
+		tagSet = TagSet.copyTagSet(bp.tagSet);
 		
 		dateOfCreation = date;
 		decompositionPeriod = bp.putrefactionPeriod;
@@ -48,7 +47,7 @@ public class Item extends Entity {
 		}
 		
 		if (hasTag(Tag.BOOK)) {
-			bookComponent = new BookComponent(bp.getSkill());
+			bookComponent = new BookComponent(bp.getSkill(), bp.text);
 		}
 	}
 	
@@ -100,7 +99,7 @@ public class Item extends Entity {
 	}
 	
 	public boolean hasTag(Tag tag) {
-		return tags.contains(tag);
+		return tagSet.hasTag(tag);
 	}
 	
 	public WeaponComponent getWeaponComponent() {

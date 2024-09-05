@@ -17,6 +17,9 @@ public abstract class ItemFactory {
 	}
 	
 	public static Item makeCorpse(Creature creature, Date date) {
+		if (!creature.hasTag(Creature.Tag.CORPSE)) {
+			throw new AssertionError("Called makeCorpse for Creature that does not have the CORPSE tag!");
+		}
 		return makeItem(makeCorpseIDFromCreatureID(creature.getID()), date);
 	}
 	

@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.dungeon.achievements.Achievement;
 import org.dungeon.achievements.AchievementBuilder;
+import org.dungeon.creatures.Creature;
 import org.dungeon.creatures.CreaturePreset;
 import org.dungeon.date.Date;
 import org.dungeon.io.DLogger;
@@ -29,7 +30,6 @@ import org.dungeon.util.StopWatch;
 
 public final class GameData {
 
-    public static final Font FONT = getMonospacedFont();
     private static final int CORPSE_DAMAGE = 2;
     private static final int CORPSE_INTEGRITY_DECREMENT_ON_HIT = 5;
     private static final long CORPSE_PUTREFACTION_PERIOD = Date.SECONDS_IN_DAY;
@@ -37,13 +37,14 @@ public final class GameData {
     private static final PoetryLibrary poetryLibrary = new PoetryLibrary();
     private static final DreamLibrary dreamLibrary = new DreamLibrary();
     private static final HintLibrary hintLibrary = new HintLibrary();
+    private static final int FONT_SIZE = 15;
+    public static final Font FONT = getMonospacedFont();
     
     private static String tutorial = null;
     
     public static HashMap<ID, Achievement> ACHIEVEMENTS;
     
     public static String LICENSE;
-    private static Map<ID, CreaturePreset> creaturesPresets = new HashMap<ID, CreaturePreset>();
     private static Map<ID, ItemBlueprint> itemBlueprints = new HashMap<ID, ItemBlueprint>();
     private static Map<ID, SkillDefinition> skillDefinitions = new HashMap<ID, SkillDefinition>();
     private static Map<ID, LocationPreset> locationPresets = new HashMap<ID, LocationPreset>();
@@ -53,7 +54,6 @@ public final class GameData {
     }
 
     private static Font getMonospacedFont() {
-    	final int FONT_SIZE = 15;
     	Font font = new Font(Font.MONOSPACED, Font.PLAIN, FONT_SIZE);
     	
     	try {
@@ -124,7 +124,12 @@ public final class GameData {
         	blueprint.setID(new ID(reader.getValue("ID")));
             blueprint.setType(reader.getValue("TYPE"));
             blueprint.setName(nameFromArray(reader.getArrayOfValues("NAME")));
-            blueprint.setTags(itemTagSetFromArray(reader.getArrayOfValues("TAGS")));
+            for (Item.Tag tag : tagSetFromArray(Item.Tag.class, reader.getArrayOfValues("TAGS"))) {
+            	blueprint.addTag(tag);
+            }
+            if (blueprint.hasTag(Item.Tag.BOOK)) {
+            	blueprint.setText(reader.getValue("TEXT"));
+            }
             if (reader.hasValue("DECOMPOSITION_PERIOD")) {
             	blueprint.setPutrefactionPeriod(readIntegerFromResourceReader(reader, "DECOMPOSITION_PERIOD"));
             }
@@ -151,6 +156,7 @@ public final class GameData {
     }
 
     private static void loadCreaturePresets() {
+    	Map<ID, CreaturePreset> creaturePresetMap = new HashMap<ID, CreaturePreset>();
 		ResourceReader reader = new ResourceReader("creatures.txt");
         
         while (reader.readNextElement()) {
@@ -158,23 +164,30 @@ public final class GameData {
         	preset.setID(new ID(reader.getValue("ID")));
         	preset.setType(reader.getValue("TYPE"));
         	preset.setName(nameFromArray(reader.getArrayOfValues("NAME")));
+        	if (reader.hasValue("TAGS")) {
+        		for (Creature.Tag tag : tagSetFromArray(Creature.Tag.class, reader.getArrayOfValues("TAGS"))) {
+        			preset.addTag(tag);
+        		}
+        	}
         	preset.setHealth(readIntegerFromResourceReader(reader, "HEALTH"));
         	preset.setWeight(Weight.newInstance(readDoubleFromResourceReader(reader, "WEIGHT")));
         	preset.setAttack(readIntegerFromResourceReader(reader, "ATTACK"));
-        	preset.setAttackAlgorithm(reader.getValue("ATTACK_ALGORITHM_ID"));
+        	preset.setAttackAlgorithmID(new ID(reader.getValue("ATTACK_ALGORITHM_ID")));
         	if (reader.hasValue("ITEMS")) {
         		preset.setItems(readIDList(reader, "ITEMS"));
         	}
-        	creaturesPresets.put(preset.getID(), preset);
+        	creaturePresetMap.put(preset.getID(), preset);
         	
-        	ItemBlueprint corpse = makeCorpseBlueprint(preset);
-        	itemBlueprints.put(corpse.getID(), corpse);
+        	if (preset.hasTag(Creature.Tag.CORPSE)) {
+        		ItemBlueprint corpse = makeCorpseBlueprint(preset);        		
+        		itemBlueprints.put(corpse.getID(), corpse);
+        	}
         }
         
         reader.close();
         itemBlueprints = Collections.unmodifiableMap(itemBlueprints);
-        creaturesPresets = Collections.unmodifiableMap(creaturesPresets);
-        DLogger.info("Loaded " + creaturesPresets.size() + " creature blueprints.");
+        creaturePresetMap = Collections.unmodifiableMap(creaturePresetMap);
+        DLogger.info("Loaded " + creaturePresetMap.size() + " creature blueprints.");
     }
     
     public static ItemBlueprint makeCorpseBlueprint(CreaturePreset preset) {
@@ -190,11 +203,9 @@ public final class GameData {
     	corpse.setHitRate(CORPSE_HIT_RATE);
     	corpse.setIntegrityDecrementOnHit(CORPSE_INTEGRITY_DECREMENT_ON_HIT);
     	corpse.setDamage(CORPSE_DAMAGE);
-    	Set<Item.Tag> tags = new HashSet<Item.Tag>();
-    	tags.add(Item.Tag.WEAPON);
-    	tags.add(Item.Tag.WEIGHT_PROPORTIONAL_TO_INTEGRITY);
-    	tags.add(Item.Tag.DECOMPOSES);
-    	corpse.setTags(tags);
+    	corpse.addTag(Item.Tag.WEAPON);
+    	corpse.addTag(Item.Tag.WEIGHT_PROPORTIONAL_TO_INTEGRITY);
+    	corpse.addTag(Item.Tag.DECOMPOSES);
     	return corpse;
     }
 
@@ -354,12 +365,12 @@ public final class GameData {
     	}
     }
     
-    private static Set<Item.Tag> itemTagSetFromArray(String[] strings) {
-    	Set<Item.Tag> set = new HashSet<Item.Tag>();
+    private static <E extends Enum<E>> Set<E> tagSetFromArray(Class<E> enumClass, String[] strings) {
+    	Set<E> set = EnumSet.noneOf(enumClass);
     	if (strings.length > 0) {
     		for (String tag : strings) {
     			try {
-    				set.add(Item.Tag.valueOf(tag));
+    				set.add(Enum.valueOf(enumClass, tag));
     			} catch (IllegalArgumentException fatal) {
     				String message = "Invalid tag '" + tag + "' found!";
     				DLogger.warning(message);
@@ -395,10 +406,6 @@ public final class GameData {
     	reader.readNextElement();
     	tutorial = reader.getValue("TUTORIAL");
     	reader.close();
-    }
-    
-    public static Map<ID, CreaturePreset> getCreaturePresets() {
-    	return creaturesPresets;
     }
     
     public static Map<ID, ItemBlueprint> getItemBlueprints() {

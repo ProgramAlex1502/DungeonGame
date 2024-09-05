@@ -22,6 +22,14 @@ public class Table {
 		}
 	}
 	
+	private static String makeRepeatedCharacterString(int repetitions, char character) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < repetitions; i++) {
+			builder.append(character);
+		}
+		return builder.toString();
+	}
+	
 	public void insertRow(String... values) {
 		int columnCount = columns.size();
 		if (values.length <= columnCount) {
@@ -121,7 +129,7 @@ public class Table {
 	}
 	
 	private void appendHorizontalSeparator(StringBuilder stringBuilder, int columnWidth, int columnCount) {
-		String pseudoValue = Utils.makeRepeatedCharacterString(columnWidth, HORIZONTAL_BAR);
+		String pseudoValue = makeRepeatedCharacterString(columnWidth, HORIZONTAL_BAR);
 		String[] pseudoRow = new String[columnCount];
 		Arrays.fill(pseudoRow, pseudoValue);
 		appendRow(stringBuilder, columnWidth, pseudoRow);
