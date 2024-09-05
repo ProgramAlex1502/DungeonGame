@@ -42,7 +42,7 @@ import org.dungeon.util.Utils;
 public class Hero extends Creature {
 	private static final long serialVersionUID = 1L;
 	
-	private static final int DREAM_DURATION_IN_SECONDS = 4 * (int) Date.SECONDS_IN_HOUR;
+	private static final int DREAM_DURATION_IN_SECONDS = 4 * Date.SECONDS_IN_HOUR;
 	private static final int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
 	private static final int SECONDS_TO_LOOK_AT_THE_COVER_OF_A_BOOK = 6;
 	private static final int SECONDS_TO_PICK_UP_AN_ITEM = 10;
@@ -52,10 +52,12 @@ public class Hero extends Creature {
 	private static final int SECONDS_TO_DROP_AN_ITEM = 2;
 	private static final int SECONDS_TO_UNEQUIP = 4;
 	private static final int SECONDS_TO_EQUIP = 6;
+	private static final int SECONDS_TO_MILK_A_CREATURE = 45;
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
 	private static final Percentage LUMINOSITY_TO_SEE_ADJACENT_LOCATIONS = new Percentage(0.4);
 	private static final int BATTLE_TURN_DURATION = 30;
 	private static final int HEAL_TEN_PERCENT = 3600;
+	private static final int MILK_NUTRITION = 12;
 	
 	private final AchievementTracker achievementTracker = new AchievementTracker();
 	private final Date dateOfBirth;
@@ -68,6 +70,16 @@ public class Hero extends Creature {
 	
 	public AchievementTracker getAchievementTracker() {
 		return achievementTracker;
+	}
+	
+	private void addHealth(int amount) {
+		int sum = amount + getCurHealth();
+		if (sum > getMaxHealth()) {
+			setCurHealth(getMaxHealth());
+			IO.writeString("You are completely healed.");
+		} else {
+			setCurHealth(sum);
+		}
 	}
 	
 	private boolean isCompletelyHealed() {
@@ -108,11 +120,11 @@ public class Hero extends Creature {
 			int remainingSeconds = seconds;
 			while (remainingSeconds > 0) {
 				if (remainingSeconds > DREAM_DURATION_IN_SECONDS) {
-					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * DREAM_DURATION_IN_SECONDS / (int) Date.SECONDS_IN_HOUR);
+					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * DREAM_DURATION_IN_SECONDS / Date.SECONDS_IN_HOUR);
 					IO.writeString(GameData.getDreamLibrary().getNextDream());
 					remainingSeconds -= DREAM_DURATION_IN_SECONDS;
 				} else {
-					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * remainingSeconds / (int) Date.SECONDS_IN_HOUR);
+					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * remainingSeconds / Date.SECONDS_IN_HOUR);
 					break;
 				}
 			}
@@ -134,6 +146,15 @@ public class Hero extends Creature {
 			}
 		}
 		return false;
+	}
+	
+	private boolean checkForCreatureVisibilityWarningIfFalse() {
+		if (canSeeACreature()) {
+			return true;
+		} else {
+			IO.writeString("You do not see a possible target.");
+			return false;
+		}
 	}
 	
 	private boolean canSeeAnItem() {
@@ -161,6 +182,16 @@ public class Hero extends Creature {
 	
 	private <T extends Entity> Matches<T> filterByVisibility(Matches<T> matches) {
 		return Matches.fromCollection(filterByVisibility(matches.toList()));
+	}
+	
+	private List<Creature> filterByTag(List<Creature> list, Creature.Tag tag) {
+		List<Creature> visible = new ArrayList<Creature>();
+		for (Creature candidate : list) {
+			if (candidate.hasTag(tag)) {
+				visible.add(candidate);
+			}
+		}
+		return visible;
 	}
 	
 	public void look(Direction walkedInFrom) {
@@ -295,13 +326,11 @@ public class Hero extends Creature {
 	}
 	
 	public int attackTarget(IssuedCommand issuedCommand) {
-		if (canSeeACreature()) {
+		if (checkForCreatureVisibilityWarningIfFalse()) {
 			Creature target = selectTarget(issuedCommand);
 			if (target != null) {
 				return Engine.battle(this, target) * BATTLE_TURN_DURATION;
 			}
-		} else {
-			IO.writeString("You do not see a possible target.");
 		}
 		return 0;
 	}
@@ -430,10 +459,11 @@ public class Hero extends Creature {
 			if (selectedItem.hasTag(Item.Tag.FOOD)) {
 				FoodComponent food = selectedItem.getFoodComponent();
 				double remainingBites = selectedItem.getCurIntegrity() / (double) food.getIntegrityDecrementOnEat();
+				int healthIncrement;
 				if (remainingBites >= 1.0) {
-					addHealth(food.getNutrition());
+					healthIncrement = food.getNutrition();
 				} else {
-					addHealth((int) (food.getNutrition() * remainingBites));
+					healthIncrement = (int) (food.getNutrition() * remainingBites);
 				}
 				selectedItem.decrementIntegrity(food.getIntegrityDecrementOnEat());
 				if (selectedItem.isBroken() && !selectedItem.hasTag(Item.Tag.REPAIRABLE)) {
@@ -442,15 +472,47 @@ public class Hero extends Creature {
 				} else {
 					IO.writeString("You ate a bit of " + selectedItem.getName() + ".");
 				}
-				if (isCompletelyHealed()) {
-					IO.writeString("You are completely healed.");
-				}
+				addHealth(healthIncrement);
 				return SECONDS_TO_EAT_AN_ITEM;
 			} else {
 				IO.writeString("You can only eat food.");
 			}
 		}
 		return 0;
+	}
+	
+	public int parseMilk(IssuedCommand issuedCommand) {
+		if (checkForCreatureVisibilityWarningIfFalse()) {
+			if (issuedCommand.hasArguments()) {
+				Creature selectedCreature = selectTarget(issuedCommand);
+				if (selectedCreature != null) {
+					if (selectedCreature.hasTag(Creature.Tag.MILKABLE)) {
+						return milk(selectedCreature);
+					} else {
+						IO.writeString("This creature is not milkable.");
+					}
+				}
+			} else {
+				List<Creature> visibleCreatures = filterByVisibility(getLocation().getCreatures());
+				List<Creature> milkableCreatures = filterByTag(visibleCreatures, Tag.MILKABLE);
+				if (milkableCreatures.isEmpty()) {
+					IO.writeString("You can't find a milkable creature.");
+				} else {
+					if (Matches.fromCollection(milkableCreatures).getDifferentNames() == 1) {
+						return milk(milkableCreatures.get(0));
+					} else {
+						IO.writeString("You need to be more specific.");
+					}
+				}
+			}
+		}
+		return 0;
+	}
+	
+	private int milk(Creature creature) {
+		IO.writeString("You drink milk directly from " + creature.getName().getSingular() + ".");
+		addHealth(MILK_NUTRITION);
+		return SECONDS_TO_MILK_A_CREATURE;
 	}
 	
 	public int readItem(IssuedCommand issuedCommand) {

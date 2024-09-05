@@ -15,6 +15,10 @@ public class Math {
 		throw new AssertionError();
 	}
 	
+	public static double weightedAverage(double a, double b, Percentage bContribution) {
+		return a + (b - a) * bContribution.toDouble();
+	}
+	
 	public static double mean(double... values) {
 		double sum = 0;
 		for (double value : values) {

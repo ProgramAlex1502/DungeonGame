@@ -15,6 +15,7 @@ import org.dungeon.game.Game;
 import org.dungeon.game.GameState;
 import org.dungeon.game.IssuedCommand;
 import org.dungeon.util.Messenger;
+import org.dungeon.util.StopWatch;
 import org.dungeon.util.Table;
 
 public final class Loader {
@@ -148,6 +149,7 @@ public final class Loader {
 	}
 	
 	private static GameState loadFile(File file) {
+		StopWatch stopWatch = new StopWatch();
 		FileInputStream fileInStream;
 		ObjectInputStream objectInStream;
 		try {
@@ -155,8 +157,9 @@ public final class Loader {
 			objectInStream = new ObjectInputStream(fileInStream);
 			GameState loadedGameState = (GameState) objectInStream.readObject();
 			objectInStream.close();
-			String formatString = "Successfully loaded the game (read %s from %s).";
-			IO.writeString(String.format(formatString, bytesToHuman(file.length()), file.getName()));
+			String sizeString = bytesToHuman(file.length());
+			DLogger.info(String.format("Loaded %s in %s.", sizeString, stopWatch.toString()));
+			IO.writeString(String.format("Successfully loaded the game (read %s from %s).", sizeString, file.getName()));
 			return loadedGameState;
 		} catch (Exception bad) {
 			IO.writeString("Could not load the saved game.");
@@ -173,6 +176,7 @@ public final class Loader {
 	}
 	
 	private static void saveFile(GameState state, String name) {
+		StopWatch stopWatch = new StopWatch();
 		File file = createFileFromName(name);
 		FileOutputStream fileOutStream;
 		ObjectOutputStream objectOutStream;
@@ -188,9 +192,9 @@ public final class Loader {
 			objectOutStream.writeObject(state);
 			objectOutStream.close();
 			state.setSaved(true);
-			long bytes = file.length();
-			String formatString = "Successfully saved the game (wrote %s to %s).";
-			IO.writeString(String.format(formatString, bytesToHuman(bytes), file.getName()));
+			String sizeString = bytesToHuman(file.length());
+			DLogger.info(String.format("Saved %s in %s.", sizeString, stopWatch.toString()));
+			IO.writeString(String.format("Successfully saved the game (wrote %s to %s).", sizeString, file.getName()));
 		} catch (IOException bad) {
 			IO.writeString("Could not save the game.");
 		}

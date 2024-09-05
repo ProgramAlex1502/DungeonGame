@@ -45,6 +45,7 @@ public class GameWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int ROWS = 30;
+	private static final String WINDOW_TITLE = "Dungeon";
 
 	private static final int MARGIN = 5;
 	private final SimpleAttributeSet attributeSet = new SimpleAttributeSet();
@@ -112,7 +113,7 @@ public class GameWindow extends JFrame {
 		c.insets = new Insets(0, MARGIN, MARGIN, MARGIN);
 		panel.add(textField, c);
 		
-		setTitle(Constants.NAME);
+		setTitle(WINDOW_TITLE);
 		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -177,8 +178,7 @@ public class GameWindow extends JFrame {
 		if (!text.isEmpty()) {
 			clearTextField();
 			setIdle(false);
-			@SuppressWarnings("rawtypes")
-			SwingWorker inputRenderer = new SwingWorker<Void, Void>() {
+			SwingWorker<Void, Void> inputRenderer = new SwingWorker<Void, Void>() {
 				@Override
 				protected Void doInBackground() {
 					Game.renderTurn(new IssuedCommand(text));
@@ -228,7 +228,7 @@ public class GameWindow extends JFrame {
 		writeToTextPane(string, color, textPane.getBackground(), scrollDown);
 	}
 	
-	void writeToTextPane(String string, Color fore, Color back, boolean scrollDown) {
+	private void writeToTextPane(String string, Color fore, Color back, boolean scrollDown) {
 		StyleConstants.setForeground(attributeSet, fore);
 		StyleConstants.setBackground(attributeSet, back);
 		

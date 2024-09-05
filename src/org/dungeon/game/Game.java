@@ -24,7 +24,6 @@ public class Game {
 	private static List<Command> commandList;
 	
 	public static void main(String[] args) {
-		DLogger.initialize();
 		GameData.loadGameData();
 		initializeCommands();
 		gameWindow = new GameWindow();
@@ -161,6 +160,12 @@ public class Game {
 	    		Point heroPosition = gameState.getHeroPosition();
 	    		WorldMap map = new WorldMap(world, explorationStatistics, heroPosition);
 	    		IO.writeString(map.toString());
+	    	}
+	    });
+	    commandList.add(new Command("milk", "Attempts to milk a creature.") {
+	    	@Override
+	    	public void execute(IssuedCommand issuedCommand) {
+	    		turnResult.turnLength = gameState.getHero().parseMilk(issuedCommand);
 	    	}
 	    });
 	    commandList.add(new Command("new", "Starts a new game.") {
@@ -304,7 +309,9 @@ public class Game {
 			IO.writeString("You died.");
 			gameState = Loader.loadGame(null);
 		} else {
-			gameState.getWorld().rollDate(turnResult.turnLength);
+			if (turnResult.turnLength > 0) {
+				gameState.getWorld().rollDate(turnResult.turnLength);
+			}
 			Engine.refresh();
 			if (turnResult.gameStateChanged()) {
 				gameState.setSaved(false);

@@ -86,7 +86,7 @@ public final class Utils {
 		}
 	}
 	
-	public static String enumerate(@SuppressWarnings("rawtypes") final List list) {
+	public static String enumerate(final List<?> list) {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < list.size(); i++) {
 			stringBuilder.append(list.get(i).toString());

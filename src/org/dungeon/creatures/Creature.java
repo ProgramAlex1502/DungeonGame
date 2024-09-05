@@ -90,15 +90,6 @@ public class Creature extends Entity {
 		this.location = location;
 	}
 	
-	void addHealth(int amount) {
-		int sum = amount + getCurHealth();
-		if (sum > getMaxHealth()) {
-			setCurHealth(getMaxHealth());
-		} else {
-			setCurHealth(sum);
-		}
-	}
-	
 	public CauseOfDeath hit(Creature target) {
 		return AttackAlgorithms.renderAttack(this, target);
 	}
@@ -159,6 +150,6 @@ public class Creature extends Entity {
 		return attackAlgorithmID;
 	}
 	
-	public enum Tag { CORPSE }
+	public enum Tag { MILKABLE, CORPSE }
 
 }

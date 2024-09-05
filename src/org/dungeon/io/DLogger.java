@@ -9,28 +9,26 @@ import java.util.logging.Logger;
 
 import org.dungeon.util.Messenger;
 
-public class DLogger {
+public final class DLogger {
 	
 	private static final String LOG_FILE_PATH = "logs/";
 	private static final String LOG_FILE_NAME = "log.txt";
 	private static Logger logger;
 	
-	private DLogger() {
-		
+	static {
+		try {
+			logger = Logger.getLogger("org.dungeon");
+			Handler handler = new FileHandler(getLogFilePath(), true);
+			handler.setFormatter(new DFormatter());
+			logger.setUseParentHandlers(false);
+			logger.addHandler(handler);
+			logger.setLevel(Level.ALL);
+		} catch (IOException ignored) {
+		}
 	}
 	
-	public static void initialize() {
-		if (logger == null) {
-			try {
-				logger = Logger.getLogger("org.dungeon");
-				Handler handler = new FileHandler(getLogFilePath(), true);
-				handler.setFormatter(new DFormatter());
-				logger.setUseParentHandlers(false);
-				logger.addHandler(handler);
-				logger.setLevel(Level.ALL);
-			} catch (IOException ignored) {
-			}
-		}
+	private DLogger() {
+		throw new AssertionError();
 	}
 	
 	public static void info(String message) {

@@ -33,7 +33,7 @@ import org.dungeon.util.Utils;
 
 public class DebugTools {
 	
-	private static List<Command> commands = new ArrayList<Command>();
+	private static final List<Command> commands = new ArrayList<Command>();
 	private static boolean uninitialized = true;
 	
 	public static void parseDebugCommand(IssuedCommand issuedCommand) {
@@ -113,7 +113,7 @@ public class DebugTools {
 		});
 		commands.add(new Command("tomorrow") {
 			public void execute(IssuedCommand issuedCommand) {
-				Game.getGameState().getWorld().rollDate((int) Date.SECONDS_IN_DAY);
+				Game.getGameState().getWorld().rollDate(Date.SECONDS_IN_DAY);
 				IO.writeString("A day has passed.");
 			}
 		});
@@ -232,7 +232,7 @@ public class DebugTools {
     	}
     }
 
-    public static void printIsSaved() {
+    private static void printIsSaved() {
         if (Game.getGameState().isSaved()) {
             IO.writeString("The game is saved.");
         } else {
@@ -240,7 +240,7 @@ public class DebugTools {
         }
     }
     
-    public static void wait(IssuedCommand issuedCommand) {
+    private static void wait(IssuedCommand issuedCommand) {
     	if (issuedCommand.getTokenCount() >= 3) {
     		int seconds = 0;
     		boolean gotSeconds = false;
@@ -260,15 +260,23 @@ public class DebugTools {
     			}
     		}
     		if (gotSeconds) {
-    			Game.getGameState().getWorld().rollDate(seconds);
-    			IO.writeString("Waited for " + seconds + " seconds.");
+    			rollDate(seconds);
     		}
     	} else {
     		Messenger.printMissingArgumentsMessage();
     	}
     }
+    
+    private static void rollDate(int seconds) {
+    	if (seconds > 0) {
+    		Game.getGameState().getWorld().rollDate(seconds);
+    		IO.writeString("Waited for " + seconds + " seconds.");
+    	} else {
+    		IO.writeString("The amount of seconds should be positive!");
+    	}
+    }
 
-    public static void printTime() {
+    private static void printTime() {
         IO.writeString(Game.getGameState().getWorld().getWorldDate().toTimeString());
     }
 
