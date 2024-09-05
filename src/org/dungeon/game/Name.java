@@ -23,14 +23,23 @@ public final class Name implements Serializable {
 		return new Name(singular, plural);
 	}
 	
-	public String getName() {
+	public static Name newCorpseName(Name creatureName) {
+		return newInstance(creatureName.getSingular() + " Corpse");
+	}
+	
+	public String getSingular() {
 		return singular;
 	}
 	
+	public String getQuantifiedName(int quantity) {
+		return getQuantifiedName(quantity, QuantificationMode.WORD);
+	}
+	
 	public String getQuantifiedName(int quantity, QuantificationMode mode) {
-		String name = null;
+		String name;
 		if (quantity < 0) {
 			DLogger.warning("Called getQuantifiedName with nonpositive quantity.");
+			throw new AssertionError("Negative quantity passed to getQuantifiedName()!");
 		} else if (quantity == 1) {
 			name = singular;
 		} else {
@@ -40,7 +49,12 @@ public final class Name implements Serializable {
 		if (mode == QuantificationMode.NUMBER) {
 			number = String.valueOf(quantity);
 		} else {
-			number = Numeral.getCorrespondingNumeral(quantity).toString().toLowerCase();
+			Numeral correspondingNumeral = Numeral.getCorrespondingNumeral(quantity);
+			if (correspondingNumeral == null) {
+				throw new AssertionError("Numeral.getCorrespondingNumeral() returned null!");
+			} else {
+				number = correspondingNumeral.toString().toLowerCase();
+			}
 		}
 		return number + " " + name;
 	}
@@ -72,6 +86,10 @@ public final class Name implements Serializable {
 		int result = singular != null ? singular.hashCode() : 0;
 		result = 31 * result + (plural != null ? plural.hashCode() : 0);
 		return result;
+	}
+	
+	public String toString() {
+		return getSingular();
 	}
 
 }

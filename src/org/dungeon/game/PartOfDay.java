@@ -15,14 +15,14 @@ public enum PartOfDay implements Selectable {
 	EVENING("Evening", 0.4, 19),
 	MIDNIGHT("Midnight", 0.2, 23);
 	
-	private final String stringRepresentation;
+	private final Name name;
 	
 	private Percentage luminosity;
 	
 	private int startingHour;
 	
-	PartOfDay(String stringRepresentation, double luminosity, int startingHour) {
-		this.stringRepresentation = stringRepresentation;
+	PartOfDay(String name, double luminosity, int startingHour) {
+		this.name = Name.newInstance(name);
 		this.luminosity = new Percentage(luminosity);
 		setStartingHour(startingHour);
 	}
@@ -67,13 +67,13 @@ public enum PartOfDay implements Selectable {
 	}
 	
 	@Override
-	public String getName() {
-		return toString();
+	public Name getName() {
+		return name;
 	}
 	
 	@Override
 	public String toString() {
-		return stringRepresentation;
+		return name.toString();
 	}
 
 }

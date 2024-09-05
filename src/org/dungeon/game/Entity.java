@@ -30,12 +30,8 @@ public abstract class Entity implements Selectable, Serializable {
 	}
 	
 	@Override
-	public String getName() {
-		return name.getName();
-	}
-	
-	public String getQuantifiedName(int quantity) {
-		return name.getQuantifiedName(quantity, QuantificationMode.WORD);
+	public Name getName() {
+		return name;
 	}
 	
 	public Weight getWeight() {

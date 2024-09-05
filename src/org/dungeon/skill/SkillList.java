@@ -37,7 +37,7 @@ public class SkillList implements Serializable {
 	
 	public void printSkillList() {
 		for (Skill skill : skillList) {
-			IO.writeString(skill.getName());
+			IO.writeString(skill.getName().getSingular());
 		}
 	}
 	

@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import org.dungeon.creatures.Creature;
 import org.dungeon.game.ID;
+import org.dungeon.game.Name;
 import org.dungeon.game.Selectable;
 import org.dungeon.io.IO;
 import org.dungeon.items.Item;
@@ -72,7 +73,7 @@ public class Skill implements Selectable, Serializable {
 	}
 	
 	@Override
-	public String getName() {
+	public Name getName() {
 		return definition.name;
 	}
 

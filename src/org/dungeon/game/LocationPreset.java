@@ -36,8 +36,8 @@ public final class LocationPreset implements Serializable {
 		return type;
 	}
 	
-	public String getName() {
-		return name.getName();
+	public Name getName() {
+		return name;
 	}
 	
 	public List<SpawnerPreset> getSpawners() {

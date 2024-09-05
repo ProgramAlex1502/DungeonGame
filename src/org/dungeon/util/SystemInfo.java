@@ -4,7 +4,11 @@ import java.util.Date;
 
 import org.dungeon.io.IO;
 
-public class SystemInfo {
+public final class SystemInfo {
+	
+	private SystemInfo() {
+		throw new AssertionError();
+	}
 	
 	public static void printSystemInfo() {
 		Date currentDate = new Date();
@@ -20,7 +24,11 @@ public class SystemInfo {
 	}
 	
 	private static String getOSVersionString() {
-		return String.format("%s (%s) %s", System.getProperty("os.name"), System.getProperty("os.arch"), System.getProperty("os.version"));
+		String name = System.getProperty("os.name");
+		String arch = System.getProperty("os.arch");
+		String version = System.getProperty("os.version");
+		return String.format("%s (%s) %s", name, arch, version);
+		
 	}
 
 }

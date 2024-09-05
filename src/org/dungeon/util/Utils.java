@@ -134,7 +134,7 @@ public final class Utils {
 		List<T> listOfMatches = new ArrayList<T>();
 		double maximumSimilarity = 1e-6;
 		for (T candidate : collection) {
-			String[] titleWords = split(candidate.getName());
+			String[] titleWords = split(candidate.getName().getSingular());
 			int matches = countMatches(tokens, titleWords);
 			if (!complete || matches == tokens.length) {
 				double matchesOverTitleWords = matches / (double) titleWords.length;

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.dungeon.game.Name;
 import org.dungeon.game.Selectable;
 
 public class Matches<T extends Selectable> {
@@ -41,7 +42,7 @@ public class Matches<T extends Selectable> {
 		return new ArrayList<T>(matches);
 	}
 	
-	public boolean hasMatchWithName(String name) {
+	public boolean hasMatchWithName(Name name) {
 		for (T match : matches) {
 			if (match.getName().equals(name)) {
 				return true;
@@ -62,7 +63,7 @@ public class Matches<T extends Selectable> {
 	}
 	
 	private void updateDifferentNamesCount() {
-		HashSet<String> uniqueNames = new HashSet<String>();
+		HashSet<Name> uniqueNames = new HashSet<Name>();
 		for (T match : matches) {
 			uniqueNames.add(match.getName());
 		}

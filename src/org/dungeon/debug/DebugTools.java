@@ -159,7 +159,7 @@ public class DebugTools {
 		ExplorationStatistics explorationStatistics = Game.getGameState().getStatistics().getExplorationStatistics();
 		Table table = new Table("Name", "Kills", "Visited so far", "Maximum number of visits");
 		for (Entry<ID, LocationPreset> entry : GameData.getLocationPresets().entrySet()) {
-			String name = entry.getValue().getName();
+			String name = entry.getValue().getName().getSingular();
 			String kills = String.valueOf(explorationStatistics.getKillCount(entry.getKey()));
 			String visitedSoFar = String.valueOf(explorationStatistics.getVisitedLocations(entry.getKey()));
 			String maximumNumberOfVisits = String.valueOf(explorationStatistics.getMaximumNumberOfVisits(entry.getKey()));

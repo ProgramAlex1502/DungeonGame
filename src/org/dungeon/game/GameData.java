@@ -30,6 +30,9 @@ import org.dungeon.util.StopWatch;
 public final class GameData {
 
     public static final Font FONT = getMonospacedFont();
+    private static final int CORPSE_DAMAGE = 2;
+    private static final int CORPSE_INTEGRITY_DECREMENT_ON_HIT = 5;
+    private static final long CORPSE_PUTREFACTION_PERIOD = Date.SECONDS_IN_DAY;
     private static final double CORPSE_HIT_RATE = 0.5;
     private static final PoetryLibrary poetryLibrary = new PoetryLibrary();
     private static final DreamLibrary dreamLibrary = new DreamLibrary();
@@ -178,14 +181,15 @@ public final class GameData {
     	ItemBlueprint corpse = new ItemBlueprint();
     	corpse.setID(ItemFactory.makeCorpseIDFromCreatureID(preset.getID()));
     	corpse.setType("CORPSE");
-    	corpse.setName(Name.newInstance(preset.getName().getName() + " Corpse"));
+    	corpse.setName(Name.newCorpseName(preset.getName()));
     	corpse.setWeight(preset.getWeight());
-    	corpse.setPutrefactionPeriod(Date.SECONDS_IN_DAY);
+    	corpse.setPutrefactionPeriod(CORPSE_PUTREFACTION_PERIOD);
     	int integrity = (int) Math.ceil(preset.getHealth() / (double) 2);
     	corpse.setMaxIntegrity(integrity);
-    	corpse.setHitRate(CORPSE_HIT_RATE);
     	corpse.setCurIntegrity(integrity);
-    	corpse.setIntegrityDecrementOnHit(5);
+    	corpse.setHitRate(CORPSE_HIT_RATE);
+    	corpse.setIntegrityDecrementOnHit(CORPSE_INTEGRITY_DECREMENT_ON_HIT);
+    	corpse.setDamage(CORPSE_DAMAGE);
     	Set<Item.Tag> tags = new HashSet<Item.Tag>();
     	tags.add(Item.Tag.WEAPON);
     	tags.add(Item.Tag.WEIGHT_PROPORTIONAL_TO_INTEGRITY);

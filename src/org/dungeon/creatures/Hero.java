@@ -33,6 +33,7 @@ import org.dungeon.items.FoodComponent;
 import org.dungeon.items.Item;
 import org.dungeon.skill.Skill;
 import org.dungeon.stats.ExplorationStatistics;
+import org.dungeon.util.CounterMap;
 import org.dungeon.util.Matches;
 import org.dungeon.util.Messenger;
 import org.dungeon.util.Percentage;
@@ -196,7 +197,7 @@ public class Hero extends Creature {
 				Location adjacentLocation = world.getLocation(adjacentPoint);
 				ExplorationStatistics explorationStatistics = Game.getGameState().getStatistics().getExplorationStatistics();
 				explorationStatistics.createEntryIfNotExists(adjacentPoint, adjacentLocation.getID());
-				String locationName = adjacentLocation.getName();
+				String locationName = adjacentLocation.getName().getSingular();
 				if (!visibleLocations.containsKey(locationName)) {
 					visibleLocations.put(locationName, new ArrayList<Direction>());
 				}
@@ -234,27 +235,15 @@ public class Hero extends Creature {
 			IO.writeString("On the ground you see " + enumerateEntities(getLocation().getItemList()) + ".");
 		}
 	}
-	
-	private int countEntitiesByName(final Collection<? extends Entity> entities, String name) {
-		int counter = 0;
-		for (Entity entity : entities) {
-			if (entity.getName().equals(name)) {
-				counter++;
-			}
-		}
-		return counter;
-	}
-	
+
 	private String enumerateEntities(final List<? extends Entity> listOfEntities) {
-		ArrayList<String> quantifiedNames = new ArrayList<String>();
-		ArrayList<String> alreadyListedEntities = new ArrayList<String>();
+		CounterMap<Name> nameOccurrences = new CounterMap<Name>();
 		for (Entity entity : listOfEntities) {
-			String name = entity.getName();
-			if (!alreadyListedEntities.contains(name)) {
-				int count = countEntitiesByName(listOfEntities, name);
-				quantifiedNames.add(entity.getQuantifiedName(count));
-				alreadyListedEntities.add(name);
-			}
+			nameOccurrences.incrementCounter(entity.getName());
+		}
+		ArrayList<String> quantifiedNames = new ArrayList<String>();
+		for (Name name : nameOccurrences.keySet()) {
+			quantifiedNames.add(name.getQuantifiedName(nameOccurrences.getCounter(name)));
 		}
 		return Utils.enumerate(quantifiedNames);
 	}
@@ -348,7 +337,7 @@ public class Hero extends Creature {
 	}
 	
 	private boolean checkIfAllEntitiesHaveTheSameName(Collection<? extends Entity> entities, Entity ignored) {
-		String lastSeenName = null;
+		Name lastSeenName = null;
 		for (Entity entity : entities) {
 			if (ignored  == null || entity != ignored) {
 				if (lastSeenName == null) {
