@@ -14,14 +14,15 @@ import java.util.Set;
 
 import org.dungeon.achievements.Achievement;
 import org.dungeon.achievements.AchievementBuilder;
-import org.dungeon.creatures.Creature;
-import org.dungeon.creatures.CreaturePreset;
 import org.dungeon.date.Date;
+import org.dungeon.entity.Weight;
+import org.dungeon.entity.creatures.Creature;
+import org.dungeon.entity.creatures.CreaturePreset;
+import org.dungeon.entity.items.Item;
+import org.dungeon.entity.items.ItemBlueprint;
+import org.dungeon.entity.items.ItemFactory;
 import org.dungeon.io.DLogger;
 import org.dungeon.io.ResourceReader;
-import org.dungeon.items.Item;
-import org.dungeon.items.ItemBlueprint;
-import org.dungeon.items.ItemFactory;
 import org.dungeon.skill.SkillDefinition;
 import org.dungeon.stats.CauseOfDeath;
 import org.dungeon.stats.TypeOfCauseOfDeath;
@@ -30,6 +31,7 @@ import org.dungeon.util.StopWatch;
 
 public final class GameData {
 
+	public static final Font FONT = getMonospacedFont();
     private static final int CORPSE_DAMAGE = 2;
     private static final int CORPSE_INTEGRITY_DECREMENT_ON_HIT = 5;
     private static final long CORPSE_PUTREFACTION_PERIOD = Date.SECONDS_IN_DAY;
@@ -38,7 +40,6 @@ public final class GameData {
     private static final DreamLibrary dreamLibrary = new DreamLibrary();
     private static final HintLibrary hintLibrary = new HintLibrary();
     private static final int FONT_SIZE = 15;
-    public static final Font FONT = getMonospacedFont();
     
     private static String tutorial = null;
     
@@ -142,6 +143,7 @@ public final class GameData {
             }
             blueprint.setCurIntegrity(readIntegerFromResourceReader(reader, "CUR_INTEGRITY"));
             blueprint.setMaxIntegrity(readIntegerFromResourceReader(reader, "MAX_INTEGRITY"));
+            blueprint.setVisibility(reader.readVisibility());
             blueprint.setWeight(Weight.newInstance(readDoubleFromResourceReader(reader, "WEIGHT")));
             blueprint.setDamage(readIntegerFromResourceReader(reader, "DAMAGE"));
             blueprint.setHitRate(readDoubleFromResourceReader(reader, "HIT_RATE"));
@@ -176,12 +178,16 @@ public final class GameData {
         			preset.addTag(tag);
         		}
         	}
-        	preset.setHealth(readIntegerFromResourceReader(reader, "HEALTH"));
+        	preset.setVisibility(reader.readVisibility());
         	preset.setWeight(Weight.newInstance(readDoubleFromResourceReader(reader, "WEIGHT")));
+        	preset.setHealth(readIntegerFromResourceReader(reader, "HEALTH"));
         	preset.setAttack(readIntegerFromResourceReader(reader, "ATTACK"));
         	preset.setAttackAlgorithmID(new ID(reader.getValue("ATTACK_ALGORITHM_ID")));
         	if (reader.hasValue("ITEMS")) {
         		preset.setItems(readIDList(reader, "ITEMS"));
+        	}
+        	if (reader.hasValue("WEAPON")) {
+        		preset.setWeaponID(new ID(reader.getValue("WEAPON")));
         	}
         	creaturePresetMap.put(preset.getID(), preset);
         	
@@ -207,6 +213,7 @@ public final class GameData {
     	int integrity = (int) Math.ceil(preset.getHealth() / (double) 2);
     	corpse.setMaxIntegrity(integrity);
     	corpse.setCurIntegrity(integrity);
+    	corpse.setVisibility(preset.getVisibility());
     	corpse.setHitRate(CORPSE_HIT_RATE);
     	corpse.setIntegrityDecrementOnHit(CORPSE_INTEGRITY_DECREMENT_ON_HIT);
     	corpse.setDamage(CORPSE_DAMAGE);

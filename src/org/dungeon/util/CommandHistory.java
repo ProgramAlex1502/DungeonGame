@@ -23,11 +23,11 @@ public class CommandHistory implements Serializable {
 		return cursor;
 	}
 	
-	int size() {
+	private int size() {
 		return commands.size();
 	}
 	
-	public boolean isEmpty() {
+	private boolean isEmpty() {
 		return commands.isEmpty();
 	}
 	

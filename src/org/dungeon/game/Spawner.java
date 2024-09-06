@@ -2,8 +2,8 @@ package org.dungeon.game;
 
 import java.io.Serializable;
 
-import org.dungeon.creatures.Creature;
-import org.dungeon.creatures.CreatureFactory;
+import org.dungeon.entity.creatures.Creature;
+import org.dungeon.entity.creatures.CreatureFactory;
 
 public class Spawner implements Serializable {
 	private static final long serialVersionUID = 1L;

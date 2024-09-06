@@ -1,7 +1,7 @@
-package org.dungeon.items;
+package org.dungeon.entity.items;
 
-import org.dungeon.creatures.Creature;
 import org.dungeon.date.Date;
+import org.dungeon.entity.creatures.Creature;
 import org.dungeon.game.GameData;
 import org.dungeon.game.ID;
 

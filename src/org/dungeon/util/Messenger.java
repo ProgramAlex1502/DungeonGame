@@ -6,6 +6,10 @@ import org.dungeon.io.IO;
 
 public class Messenger {
 	
+	private Messenger() {
+		throw new AssertionError();
+	}
+	
 	public static void printInvalidCommandMessage(String command) {
 		IO.writeString("'" + command + "' is not a recognized command.", Color.RED);
 		IO.writeString("See 'commands' for a complete list of commands.", Color.ORANGE);

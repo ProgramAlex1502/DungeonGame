@@ -3,12 +3,12 @@ package org.dungeon.skill;
 import java.awt.Color;
 import java.io.Serializable;
 
-import org.dungeon.creatures.Creature;
+import org.dungeon.entity.creatures.Creature;
+import org.dungeon.entity.items.Item;
 import org.dungeon.game.ID;
 import org.dungeon.game.Name;
 import org.dungeon.game.Selectable;
 import org.dungeon.io.IO;
-import org.dungeon.items.Item;
 import org.dungeon.util.Constants;
 
 public class Skill implements Selectable, Serializable {
@@ -35,11 +35,11 @@ public class Skill implements Selectable, Serializable {
 		return definition.id;
 	}
 	
-	public int getDamage() {
+	private int getDamage() {
 		return definition.damage;
 	}
 	
-	public int getRepair()  {
+	private int getRepair()  {
 		return definition.repair;
 	}
 	

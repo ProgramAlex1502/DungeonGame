@@ -5,8 +5,8 @@ import org.dungeon.game.Selectable;
 
 final class Article implements Selectable {
 	
-	public final Name title;
-	public final String content;
+	private final Name title;
+	private final String content;
 	
 	public Article(String title, String content) {
 		this.title = Name.newInstance(title);

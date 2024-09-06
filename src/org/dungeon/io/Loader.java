@@ -93,6 +93,7 @@ public final class Loader {
 	
 	public static GameState newGame() {
 		IO.writeString("Created a new game.");
+		Game.getGameWindow().requestFocusOnTextField();
 		return new GameState();
 	}
 	

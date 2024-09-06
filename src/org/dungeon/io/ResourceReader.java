@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.dungeon.entity.Visibility;
+import org.dungeon.util.Percentage;
+
 public class ResourceReader implements Closeable {
 	
 	private static final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -125,6 +128,14 @@ public class ResourceReader implements Closeable {
 	
 	public String[] getArrayOfValues(String key) {
 		return map.get(key);
+	}
+	
+	public Visibility readVisibility() {
+		if (hasValue("VISIBILITY") && Percentage.isValidPercentageString(getValue("VISIBILITY"))) {
+			return new Visibility(Percentage.fromString(getValue("VISIBILITY")));
+		} else {
+			return null;
+		}
 	}
 	
 	private void logRepeatedValue() {

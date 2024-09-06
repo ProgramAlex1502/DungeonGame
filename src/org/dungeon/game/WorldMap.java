@@ -4,13 +4,13 @@ import org.dungeon.gui.GameWindow;
 import org.dungeon.stats.ExplorationStatistics;
 import org.dungeon.util.Constants;
 
-public class WorldMap {
+class WorldMap {
 
 	private static final char HERO_SYMBOL = '@';
 	private static final char NOT_YET_SEEN_SYMBOL = '?';
 	private static final char NOT_YET_GENERATED_SYMBOL = '~';
 	
-	private String map;
+	private final String map;
 	
 	public WorldMap(World world, ExplorationStatistics explorationStatistics, Point heroPosition) {
 		int rows = GameWindow.ROWS - 1;

@@ -1,4 +1,4 @@
-package org.dungeon.items;
+package org.dungeon.entity.items;
 
 import java.io.Serializable;
 

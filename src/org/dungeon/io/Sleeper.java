@@ -3,6 +3,7 @@ package org.dungeon.io;
 public final class Sleeper {
 	
 	private Sleeper() {
+		throw new AssertionError();
 	}
 	
 	public static void sleep(int milliseconds) {

@@ -12,7 +12,7 @@ import org.dungeon.io.IO;
 public class SkillList implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private final ArrayList<Skill> skillList = new ArrayList<Skill>();
+	private final List<Skill> skillList = new ArrayList<Skill>();
 	
 	public void addSkill(Skill skill) {
 		if (hasSkill(skill.getID())) {

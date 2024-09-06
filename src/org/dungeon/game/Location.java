@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.dungeon.creatures.Creature;
+import org.dungeon.entity.creatures.Creature;
+import org.dungeon.entity.items.Item;
+import org.dungeon.entity.items.ItemFactory;
+import org.dungeon.entity.items.LocationInventory;
 import org.dungeon.io.DLogger;
-import org.dungeon.items.Item;
-import org.dungeon.items.ItemFactory;
-import org.dungeon.items.LocationInventory;
 import org.dungeon.util.Percentage;
 
 public class Location implements Serializable {

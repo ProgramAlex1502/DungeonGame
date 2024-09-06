@@ -3,8 +3,8 @@ package org.dungeon.game;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import org.dungeon.creatures.Hero;
 import org.dungeon.date.Date;
+import org.dungeon.entity.creatures.Hero;
 import org.dungeon.io.DLogger;
 import org.dungeon.stats.WorldStatistics;
 

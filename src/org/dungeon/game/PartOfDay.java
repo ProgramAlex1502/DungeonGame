@@ -17,7 +17,7 @@ public enum PartOfDay implements Selectable {
 	
 	private final Name name;
 	
-	private Percentage luminosity;
+	private final Percentage luminosity;
 	
 	private int startingHour;
 	

@@ -30,7 +30,7 @@ public class AchievementTracker implements Serializable {
 		}
 	}
 	
-	UnlockedAchievement getUnlockedAchievement(Achievement achievement) {
+	private UnlockedAchievement getUnlockedAchievement(Achievement achievement) {
 		ID id = achievement.getID();
 		for (UnlockedAchievement ua : unlockedAchievements) {
 			if (ua.id.equals(id)) {

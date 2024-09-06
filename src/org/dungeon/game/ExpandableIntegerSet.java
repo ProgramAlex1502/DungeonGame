@@ -23,7 +23,7 @@ class ExpandableIntegerSet implements Serializable {
 		initialize();
 	}
 	
-	void initialize() {
+	private void initialize() {
 		if (set.size() != 0) {
 			throw new IllegalStateException("set already has an element.");
 		} else {

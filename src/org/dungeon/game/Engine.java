@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.util.Random;
 
 import org.dungeon.achievements.Achievement;
-import org.dungeon.creatures.Creature;
-import org.dungeon.creatures.Hero;
+import org.dungeon.entity.creatures.Creature;
+import org.dungeon.entity.creatures.Hero;
+import org.dungeon.entity.items.ItemFactory;
 import org.dungeon.io.IO;
-import org.dungeon.items.ItemFactory;
 import org.dungeon.stats.CauseOfDeath;
 import org.dungeon.stats.ExplorationStatistics;
 import org.dungeon.util.Constants;

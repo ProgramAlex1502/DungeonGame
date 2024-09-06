@@ -1,10 +1,10 @@
-package org.dungeon.items;
+package org.dungeon.entity.items;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dungeon.items.Item.Tag;
+import org.dungeon.entity.items.Item.Tag;
 
 public abstract class BaseInventory implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,11 +23,11 @@ public abstract class BaseInventory implements Serializable {
 		return items.size();
 	}
 	
-	boolean hasItem(Item itemObject) {
+	public boolean hasItem(Item itemObject) {
 		return items.contains(itemObject);
 	}
 	
-	public abstract void removeItem(Item item);
+	protected abstract void removeItem(Item item);
 	
 	public void refreshItems() {
 		for (Item item : items) {

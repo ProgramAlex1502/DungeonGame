@@ -1,5 +1,10 @@
 package org.dungeon.game;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 public enum Direction {
 	
 	NORTH("North", "N", 0, 1),
@@ -26,6 +31,12 @@ public enum Direction {
 			}
 		}
 		return null;
+	}
+	
+	public static Collection<Direction> getAllExcept(Direction exception) {
+		List<Direction> directions = new ArrayList<Direction>(Arrays.asList(values()));
+		directions.remove(exception);
+		return directions;
 	}
 	
 	public int getX() {

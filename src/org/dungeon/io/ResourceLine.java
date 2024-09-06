@@ -29,7 +29,7 @@ public class ResourceLine {
 		return valid && text.charAt(text.length() - 1) == LINE_BREAK;
 	}
 	
-	int countLineBreaks() {
+	private int countLineBreaks() {
 		int count = 0;
 		for (int i = text.length() - 1; i >= 0; i--) {
 			if (text.charAt(i) == LINE_BREAK) {

@@ -1,6 +1,6 @@
-package org.dungeon.items;
+package org.dungeon.entity.items;
 
-import org.dungeon.game.Weight;
+import org.dungeon.entity.Weight;
 
 interface LimitedInventory {
 	

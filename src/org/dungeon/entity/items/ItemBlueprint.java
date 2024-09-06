@@ -1,19 +1,16 @@
-package org.dungeon.items;
+package org.dungeon.entity.items;
 
+import org.dungeon.entity.Preset;
+import org.dungeon.entity.TagSet;
+import org.dungeon.entity.Visibility;
+import org.dungeon.entity.Weight;
+import org.dungeon.entity.items.Item.Tag;
 import org.dungeon.game.ID;
 import org.dungeon.game.Name;
-import org.dungeon.game.TagSet;
-import org.dungeon.game.Weight;
-import org.dungeon.items.Item.Tag;
 
-public final class ItemBlueprint {
+public final class ItemBlueprint implements Preset {
 	
 	final TagSet<Item.Tag> tagSet = TagSet.makeEmptyTagSet(Item.Tag.class);
-	ID id;
-	String type;
-	Name name;
-	
-	Weight weight;
 	
 	int maxIntegrity;
 	int curIntegrity;
@@ -28,6 +25,13 @@ public final class ItemBlueprint {
 	long putrefactionPeriod;
 	
 	String text;
+	
+	private ID id;
+	private String type;
+	private Name name;
+	private Weight weight;
+
+	private Visibility visibility;
 	
 	private ID skill;
 	
@@ -67,8 +71,22 @@ public final class ItemBlueprint {
 		this.name = name;
 	}
 	
+	@Override
+	public Weight getWeight() {
+		return weight;
+	}
+	
 	public void setWeight(Weight weight) {
 		this.weight = weight;
+	}
+	
+	@Override
+	public Visibility getVisibility() {
+		return visibility;
+	}
+	
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
 	}
 	
 	public boolean hasTag(Item.Tag tag) {

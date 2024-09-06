@@ -1,7 +1,7 @@
-package org.dungeon.items;
+package org.dungeon.entity.items;
 
-import org.dungeon.creatures.Creature;
-import org.dungeon.game.Weight;
+import org.dungeon.entity.Weight;
+import org.dungeon.entity.creatures.Creature;
 import org.dungeon.io.DLogger;
 
 public class CreatureInventory extends BaseInventory implements LimitedInventory {
@@ -61,7 +61,7 @@ public class CreatureInventory extends BaseInventory implements LimitedInventory
 	
 	public void removeItem(Item item) {
 		if (owner.getWeapon() == item) {
-			owner.setWeapon(null);
+			owner.unsetWeapon();
 		}
 		
 		items.remove(item);

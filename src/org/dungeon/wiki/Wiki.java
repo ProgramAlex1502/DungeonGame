@@ -57,7 +57,7 @@ public abstract class Wiki {
 	}
 	
 	private static String toArticleListingEntry(Article article) {
-		return "  " + article.title;
+		return "  " + article.getName();
 	}
 
 }

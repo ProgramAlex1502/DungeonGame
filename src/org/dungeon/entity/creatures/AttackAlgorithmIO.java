@@ -1,10 +1,10 @@
-package org.dungeon.creatures;
+package org.dungeon.entity.creatures;
 
 import java.awt.Color;
 
+import org.dungeon.entity.items.Item;
 import org.dungeon.game.Engine;
 import org.dungeon.io.IO;
-import org.dungeon.items.Item;
 import org.dungeon.util.Constants;
 
 class AttackAlgorithmIO {

@@ -81,11 +81,11 @@ public class Date implements Serializable {
 		return time;
 	}
 	
-	long getSecond() {
+	private long getSecond() {
 		return (time % MILLIS_IN_MINUTE) / MILLIS_IN_SECOND;
 	}
 	
-	long getMinute() {
+	private long getMinute() {
 		return (time % MILLIS_IN_HOUR) / MILLIS_IN_MINUTE;
 	}
 	

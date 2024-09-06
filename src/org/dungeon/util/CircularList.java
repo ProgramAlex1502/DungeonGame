@@ -36,7 +36,7 @@ final class CircularList<T> implements Serializable {
 		return list.size();
 	}
 	
-	boolean isFull() {
+	private boolean isFull() {
 		return size() == capacity;
 	}
 	

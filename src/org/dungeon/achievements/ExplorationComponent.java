@@ -7,9 +7,9 @@ import org.dungeon.util.CounterMap;
 
 final class ExplorationComponent {
 	
-	final CounterMap<ID> killsByLocationID;
-	final CounterMap<ID> visitedLocations;
-	final CounterMap<ID> maximumNumberOfVisits;
+	private final CounterMap<ID> killsByLocationID;
+	private final CounterMap<ID> visitedLocations;
+	private final CounterMap<ID> maximumNumberOfVisits;
 	
 	ExplorationComponent(CounterMap<ID> killsByLocationID, CounterMap<ID> visitedLocations,
 			CounterMap<ID> maximumNumberOfVisits) {

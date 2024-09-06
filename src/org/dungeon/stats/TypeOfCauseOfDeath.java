@@ -6,7 +6,7 @@ public enum TypeOfCauseOfDeath implements Serializable {
 	
 	WEAPON("Weapon"), SKILL("Skill");
 	
-	public final String stringRepresentation;
+	private final String stringRepresentation;
 	
 	TypeOfCauseOfDeath(String stringRepresentation) {
 		this.stringRepresentation = stringRepresentation;

@@ -2,7 +2,7 @@ package org.dungeon.util;
 
 public class AutomaticShuffledRange {
 	
-	ShuffledRange shuffledRange;
+	private final ShuffledRange shuffledRange;
 	private int index;
 	
 	public AutomaticShuffledRange(int start, int end) {

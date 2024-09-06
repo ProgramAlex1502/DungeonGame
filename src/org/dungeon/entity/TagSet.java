@@ -1,4 +1,4 @@
-package org.dungeon.game;
+package org.dungeon.entity;
 
 import java.io.Serializable;
 import java.util.EnumSet;

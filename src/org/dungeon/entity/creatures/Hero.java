@@ -1,4 +1,4 @@
-package org.dungeon.creatures;
+package org.dungeon.entity.creatures;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -10,9 +10,14 @@ import java.util.Map.Entry;
 import org.dungeon.achievements.AchievementTracker;
 import org.dungeon.date.Date;
 import org.dungeon.date.Period;
+import org.dungeon.entity.Entity;
+import org.dungeon.entity.items.BaseInventory;
+import org.dungeon.entity.items.BookComponent;
+import org.dungeon.entity.items.CreatureInventory;
+import org.dungeon.entity.items.FoodComponent;
+import org.dungeon.entity.items.Item;
 import org.dungeon.game.Direction;
 import org.dungeon.game.Engine;
-import org.dungeon.game.Entity;
 import org.dungeon.game.Game;
 import org.dungeon.game.GameData;
 import org.dungeon.game.ID;
@@ -26,11 +31,6 @@ import org.dungeon.game.Selectable;
 import org.dungeon.game.World;
 import org.dungeon.io.IO;
 import org.dungeon.io.Sleeper;
-import org.dungeon.items.BaseInventory;
-import org.dungeon.items.BookComponent;
-import org.dungeon.items.CreatureInventory;
-import org.dungeon.items.FoodComponent;
-import org.dungeon.items.Item;
 import org.dungeon.skill.Skill;
 import org.dungeon.stats.ExplorationStatistics;
 import org.dungeon.util.CounterMap;
@@ -53,6 +53,8 @@ public class Hero extends Creature {
 	private static final int SECONDS_TO_UNEQUIP = 4;
 	private static final int SECONDS_TO_EQUIP = 6;
 	private static final int SECONDS_TO_MILK_A_CREATURE = 45;
+	private static final int SECONDS_TO_READ_EQUIPPED_CLOCK = 4;
+	private static final int SECONDS_TO_READ_UNEQUIPPED_CLOCK = 10;
 	private static final String ROTATION_SKILL_SEPARATOR = ">";
 	private static final Percentage LUMINOSITY_TO_SEE_ADJACENT_LOCATIONS = new Percentage(0.4);
 	private static final int BATTLE_TURN_DURATION = 30;
@@ -136,7 +138,7 @@ public class Hero extends Creature {
 	}
 	
 	private boolean canSee(Entity entity) {
-		return getLocation().getLuminosity().biggerThanOrEqualTo(entity.getVisibility());
+		return getLocation().getLuminosity().biggerThanOrEqualTo(entity.getVisibility().toPercentage());
 	}
 	
 	private boolean canSeeACreature() {
@@ -148,7 +150,7 @@ public class Hero extends Creature {
 		return false;
 	}
 	
-	private boolean checkForCreatureVisibilityWarningIfFalse() {
+	private boolean canSeeACreatureWarnIfNot() {
 		if (canSeeACreature()) {
 			return true;
 		} else {
@@ -205,44 +207,39 @@ public class Hero extends Creature {
 		firstLine += " " + "It is " + location.getWorld().getPartOfDay().toString().toLowerCase() + ".";
 		IO.writeString(firstLine);
 		IO.writeNewLine();
-		if (canSeeAdjacentLocations()) {
-			lookAdjacentLocations(walkedInFrom);
-		} else {
-			IO.writeString("You can't clearly see the surrounding locations.");
-		}
+		lookAdjacentLocations(walkedInFrom);
 		IO.writeNewLine();
 		lookCreatures();
-		IO.writeNewLine();
 		lookItems();
 	}
 	
 	private void lookAdjacentLocations(Direction walkedInFrom) {
+		if (!canSeeAdjacentLocations()) {
+			IO.writeString("You can't clearly see the surrounding locations.");
+			return;
+		}
 		World world = Game.getGameState().getWorld();
 		Point pos = Game.getGameState().getHeroPosition();
 		
 		HashMap<String, ArrayList<Direction>> visibleLocations = new HashMap<String, ArrayList<Direction>>();
 		
-		for (Direction dir : Direction.values()) {
-			if (walkedInFrom == null || !dir.equals(walkedInFrom)) {
-				Point adjacentPoint = new Point(pos, dir);
-				Location adjacentLocation = world.getLocation(adjacentPoint);
-				ExplorationStatistics explorationStatistics = Game.getGameState().getStatistics().getExplorationStatistics();
-				explorationStatistics.createEntryIfNotExists(adjacentPoint, adjacentLocation.getID());
-				String locationName = adjacentLocation.getName().getSingular();
-				if (!visibleLocations.containsKey(locationName)) {
-					visibleLocations.put(locationName, new ArrayList<Direction>());
-				}
-				visibleLocations.get(locationName).add(dir);
+		Collection<Direction> directions = Direction.getAllExcept(walkedInFrom);
+		
+		for (Direction dir : directions) {
+			Point adjacentPoint = new Point(pos, dir);
+			Location adjacentLocation = world.getLocation(adjacentPoint);
+			ExplorationStatistics explorationStatistics = Game.getGameState().getStatistics().getExplorationStatistics();
+			explorationStatistics.createEntryIfNotExists(adjacentPoint, adjacentLocation.getID());
+			String locationName = adjacentLocation.getName().getSingular();
+			if (!visibleLocations.containsKey(locationName)) {
+				visibleLocations.put(locationName, new ArrayList<Direction>());
 			}
+			visibleLocations.get(locationName).add(dir);
 		}
 		
 		StringBuilder stringBuilder = new StringBuilder(140);
 		for (Entry<String, ArrayList<Direction>> entry : visibleLocations.entrySet()) {
-			stringBuilder.append("To ");
-			stringBuilder.append(Utils.enumerate(entry.getValue()));
-			stringBuilder.append(" you see ");
-			stringBuilder.append(entry.getKey());
-			stringBuilder.append(".\n");
+			stringBuilder.append(String.format("To %s you see %s.\n", Utils.enumerate(entry.getValue()), entry.getKey()));
 		}
 		
 		IO.writeString(stringBuilder.toString());
@@ -263,6 +260,7 @@ public class Hero extends Creature {
 		List<Item> items = getLocation().getItemList();
 		items = filterByVisibility(items);
 		if (!items.isEmpty()) {
+			IO.writeNewLine();
 			IO.writeString("On the ground you see " + enumerateEntities(getLocation().getItemList()) + ".");
 		}
 	}
@@ -279,7 +277,7 @@ public class Hero extends Creature {
 		return Utils.enumerate(quantifiedNames);
 	}
 	
-	Item selectInventoryItem(IssuedCommand issuedCommand) {
+	private Item selectInventoryItem(IssuedCommand issuedCommand) {
 		if (getInventory().getItemCount() == 0) {
 			IO.writeString("Your inventory is empty.");
 			return null;
@@ -288,7 +286,7 @@ public class Hero extends Creature {
 		}
 	}
 	
-	Item selectLocationItem(IssuedCommand issuedCommand) {
+	private Item selectLocationItem(IssuedCommand issuedCommand) {
 		if (filterByVisibility(getLocation().getItemList()).isEmpty()) {
 			IO.writeString("You don't see any items here.");
 			return null;
@@ -326,7 +324,7 @@ public class Hero extends Creature {
 	}
 	
 	public int attackTarget(IssuedCommand issuedCommand) {
-		if (checkForCreatureVisibilityWarningIfFalse()) {
+		if (canSeeACreatureWarnIfNot()) {
 			Creature target = selectTarget(issuedCommand);
 			if (target != null) {
 				return Engine.battle(this, target) * BATTLE_TURN_DURATION;
@@ -335,7 +333,7 @@ public class Hero extends Creature {
 		return 0;
 	}
 	
-	Creature selectTarget(IssuedCommand issuedCommand) {
+	private Creature selectTarget(IssuedCommand issuedCommand) {
 		List<Creature> visibleCreatures = filterByVisibility(getLocation().getCreatures());
 		if (issuedCommand.hasArguments() || checkIfAllEntitiesHaveTheSameName(visibleCreatures, this)) {
 			return findCreature(issuedCommand.getArguments());
@@ -345,7 +343,7 @@ public class Hero extends Creature {
 		}
 	}
 	
-	Creature findCreature(String[] tokens) {
+	private Creature findCreature(String[] tokens) {
 		Matches<Creature> result = Utils.findBestCompleteMatches(getLocation().getCreatures(), tokens);
 		
 		if (result.size() == 0) {
@@ -482,7 +480,7 @@ public class Hero extends Creature {
 	}
 	
 	public int parseMilk(IssuedCommand issuedCommand) {
-		if (checkForCreatureVisibilityWarningIfFalse()) {
+		if (canSeeACreatureWarnIfNot()) {
 			if (issuedCommand.hasArguments()) {
 				Creature selectedCreature = selectTarget(issuedCommand);
 				if (selectedCreature != null) {
@@ -558,7 +556,7 @@ public class Hero extends Creature {
 		return 0;
 	}
 	
-	void equipWeapon(Item weapon) {
+	private void equipWeapon(Item weapon) {
 		if (hasWeapon()) {
 			if (getWeapon() == weapon) {
 				IO.writeString(getName() + " is already equipping " + weapon.getName() + ".");
@@ -568,14 +566,14 @@ public class Hero extends Creature {
 			}
 		}
 		
-		this.setWeapon(weapon);
+		setWeapon(weapon);
 		IO.writeString(getName() + " equipped " + weapon.getName() + ".");
 	}
 	
 	public int unequipWeapon() {
 		if (hasWeapon()) {
 			IO.writeString(getName() + " unequipped " + getWeapon().getName() + ".");
-			setWeapon(null);
+			unsetWeapon();
 			return SECONDS_TO_UNEQUIP;
 		} else {
 			IO.writeString("You are not equipping a weapon.");
@@ -606,23 +604,35 @@ public class Hero extends Creature {
 	}
 	
 	public int printDateAndTime() {
+		ItemIntegerPair pair = getBestClock();
+		Item clock = pair.getItem();
+		if (clock != null) {
+			IO.writeString(clock.getClockComponent().getTimeString());
+		}
+		World world = getLocation().getWorld();
+		Date worldDate = getLocation().getWorld().getWorldDate();
+		IO.writeString("You think it is " + worldDate.toDateString() + ".");
+		if (worldDate.getMonth() == dateOfBirth.getMonth() && worldDate.getDay() == dateOfBirth.getDay()) {
+			IO.writeString("Today is your birthday.");
+		}
+		IO.writeString("You can see that it is " + world.getPartOfDay().toString().toLowerCase() + ".");
+		return pair.getInteger();
+	}
+	
+	private ItemIntegerPair getBestClock() {
         Item clock = null;
-        int timeSpent = 0;
         if (hasWeapon() && getWeapon().hasTag(Item.Tag.CLOCK)) {
         	if (!getWeapon().isBroken()) {
         		clock = getWeapon();
-        		timeSpent = 4;
         	} else {
         		for (Item item : getInventory().getItems()) {
         			if (item.hasTag(Item.Tag.CLOCK) && !item.isBroken()) {
         				clock = item;
-        				timeSpent = 10;
         				break;
         			}
         		}
         		if (clock == null) {
         			clock = getWeapon();
-        			timeSpent = 4;
         		}
         	}
         } else {
@@ -633,30 +643,27 @@ public class Hero extends Creature {
         				brokenClock = item;
         			} else {
         				clock = item;
-        				timeSpent = 10;
         				break;
         			}
         		}
         	}
         	if (brokenClock != null) {
-        		timeSpent = 10;
         		clock = brokenClock;
         	}
         }
-        if (clock != null) {
-        	IO.writeString(clock.getClockComponent().getTimeString());
+        
+        int timeSpent;
+        
+        if (clock == null) {
+        	timeSpent = 0;
+        } else if (clock == getWeapon()) {
+        	timeSpent = SECONDS_TO_READ_EQUIPPED_CLOCK;
+        } else {
+        	timeSpent = SECONDS_TO_READ_UNEQUIPPED_CLOCK;
         }
         
-        World world = getLocation().getWorld();
-        Date worldDate = world.getWorldDate();
-        IO.writeString("You think it is " + worldDate.toDateString() + ".");
+        return new ItemIntegerPair(clock, timeSpent);
 
-        if (worldDate.getMonth() == dateOfBirth.getMonth() && worldDate.getDay() == dateOfBirth.getDay()) {
-            IO.writeString("Today is your birthday.");
-        }
-
-        IO.writeString("You can see that it is " + world.getPartOfDay().toString().toLowerCase() + ".");
-        return timeSpent;
     }
 	
 	public void printSkills() {

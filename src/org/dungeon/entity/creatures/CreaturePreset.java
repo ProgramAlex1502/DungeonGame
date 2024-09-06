@@ -1,15 +1,17 @@
-package org.dungeon.creatures;
+package org.dungeon.entity.creatures;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dungeon.entity.Preset;
+import org.dungeon.entity.TagSet;
+import org.dungeon.entity.Visibility;
+import org.dungeon.entity.Weight;
 import org.dungeon.game.ID;
 import org.dungeon.game.Name;
-import org.dungeon.game.TagSet;
-import org.dungeon.game.Weight;
 import org.dungeon.io.DLogger;
 
-public final class CreaturePreset {
+public final class CreaturePreset implements Preset {
 	
 	private final TagSet<Creature.Tag> tagSet = TagSet.makeEmptyTagSet(Creature.Tag.class);
 	private ID id;
@@ -20,6 +22,8 @@ public final class CreaturePreset {
 	private int attack;
 	private ID attackAlgorithmID;
 	private List<ID> items = new ArrayList<ID>();
+	private Visibility visibility;
+	private ID weaponID;
 	
 	private static int validate(int value, int minimum, String attributeName) {
 		if (value >= minimum) {
@@ -35,8 +39,8 @@ public final class CreaturePreset {
 		return tagSet;
 	}
 	
-	public boolean hasTag(Creature.Tag corpse) {
-		return tagSet.hasTag(corpse);
+	public boolean hasTag(Creature.Tag tag) {
+		return tagSet.hasTag(tag);
 	}
 	
 	public void addTag(Creature.Tag tag) {
@@ -107,6 +111,22 @@ public final class CreaturePreset {
 	
 	public void setItems(List<ID> items) {
 		this.items = items;
+	}
+	
+	public Visibility getVisibility() {
+		return visibility;
+	}
+	
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
+	
+	public ID getWeaponID() {
+		return weaponID;
+	}
+	
+	public void setWeaponID(ID weaponID) {
+		this.weaponID = weaponID;
 	}
 
 }

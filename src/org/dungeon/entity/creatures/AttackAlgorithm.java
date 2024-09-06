@@ -1,4 +1,4 @@
-package org.dungeon.creatures;
+package org.dungeon.entity.creatures;
 
 import org.dungeon.stats.CauseOfDeath;
 

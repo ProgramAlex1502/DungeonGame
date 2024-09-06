@@ -7,8 +7,8 @@ import org.dungeon.game.ID;
 public class CauseOfDeath implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public final TypeOfCauseOfDeath type;
-	public final ID id;
+	private final TypeOfCauseOfDeath type;
+	private final ID id;
 	
 	public CauseOfDeath(TypeOfCauseOfDeath type, ID id) {
 		this.type = type;

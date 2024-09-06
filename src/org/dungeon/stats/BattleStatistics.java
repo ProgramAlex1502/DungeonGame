@@ -2,7 +2,7 @@ package org.dungeon.stats;
 
 import java.io.Serializable;
 
-import org.dungeon.creatures.Creature;
+import org.dungeon.entity.creatures.Creature;
 import org.dungeon.game.ID;
 import org.dungeon.util.CounterMap;
 

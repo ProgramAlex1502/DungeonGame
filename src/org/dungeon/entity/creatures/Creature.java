@@ -1,13 +1,16 @@
-package org.dungeon.creatures;
+package org.dungeon.entity.creatures;
 
-import org.dungeon.game.Entity;
+import java.util.Iterator;
+
+import org.dungeon.entity.Entity;
+import org.dungeon.entity.TagSet;
+import org.dungeon.entity.items.CreatureInventory;
+import org.dungeon.entity.items.Item;
+import org.dungeon.entity.items.CreatureInventory.AdditionResult;
 import org.dungeon.game.ID;
 import org.dungeon.game.Location;
-import org.dungeon.game.TagSet;
+import org.dungeon.io.DLogger;
 import org.dungeon.io.IO;
-import org.dungeon.items.CreatureInventory;
-import org.dungeon.items.CreatureInventory.AdditionResult;
-import org.dungeon.items.Item;
 import org.dungeon.skill.SkillList;
 import org.dungeon.skill.SkillRotation;
 import org.dungeon.stats.CauseOfDeath;
@@ -30,7 +33,7 @@ public class Creature extends Entity {
 	private Location location;
 	
 	public Creature(CreaturePreset preset) {
-		super(preset.getID(), preset.getType(), preset.getName(), preset.getWeight());
+		super(preset);
 		maxHealth = preset.getHealth();
 		curHealth = preset.getHealth();
 		attack = preset.getAttack();
@@ -79,7 +82,19 @@ public class Creature extends Entity {
 	}
 	
 	public void setWeapon(Item weapon) {
-		this.weapon = weapon;
+		if (inventory.hasItem(weapon)) {
+			if (weapon.hasTag(Item.Tag.WEAPON)) {
+				this.weapon = weapon;
+			} else {
+				DLogger.warning(String.format("Tried to equip %s (no WEAPON tag) on %s!", weapon.getName(), getName()));
+			}
+		} else {
+			DLogger.warning("Tried to equip an Item that is not in the inventory of " + getName() + "!");
+		}
+	}
+	
+	public void unsetWeapon() {
+		this.weapon = null;
 	}
 	
 	public Location getLocation() {
@@ -135,14 +150,15 @@ public class Creature extends Entity {
 		return false;
 	}
 	
-	public void dropItem(Item item) {
+	void dropItem(Item item) {
 		getInventory().removeItem(item);
 		getLocation().addItem(item);
 	}
 	
 	public void dropEverything() {
-		for (Item item : getInventory().getItems()) {
-			dropItem(item);
+		for (Iterator<Item> iterator = getInventory().getItems().iterator(); iterator.hasNext();) {
+			getLocation().addItem(iterator.next());
+			iterator.remove();
 		}
 	}
 	

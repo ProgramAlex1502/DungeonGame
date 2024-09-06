@@ -23,15 +23,7 @@ public class IO {
 	}
 	
 	public static void writeString(String string, Color color) {
-		writeString(string, color, true);
-	}
-	
-	public static void writeString(String string, Color color, boolean newLine) {
-		writeString(string, color, newLine, true, 0);
-	}
-	
-	private static void writeString(String string, Color color, boolean newLine, boolean scrollDown) {
-		writeString(string, color, newLine, scrollDown, 0);
+		writeString(string, color, true, true, 0);
 	}
 	
 	private static void writeString(String string, Color color, boolean newLine, boolean scrollDown, int wait) {
@@ -55,23 +47,8 @@ public class IO {
 		writeString("");
 	}
 	
-	public static void writeKeyValueString(String key, String value, Color textColor, Color fillColor) {
-		int dots = Constants.COLS - key.length() - value.length();
-		if (dots < 0) {
-			DLogger.warning("Passed too large strings to writeKeyValueString.");
-		}
-		writeString(key, textColor, false);
-		StringBuilder stringBuilder = new StringBuilder();
-		for (; dots > 0; dots--) {
-			stringBuilder.append('.');
-		}
-		
-		writeString(stringBuilder.toString(), fillColor, false);
-		writeString(value, textColor, true);
-	}
-	
 	public static void writePoem(Poem poem) {
-		writeString(poem.toString(), Constants.FORE_COLOR_NORMAL, false, false);
+		writeString(poem.toString(), Constants.FORE_COLOR_NORMAL, false, false, 0);
 	}
 	
 	public static void writeAchievementList(List<Achievement> achievementList) {

@@ -1,6 +1,6 @@
 package org.dungeon.achievements;
 
-import org.dungeon.creatures.Hero;
+import org.dungeon.entity.creatures.Hero;
 import org.dungeon.game.ID;
 import org.dungeon.io.IO;
 import org.dungeon.stats.CauseOfDeath;
@@ -39,7 +39,7 @@ public class Achievement {
 		return info;
 	}
 	
-	boolean isFulfilled() {
+	private boolean isFulfilled() {
 		return battle.isFulfilled() && exploration.isFulfilled();
 	}
 	
@@ -50,7 +50,7 @@ public class Achievement {
 		}
 	}
 	
-	void printAchievementUnlocked() {
+	private void printAchievementUnlocked() {
 		IO.writeString("You unlocked the achievement " + getName() + " because you " + text + ".");
 	}
 

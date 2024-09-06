@@ -3,7 +3,7 @@ package org.dungeon.game;
 class TurnResult {
 	
 	int turnLength;
-	boolean configurationsChanged;
+	private boolean configurationsChanged;
 	
 	void clear() {
 		turnLength = 0;

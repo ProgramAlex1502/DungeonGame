@@ -4,17 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldGenerator implements Serializable {
+class WorldGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
 	private static final int CHUNK_SIDE = 5;
 	
 	private static final int MIN_DIST_RIVER = 6;
 	private static final int MAX_DIST_RIVER = 11;
 	private final World world;
 	private final RiverGenerator riverGenerator;
-	private int chunkSide;
+	private final int chunkSide;
 	
 	public WorldGenerator(World world) {
 		this(world, CHUNK_SIDE);

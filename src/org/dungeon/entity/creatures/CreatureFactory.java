@@ -1,13 +1,14 @@
-package org.dungeon.creatures;
+package org.dungeon.entity.creatures;
 
 import java.util.Map;
 
 import org.dungeon.date.Date;
+import org.dungeon.entity.items.Item;
+import org.dungeon.entity.items.ItemFactory;
+import org.dungeon.entity.items.CreatureInventory.AdditionResult;
 import org.dungeon.game.Game;
 import org.dungeon.game.ID;
 import org.dungeon.io.DLogger;
-import org.dungeon.items.CreatureInventory.AdditionResult;
-import org.dungeon.items.ItemFactory;
 import org.dungeon.util.Constants;
 
 public abstract class CreatureFactory {
@@ -27,7 +28,7 @@ public abstract class CreatureFactory {
 		if (preset != null) {
 			Game.getGameState().getStatistics().getWorldStatistics().addSpawn(preset.getName().getSingular());
 			Creature creature = new Creature(preset);
-			giveItems(creature, id);
+			giveItems(creature);
 			return creature;
 		} else {
 			return null;
@@ -36,16 +37,32 @@ public abstract class CreatureFactory {
 	
 	public static Hero makeHero() {
 		Hero hero = new Hero(creaturePresetMap.get(Constants.HERO_ID));
-		giveItems(hero, Constants.HERO_ID);
+		giveItems(hero);
 		return hero;
 	}
 	
-	private static void giveItems(Creature creature, ID id) {
-		for (ID itemID : creaturePresetMap.get(id).getItems()) {
+	private static void giveItems(Creature creature) {
+		CreaturePreset preset = creaturePresetMap.get(creature.getID());
+		for (ID itemID : preset.getItems()) {
 			Date date = Game.getGameState().getWorld().getWorldDate();
 			AdditionResult result = creature.getInventory().addItem(ItemFactory.makeItem(itemID, date));
 			if (result != AdditionResult.SUCCESSFUL) {
-				DLogger.warning("Could not add " + itemID + " to " + id + "! Got " + result + ".");
+				DLogger.warning("Could not add " + itemID + " to " + creature.getID() + "! Got " + result + ".");
+			}
+		}
+		equipWeapon(creature, preset);
+	}
+	
+	private static void equipWeapon(Creature creature, CreaturePreset preset) {
+		if (preset.getWeaponID() != null) {
+			for (Item item : creature.getInventory().getItems()) {
+				if (item.getID().equals(preset.getWeaponID())) {
+					creature.setWeapon(item);
+					break;
+				}
+			}
+			if (!creature.hasWeapon()) {
+				DLogger.warning(String.format("%s not found in the inventory of %s!", preset.getWeaponID(), preset.getID()));
 			}
 		}
 	}

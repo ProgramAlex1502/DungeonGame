@@ -188,7 +188,6 @@ public class GameWindow extends JFrame {
 				
 				@Override
 				protected void done() {
-					textField.requestFocusInWindow();
 					setIdle(true);
 				}
 			};
@@ -199,6 +198,9 @@ public class GameWindow extends JFrame {
 	private void setIdle(boolean idle) {
 		this.idle = idle;
 		textField.setEnabled(idle);
+		if (textField.isEnabled()) {
+			textField.requestFocusInWindow();
+		}
 	}
 	
 	private void textFieldKeyPressed(KeyEvent e) {

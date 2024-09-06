@@ -1,4 +1,4 @@
-package org.dungeon.items;
+package org.dungeon.entity.items;
 
 public class LocationInventory extends BaseInventory {
 	private static final long serialVersionUID = 1L;
