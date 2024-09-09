@@ -27,16 +27,18 @@ public class Game {
 		GameData.loadGameData();
 		initializeCommands();
 		gameWindow = new GameWindow();
-		GameState loadedGameState = Loader.loadGame();
-		if (loadedGameState == null) {
-			setGameState(Loader.newGame());
+		setGameState(loadAGameStateOrCreateANewOne());
+	}
+	
+	private static GameState loadAGameStateOrCreateANewOne() {
+		GameState gameState = Loader.loadGame();
+		if (gameState == null) {
+			gameState = Loader.newGame();
 			if (!Loader.checkForAnySave()) {
 				suggestTutorial();
 			}
-		} else {
-			setGameState(loadedGameState);
 		}
-		Engine.refresh();
+		return gameState;
 	}
 	
 	private static void initializeCommands() {
@@ -307,7 +309,7 @@ public class Game {
 		processInput(issuedCommand);
 		if (gameState.getHero().isDead()) {
 			IO.writeString("You died.");
-			gameState = Loader.loadGame(null);
+			setGameState(loadAGameStateOrCreateANewOne());
 		} else {
 			if (turnResult.turnLength > 0) {
 				gameState.getWorld().rollDate(turnResult.turnLength);

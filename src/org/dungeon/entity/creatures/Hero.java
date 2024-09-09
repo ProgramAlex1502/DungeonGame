@@ -463,7 +463,7 @@ public class Hero extends Creature {
 				} else {
 					healthIncrement = (int) (food.getNutrition() * remainingBites);
 				}
-				selectedItem.decrementIntegrity(food.getIntegrityDecrementOnEat());
+				selectedItem.decrementIntegrityByEat();
 				if (selectedItem.isBroken() && !selectedItem.hasTag(Item.Tag.REPAIRABLE)) {
 					IO.writeString("You ate " + selectedItem.getName() + ".");
 					getInventory().removeItem(selectedItem);

@@ -47,6 +47,7 @@ public class CreatureInventory extends BaseInventory implements LimitedInventory
 			return AdditionResult.WEIGHT_LIMIT;
 		} else {
 			items.add(item);
+			item.setInventory(this);
 			return AdditionResult.SUCCESSFUL;
 		}
 	}
@@ -65,6 +66,7 @@ public class CreatureInventory extends BaseInventory implements LimitedInventory
 		}
 		
 		items.remove(item);
+		item.setInventory(null);
 	}
 	
 	public enum AdditionResult { ALREADY_IN_THE_INVENTORY, AMOUNT_LIMIT, WEIGHT_LIMIT, SUCCESSFUL }

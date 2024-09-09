@@ -17,6 +17,7 @@ import org.dungeon.achievements.AchievementBuilder;
 import org.dungeon.date.Date;
 import org.dungeon.entity.Weight;
 import org.dungeon.entity.creatures.Creature;
+import org.dungeon.entity.creatures.CreatureFactory;
 import org.dungeon.entity.creatures.CreaturePreset;
 import org.dungeon.entity.items.Item;
 import org.dungeon.entity.items.ItemBlueprint;
@@ -199,7 +200,7 @@ public final class GameData {
         
         reader.close();
         itemBlueprints = Collections.unmodifiableMap(itemBlueprints);
-        creaturePresetMap = Collections.unmodifiableMap(creaturePresetMap);
+        CreatureFactory.setCreaturePresetMap(Collections.unmodifiableMap(creaturePresetMap));
         DLogger.info("Loaded " + creaturePresetMap.size() + " creature blueprints.");
     }
     

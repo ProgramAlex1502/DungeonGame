@@ -73,18 +73,55 @@ final class AttackAlgorithms {
 			}
 		});
 		
+		final double ORC_UNARMED_HIT_RATE = 0.95;
+		final double ORC_MIN_CRITICAL_CHANCE = 0.1;
+		final double ORC_MAX_CRITICAL_CHANCE = 0.5;
+		registerAttackAlgorithm("ORC", new AttackAlgorithm() {
+			@Override
+			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
+				Item weapon = attacker.getWeapon();
+				int hitDamage;
+				Percentage healthiness = new Percentage(attacker.getCurHealth() / (double) attacker.getMaxHealth());
+				double criticalChance = Math.weightedAverage(ORC_MIN_CRITICAL_CHANCE, ORC_MAX_CRITICAL_CHANCE, healthiness);
+				boolean criticalHit = Engine.roll(criticalChance);
+				if (weapon != null && !weapon.isBroken()) {
+					if (weapon.rollForHit()) {
+						hitDamage = weapon.getWeaponComponent().getDamage() + attacker.getAttack();
+						weapon.decrementIntegrityByHit();
+					} else {
+						AttackAlgorithmIO.printMiss(attacker);
+						return null;
+					}
+				} else {
+					if (Engine.roll(ORC_UNARMED_HIT_RATE)) {
+						hitDamage = attacker.getAttack();
+					} else {
+						AttackAlgorithmIO.printMiss(attacker);
+						return null;
+					}
+				}
+				if (criticalHit) {
+					hitDamage *= 2;
+				}
+				boolean healthStateChanged = defender.takeDamage(hitDamage);
+				AttackAlgorithmIO.printInflictedDamage(attacker, hitDamage, defender, criticalHit, healthStateChanged);
+				if (weapon != null && weapon.isBroken()) {
+					AttackAlgorithmIO.printWeaponBreak(weapon);
+				}
+				return null;
+			}
+		});
+		
 		final double UNDEAD_UNARMED_HIT_RATE = 0.85;
 		registerAttackAlgorithm("UNDEAD", new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
 				Item weapon = attacker.getWeapon();
 				int hitDamage;
-				boolean weaponBroke = false;
 				if (weapon != null && !weapon.isBroken()) {
 					if (weapon.rollForHit()) {
 						hitDamage = weapon.getWeaponComponent().getDamage() + attacker.getAttack();
 						weapon.decrementIntegrityByHit();
-						weaponBroke = weapon.isBroken();
 					} else {
 						AttackAlgorithmIO.printMiss(attacker);
 						return null;
@@ -99,7 +136,7 @@ final class AttackAlgorithms {
 				}
 				boolean healthStateChanged = defender.takeDamage(hitDamage);
 				AttackAlgorithmIO.printInflictedDamage(attacker, hitDamage, defender, false, healthStateChanged);
-				if (weaponBroke) {
+				if (weapon != null && weapon.isBroken()) {
 					AttackAlgorithmIO.printWeaponBreak(weapon);
 					if (!weapon.hasTag(Item.Tag.REPAIRABLE)) {
 						attacker.getInventory().removeItem(weapon);
@@ -121,7 +158,6 @@ final class AttackAlgorithms {
 					causeOfDeath = new CauseOfDeath(TypeOfCauseOfDeath.SKILL, skill.getID());
 				} else {
 					Item weapon = attacker.getWeapon();
-					boolean weaponBroke = false;
 					boolean criticalHit;
 					int hitDamage;
 					if (weapon != null && !weapon.isBroken()) {
@@ -129,7 +165,6 @@ final class AttackAlgorithms {
 							hitDamage = weapon.getWeaponComponent().getDamage() + attacker.getAttack();
 							criticalHit = Engine.roll(HERO_CRITICAL_CHANCE);
 							weapon.decrementIntegrityByHit();
-							weaponBroke = weapon.isBroken();
 							causeOfDeath = new CauseOfDeath(TypeOfCauseOfDeath.WEAPON, weapon.getID());
 						} else {
 							AttackAlgorithmIO.printMiss(attacker);
@@ -145,11 +180,8 @@ final class AttackAlgorithms {
 					}
 					boolean healthStateChanged = defender.takeDamage(hitDamage);
 					AttackAlgorithmIO.printInflictedDamage(attacker, hitDamage, defender, criticalHit, healthStateChanged);
-					if (weaponBroke) {
+					if (weapon != null && weapon.isBroken()) {
 						AttackAlgorithmIO.printWeaponBreak(weapon);
-						if (!weapon.hasTag(Item.Tag.REPAIRABLE)) {
-							attacker.getInventory().removeItem(weapon);
-						}
 					}
 				}
 				return causeOfDeath;
