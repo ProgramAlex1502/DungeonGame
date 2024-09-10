@@ -2,7 +2,7 @@ package org.dungeon.stats;
 
 import java.io.Serializable;
 
-import org.dungeon.game.IssuedCommand;
+import org.dungeon.commands.IssuedCommand;
 
 final class CommandStatistics implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.dungeon.game.IssuedCommand;
+import org.dungeon.commands.IssuedCommand;
 import org.dungeon.util.Table;
 
 public final class Statistics implements Serializable {

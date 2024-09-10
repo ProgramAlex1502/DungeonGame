@@ -3,7 +3,7 @@ package org.dungeon.wiki;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dungeon.game.IssuedCommand;
+import org.dungeon.commands.IssuedCommand;
 import org.dungeon.io.IO;
 import org.dungeon.io.ResourceReader;
 import org.dungeon.util.Matches;

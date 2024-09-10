@@ -3,7 +3,7 @@ package org.dungeon.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-final class CircularList<T> implements Serializable {
+public final class CircularList<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final int capacity;

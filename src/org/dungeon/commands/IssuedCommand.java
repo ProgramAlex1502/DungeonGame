@@ -1,4 +1,4 @@
-package org.dungeon.game;
+package org.dungeon.commands;
 
 import java.util.Arrays;
 

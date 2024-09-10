@@ -2,7 +2,7 @@ package org.dungeon.util;
 
 import java.math.BigInteger;
 
-import org.dungeon.game.IssuedCommand;
+import org.dungeon.commands.IssuedCommand;
 import org.dungeon.io.IO;
 
 public class Math {

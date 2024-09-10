@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import org.dungeon.achievements.Achievement;
 import org.dungeon.achievements.AchievementTracker;
 import org.dungeon.achievements.UnlockedAchievement;
+import org.dungeon.commands.CommandHistory;
+import org.dungeon.commands.IssuedCommand;
 import org.dungeon.date.Date;
 import org.dungeon.date.Period;
 import org.dungeon.entity.creatures.CreatureFactory;
@@ -14,7 +16,6 @@ import org.dungeon.entity.creatures.Hero;
 import org.dungeon.io.DLogger;
 import org.dungeon.io.IO;
 import org.dungeon.stats.Statistics;
-import org.dungeon.util.CommandHistory;
 
 public class GameState implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -27,15 +28,20 @@ public class GameState implements Serializable {
 	private Hero hero;
 	private Point heroPosition;
 	
-	transient private boolean saved;
+	transient private boolean saved = false;
 	
 	public GameState() {
 		commandHistory = new CommandHistory();
 		world = new World(statistics.getWorldStatistics());
 		
 		createHeroAndStartingLocation();
-		
-		saved = true;
+	}
+	
+	public String getPreface() {
+		String prefaceFormat = "You make up at %s. Your head hurts and you can't remember what happened to you.\n"
+				+ "You were born in a city called Everdusk and raised by your parents, a man who was a trader and a woman who "
+				+ "helped him and owned the local watermill.";
+		return String.format(prefaceFormat, hero.getLocation());
 	}
 	
 	private void createHeroAndStartingLocation() {

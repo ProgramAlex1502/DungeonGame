@@ -139,5 +139,10 @@ public class Location implements Serializable {
 	public boolean isBlocked(Direction direction) {
 		return blockedEntrances.isBlocked(direction);
 	}
+	
+	@Override
+	public String toString() {
+		return name.getSingular();
+	}
 
 }

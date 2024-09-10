@@ -1,8 +1,9 @@
-package org.dungeon.util;
+package org.dungeon.commands;
 
 import java.io.Serializable;
 
-import org.dungeon.game.IssuedCommand;
+import org.dungeon.util.CircularList;
+import org.dungeon.util.Utils;
 
 public class CommandHistory implements Serializable {
 	private static final long serialVersionUID = 1L;

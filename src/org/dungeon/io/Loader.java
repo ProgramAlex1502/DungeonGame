@@ -11,9 +11,9 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
+import org.dungeon.commands.IssuedCommand;
 import org.dungeon.game.Game;
 import org.dungeon.game.GameState;
-import org.dungeon.game.IssuedCommand;
 import org.dungeon.util.Messenger;
 import org.dungeon.util.StopWatch;
 import org.dungeon.util.Table;
@@ -92,9 +92,12 @@ public final class Loader {
 	}
 	
 	public static GameState newGame() {
+		GameState gameState = new GameState();
 		IO.writeString("Created a new game.");
+		IO.writeNewLine();
+		IO.writeString(gameState.getPreface());
 		Game.getGameWindow().requestFocusOnTextField();
-		return new GameState();
+		return gameState;
 	}
 	
 	public static GameState loadGame() {
@@ -158,6 +161,7 @@ public final class Loader {
 			objectInStream = new ObjectInputStream(fileInStream);
 			GameState loadedGameState = (GameState) objectInStream.readObject();
 			objectInStream.close();
+			loadedGameState.setSaved(true);
 			String sizeString = bytesToHuman(file.length());
 			DLogger.info(String.format("Loaded %s in %s.", sizeString, stopWatch.toString()));
 			IO.writeString(String.format("Successfully loaded the game (read %s from %s).", sizeString, file.getName()));
