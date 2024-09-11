@@ -890,3 +890,25 @@
 [2024-09-11 17:08:25] (FINE) : Added Rat Beef to the inventory of Rat.
 [2024-09-11 17:08:25] (FINE) : Added Rat Beef to the inventory of Rat.
 [2024-09-11 17:08:38] (INFO) : Exited with no problems.
+[2024-09-11 17:10:43] (INFO) : Started loading the game data.
+[2024-09-11 17:10:43] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 17:10:43] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 17:10:43] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:10:43] (INFO) : Loaded 14 location presets.
+[2024-09-11 17:10:43] (INFO) : Created 25 achievements.
+[2024-09-11 17:10:44] (INFO) : Finished loading the game data. Took 828 ms.
+[2024-09-11 17:10:46] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 17:10:46] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 17:10:46] (FINE) : Added Orc Sword to the inventory of Orc.
+[2024-09-11 17:10:46] (FINE) : Added Orc Sword to the inventory of Orc.
+[2024-09-11 17:10:46] (FINE) : Added Club to the inventory of Zombie.
+[2024-09-11 17:11:00] (INFO) : Saved 41,2 kB in 194 ms.
+[2024-09-11 17:11:00] (INFO) : Exited with no problems.
