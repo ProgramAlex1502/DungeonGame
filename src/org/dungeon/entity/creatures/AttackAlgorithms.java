@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.dungeon.entity.items.Item;
-import org.dungeon.game.Engine;
 import org.dungeon.game.ID;
-import org.dungeon.io.DLogger;
+import org.dungeon.game.Random;
 import org.dungeon.skill.Skill;
 import org.dungeon.stats.CauseOfDeath;
 import org.dungeon.stats.TypeOfCauseOfDeath;
@@ -16,18 +15,18 @@ import org.dungeon.util.Percentage;
 final class AttackAlgorithms {
 	
 	private static final ID UNARMED_ID = new ID("");
-	private static final Map<ID, AttackAlgorithm> ATTACK_ALGORITHM_MAP = new HashMap<ID, AttackAlgorithm>();
+	private static final Map<AttackAlgorithmID, AttackAlgorithm> ATTACK_ALGORITHM_MAP = new HashMap<AttackAlgorithmID, AttackAlgorithm>();
 	
 	static {
 		final double BAT_CRITICAL_MAXIMUM_LUMINOSITY = 0.5;
 		final double BAT_HIT_RATE_MAX_LUMINOSITY = 0.9;
 		final double BAT_HIT_RATE_MIN_LUMINOSITY = 0.1;
-		registerAttackAlgorithm("BAT", new AttackAlgorithm() {
+		registerAttackAlgorithm(AttackAlgorithmID.BAT, new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
 				Percentage luminosity = attacker.getLocation().getLuminosity();
 				double hitRate = Math.weightedAverage(BAT_HIT_RATE_MIN_LUMINOSITY, BAT_HIT_RATE_MAX_LUMINOSITY, luminosity);
-				if (Engine.roll(hitRate)) {
+				if (Random.roll(hitRate)) {
 					int hitDamage = attacker.getAttack();
 					boolean criticalHit = luminosity.toDouble() <= BAT_CRITICAL_MAXIMUM_LUMINOSITY;
 					if (criticalHit) {
@@ -43,10 +42,10 @@ final class AttackAlgorithms {
 		});
 		
 		final double BEAST_HIT_RATE = 0.9;
-		registerAttackAlgorithm("BEAST", new AttackAlgorithm() {
+		registerAttackAlgorithm(AttackAlgorithmID.BEAST, new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
-				if (Engine.roll(BEAST_HIT_RATE)) {
+				if (Random.roll(BEAST_HIT_RATE)) {
 					int hitDamage = attacker.getAttack();
 					boolean healthStateChanged = defender.takeDamage(hitDamage);
 					AttackAlgorithmIO.printInflictedDamage(attacker, hitDamage, defender, false, healthStateChanged);
@@ -57,7 +56,7 @@ final class AttackAlgorithms {
 			}
 		});
 		
-		registerAttackAlgorithm("CRITTER", new AttackAlgorithm() {
+		registerAttackAlgorithm(AttackAlgorithmID.CRITTER, new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
 				AttackAlgorithmIO.writeCritterAttackMessage(attacker);
@@ -65,7 +64,7 @@ final class AttackAlgorithms {
 			}
 		});
 		
-		registerAttackAlgorithm("DUMMY", new AttackAlgorithm() {
+		registerAttackAlgorithm(AttackAlgorithmID.DUMMY, new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
 				AttackAlgorithmIO.writeDummyAttackMessage(attacker);
@@ -76,14 +75,14 @@ final class AttackAlgorithms {
 		final double ORC_UNARMED_HIT_RATE = 0.95;
 		final double ORC_MIN_CRITICAL_CHANCE = 0.1;
 		final double ORC_MAX_CRITICAL_CHANCE = 0.5;
-		registerAttackAlgorithm("ORC", new AttackAlgorithm() {
+		registerAttackAlgorithm(AttackAlgorithmID.ORC, new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
 				Item weapon = attacker.getWeapon();
 				int hitDamage;
 				Percentage healthiness = new Percentage(attacker.getCurHealth() / (double) attacker.getMaxHealth());
 				double criticalChance = Math.weightedAverage(ORC_MIN_CRITICAL_CHANCE, ORC_MAX_CRITICAL_CHANCE, healthiness);
-				boolean criticalHit = Engine.roll(criticalChance);
+				boolean criticalHit = Random.roll(criticalChance);
 				if (weapon != null && !weapon.isBroken()) {
 					if (weapon.rollForHit()) {
 						hitDamage = weapon.getWeaponComponent().getDamage() + attacker.getAttack();
@@ -93,7 +92,7 @@ final class AttackAlgorithms {
 						return null;
 					}
 				} else {
-					if (Engine.roll(ORC_UNARMED_HIT_RATE)) {
+					if (Random.roll(ORC_UNARMED_HIT_RATE)) {
 						hitDamage = attacker.getAttack();
 					} else {
 						AttackAlgorithmIO.printMiss(attacker);
@@ -113,7 +112,7 @@ final class AttackAlgorithms {
 		});
 		
 		final double UNDEAD_UNARMED_HIT_RATE = 0.85;
-		registerAttackAlgorithm("UNDEAD", new AttackAlgorithm() {
+		registerAttackAlgorithm(AttackAlgorithmID.UNDEAD, new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
 				Item weapon = attacker.getWeapon();
@@ -127,7 +126,7 @@ final class AttackAlgorithms {
 						return null;
 					}
 				} else {
-					if (Engine.roll(UNDEAD_UNARMED_HIT_RATE)) {
+					if (Random.roll(UNDEAD_UNARMED_HIT_RATE)) {
 						hitDamage = attacker.getAttack();
 					} else {
 						AttackAlgorithmIO.printMiss(attacker);
@@ -148,7 +147,7 @@ final class AttackAlgorithms {
 		
 		final double HERO_CRITICAL_CHANCE = 0.1;
 		final double HERO_CRITICAL_CHANCE_UNARMED = 0.05;
-		registerAttackAlgorithm("HERO", new AttackAlgorithm() {
+		registerAttackAlgorithm(AttackAlgorithmID.HERO, new AttackAlgorithm() {
 			@Override
 			public CauseOfDeath renderAttack(Creature attacker, Creature defender) {
 				CauseOfDeath causeOfDeath;
@@ -163,7 +162,7 @@ final class AttackAlgorithms {
 					if (weapon != null && !weapon.isBroken()) {
 						if (weapon.rollForHit()) {
 							hitDamage = weapon.getWeaponComponent().getDamage() + attacker.getAttack();
-							criticalHit = Engine.roll(HERO_CRITICAL_CHANCE);
+							criticalHit = Random.roll(HERO_CRITICAL_CHANCE);
 							weapon.decrementIntegrityByHit();
 							causeOfDeath = new CauseOfDeath(TypeOfCauseOfDeath.WEAPON, weapon.getID());
 						} else {
@@ -172,7 +171,7 @@ final class AttackAlgorithms {
 						}
 					} else {
 						hitDamage = attacker.getAttack();
-						criticalHit = Engine.roll(HERO_CRITICAL_CHANCE_UNARMED);
+						criticalHit = Random.roll(HERO_CRITICAL_CHANCE_UNARMED);
 						causeOfDeath = new CauseOfDeath(TypeOfCauseOfDeath.WEAPON, UNARMED_ID);
 					}
 					if (criticalHit) {
@@ -187,28 +186,31 @@ final class AttackAlgorithms {
 				return causeOfDeath;
 			}
 		});
+		
+		validateMap();
 	}
 	
 	private AttackAlgorithms() {
 		throw new AssertionError();
 	}
 	
-	private static void registerAttackAlgorithm(String name, AttackAlgorithm algorithm) {
-		ID id = new ID(name);
+	private static void validateMap() {
+		for (AttackAlgorithmID id : AttackAlgorithmID.values()) {
+			if (!ATTACK_ALGORITHM_MAP.containsKey(id)) {
+				throw new AssertionError(id + " is not mapped to an AttackAlgorithm!");
+			}
+		}
+	}
+	
+	private static void registerAttackAlgorithm(AttackAlgorithmID id, AttackAlgorithm algorithm) {
 		if (ATTACK_ALGORITHM_MAP.containsKey(id)) {
-			throw new AssertionError("There is an AttackAlgorithm already defined with the ID produced by this name!");
+			throw new IllegalStateException("There is an AttackAlgorithm already defined for this AttackAlgorithmID!");
 		}
 		ATTACK_ALGORITHM_MAP.put(id, algorithm);
 	}
 	
 	public static CauseOfDeath renderAttack(Creature attacker, Creature defender) {
-		AttackAlgorithm attackAlgorithm = ATTACK_ALGORITHM_MAP.get(attacker.getAttackAlgorithmID());
-		if (attackAlgorithm != null) {
-			return attackAlgorithm.renderAttack(attacker, defender);
-		} else {
-			DLogger.warning("AttackAlgorithmID does not match any implemented algorithm.");
-			return null;
-		}
+		return ATTACK_ALGORITHM_MAP.get(attacker.getAttackAlgorithmID()).renderAttack(attacker, defender);
 	}
 
 }

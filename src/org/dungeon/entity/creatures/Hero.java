@@ -1,5 +1,8 @@
 package org.dungeon.entity.creatures;
 
+import static org.dungeon.date.DungeonTimeUnit.HOUR;
+import static org.dungeon.date.DungeonTimeUnit.SECOND;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +17,7 @@ import org.dungeon.date.Period;
 import org.dungeon.entity.Entity;
 import org.dungeon.entity.items.BaseInventory;
 import org.dungeon.entity.items.BookComponent;
-import org.dungeon.entity.items.CreatureInventory;
+import org.dungeon.entity.items.CreatureInventory.SimulationResult;
 import org.dungeon.entity.items.FoodComponent;
 import org.dungeon.entity.items.Item;
 import org.dungeon.game.Direction;
@@ -27,6 +30,7 @@ import org.dungeon.game.Name;
 import org.dungeon.game.PartOfDay;
 import org.dungeon.game.Point;
 import org.dungeon.game.QuantificationMode;
+import org.dungeon.game.Random;
 import org.dungeon.game.Selectable;
 import org.dungeon.game.World;
 import org.dungeon.io.IO;
@@ -39,10 +43,12 @@ import org.dungeon.util.Messenger;
 import org.dungeon.util.Percentage;
 import org.dungeon.util.Utils;
 
+
+
 public class Hero extends Creature {
 	private static final long serialVersionUID = 1L;
 	
-	private static final int DREAM_DURATION_IN_SECONDS = 4 * Date.SECONDS_IN_HOUR;
+	private static final long DREAM_DURATION_IN_SECONDS = 4 * HOUR.as(SECOND);
 	private static final int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
 	private static final int SECONDS_TO_LOOK_AT_THE_COVER_OF_A_BOOK = 6;
 	private static final int SECONDS_TO_PICK_UP_AN_ITEM = 10;
@@ -66,7 +72,6 @@ public class Hero extends Creature {
 	
 	Hero(CreaturePreset preset) {
 		super(preset);
-		setInventory(new CreatureInventory(this, 12, 10));
 		dateOfBirth = new Date(432, 6, 4, 8, 30, 0);
 	}
 	
@@ -109,7 +114,7 @@ public class Hero extends Creature {
 		if (pod == PartOfDay.EVENING || pod == PartOfDay.MIDNIGHT || pod == PartOfDay.NIGHT) {
 			IO.writeString("You fall asleep.");
 			seconds = PartOfDay.getSecondsToNext(world.getWorldDate(), PartOfDay.DAWN);
-			seconds += Engine.RANDOM.nextInt(15 * 60 + 1);
+			seconds += Random.nextInteger(15 * 60 + 1);
 			int healing = getMaxHealth() * seconds / HEAL_TEN_PERCENT / 10;
 			if (!isCompletelyHealed()) {
 				int health = getCurHealth() + healing;
@@ -122,11 +127,11 @@ public class Hero extends Creature {
 			int remainingSeconds = seconds;
 			while (remainingSeconds > 0) {
 				if (remainingSeconds > DREAM_DURATION_IN_SECONDS) {
-					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * DREAM_DURATION_IN_SECONDS / Date.SECONDS_IN_HOUR);
+					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * DREAM_DURATION_IN_SECONDS / HOUR.as(SECOND));
 					IO.writeString(GameData.getDreamLibrary().getNextDream());
 					remainingSeconds -= DREAM_DURATION_IN_SECONDS;
 				} else {
-					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * remainingSeconds / Date.SECONDS_IN_HOUR);
+					Sleeper.sleep(MILLISECONDS_TO_SLEEP_AN_HOUR * remainingSeconds / HOUR.as(SECOND));
 					break;
 				}
 			}
@@ -138,7 +143,7 @@ public class Hero extends Creature {
 	}
 	
 	private boolean canSee(Entity entity) {
-		return getLocation().getLuminosity().biggerThanOrEqualTo(entity.getVisibility().toPercentage());
+		return entity.getVisibility().visibleUnder(getLocation().getLuminosity());
 	}
 	
 	private boolean canSeeACreature() {
@@ -383,8 +388,14 @@ public class Hero extends Creature {
 		if (canSeeAnItem()) {
 			Item selectedItem = selectLocationItem(issuedCommand);
 			if (selectedItem != null) {
-				if (addItem(selectedItem)) {
+				SimulationResult result = getInventory().simulateItemAddition(selectedItem);
+				if (result == SimulationResult.AMOUNT_LIMIT) {
+					IO.writeString("Your inventory is full.");
+				} else if (result == SimulationResult.WEIGHT_LIMIT) {
+					IO.writeString("You can't carry more weight.");
+				} else if (result == SimulationResult.SUCCESSFUL) {
 					getLocation().removeItem(selectedItem);
+					addItem(selectedItem);
 					return SECONDS_TO_PICK_UP_AN_ITEM;
 				}
 			}
@@ -392,6 +403,15 @@ public class Hero extends Creature {
 			IO.writeString("You do not see ant item you could pick up.");
 		}
 		return 0;
+	}
+	
+	public void addItem(Item item) {
+		if (getInventory().simulateItemAddition(item) == SimulationResult.SUCCESSFUL) {
+			getInventory().addItem(item);
+			IO.writeString(String.format("Added %s to the inventory.", item.getQualifiedName()));
+		} else {
+			throw new IllegalStateException("simulateItemAddition did not return SUCCESSFUL.");
+		}
 	}
 	
 	public int parseEquip(IssuedCommand issuedCommand) {
@@ -417,7 +437,7 @@ public class Hero extends Creature {
 			}
 			
 			dropItem(selectedItem);
-			IO.writeString("Dropped " + selectedItem.getName() + ".");
+			IO.writeString(String.format("Dropped %s.", selectedItem.getName()));
 			return totalTime;
 		}
 		return 0;

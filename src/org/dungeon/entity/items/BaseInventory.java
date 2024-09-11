@@ -2,7 +2,7 @@ package org.dungeon.entity.items;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.dungeon.entity.items.Item.Tag;
@@ -21,24 +21,23 @@ public abstract class BaseInventory implements Serializable {
 	}
 	
 	public List<Item> getItems() {
-		return items;
+		return Collections.unmodifiableList(items);
 	}
 	
 	public int getItemCount() {
 		return items.size();
 	}
 	
-	public boolean hasItem(Item itemObject) {
-		return items.contains(itemObject);
+	public boolean hasItem(Item item) {
+		return items.contains(item);
 	}
 	
 	protected abstract void removeItem(Item item);
 	
 	public void refreshItems() {
-		for (Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
-			Item item = iterator.next();
+		for (Item item : new ArrayList<Item>(items)) {
 			if (isDecomposed(item)) {
-				iterator.remove();
+				removeItem(item);	
 			}
 		}
 	}

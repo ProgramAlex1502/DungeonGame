@@ -47,6 +47,18 @@ public final class DLogger {
 		warning("Line " + lineNumber + " of " + filename + messageEnd);
 	}
 	
+	public static void severe(String message) {
+		if (logger != null) {
+			logger.severe(message);
+		}
+	}
+	
+	public static void inventoryManagement(String message) {
+		if (logger != null) {
+			logger.fine(message);
+		}
+	}
+	
 	private static String getLogFilePath() {
 		File logFolder = new File(LOG_FILE_PATH);
 		if (!logFolder.exists()) {

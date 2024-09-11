@@ -46,7 +46,7 @@ public class CommandHistory implements Serializable {
 		return null;
 	}
 	
-	public class Cursor implements Serializable {
+	public final class Cursor implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private final CommandHistory history;

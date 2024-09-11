@@ -3,10 +3,10 @@ package org.dungeon.util;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.dungeon.game.Engine;
+import org.dungeon.game.Random;
 import org.dungeon.io.DLogger;
 
-public class ShuffledRange {
+public final class ShuffledRange {
 	
 	private ArrayList<Integer> integers;
 	
@@ -30,15 +30,11 @@ public class ShuffledRange {
 		return integers.size();
 	}
 	
-	public int getLast() {
-		return integers.get(integers.size() - 1);
-	}
-	
 	public void shuffle() {
-		int lastInteger = getLast();
+		int lastIntegerBeforeShuffling = integers.get(integers.size() - 1);
 		Collections.shuffle(integers);
-		if (getSize() > 1 && get(0) == lastInteger) {
-			Collections.swap(integers, 0, 1 + Engine.RANDOM.nextInt(getSize() - 1));
+		if (getSize() > 1 && get(0) == lastIntegerBeforeShuffling) {
+			Collections.swap(integers, 0, 1 + Random.nextInteger(getSize() - 1));
 		}
 	}
 

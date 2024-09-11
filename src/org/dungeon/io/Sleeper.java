@@ -6,7 +6,7 @@ public final class Sleeper {
 		throw new AssertionError();
 	}
 	
-	public static void sleep(int milliseconds) {
+	public static void sleep(long milliseconds) {
 		if (milliseconds > 0) {
 			try {
 				Thread.sleep(milliseconds);

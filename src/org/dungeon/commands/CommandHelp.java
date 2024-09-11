@@ -2,12 +2,11 @@ package org.dungeon.commands;
 
 import java.util.List;
 
-import org.dungeon.game.Game;
 import org.dungeon.io.IO;
 import org.dungeon.util.Messenger;
 import org.dungeon.util.Utils;
 
-public final class CommandHelp {
+final class CommandHelp {
 	
 	private static final int COMMAND_NAME_COLUMN_WIDTH = 20;
 	
@@ -21,9 +20,9 @@ public final class CommandHelp {
 	
 	public static void printHelp(IssuedCommand issuedCommand) {
 		if (issuedCommand.hasArguments()) {
-			List<CommandDescription> commandDescriptionList = Game.getCommandDescriptions();
+			List<CommandDescription> descriptions = CommandCollection.getDefaultCommandCollection().getCommandDescriptions();
 			CommandDescription selectedCommand = null;
-			for (CommandDescription description : commandDescriptionList) {
+			for (CommandDescription description : descriptions) {
 				if (Utils.startsWithIgnoreCase(description.getName(), issuedCommand.getFirstArgument())) {
 					if (selectedCommand == null) {
 						selectedCommand = description;
@@ -49,12 +48,12 @@ public final class CommandHelp {
 			filter = issuedCommand.getFirstArgument();
 		}
 		
-		List<CommandDescription> commandList = Game.getCommandDescriptions();
+		List<CommandDescription> descriptions = CommandCollection.getDefaultCommandCollection().getCommandDescriptions();
 		StringBuilder builder = new StringBuilder();
-		for (CommandDescription command : commandList) {
-			if (filter == null || Utils.startsWithIgnoreCase(command.getName(), filter)) {
-				builder.append(Utils.padString(command.getName(), COMMAND_NAME_COLUMN_WIDTH));
-				builder.append(command.getInfo());
+		for (CommandDescription description : descriptions) {
+			if (filter == null || Utils.startsWithIgnoreCase(description.getName(), filter)) {
+				builder.append(Utils.padString(description.getName(), COMMAND_NAME_COLUMN_WIDTH));
+				builder.append(description.getInfo());
 				builder.append('\n');
 			}
 		}

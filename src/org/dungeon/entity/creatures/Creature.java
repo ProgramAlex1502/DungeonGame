@@ -1,16 +1,13 @@
 package org.dungeon.entity.creatures;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import org.dungeon.entity.Entity;
 import org.dungeon.entity.TagSet;
 import org.dungeon.entity.items.CreatureInventory;
 import org.dungeon.entity.items.Item;
-import org.dungeon.entity.items.CreatureInventory.AdditionResult;
-import org.dungeon.game.ID;
 import org.dungeon.game.Location;
 import org.dungeon.io.DLogger;
-import org.dungeon.io.IO;
 import org.dungeon.skill.SkillList;
 import org.dungeon.skill.SkillRotation;
 import org.dungeon.stats.CauseOfDeath;
@@ -21,13 +18,13 @@ public class Creature extends Entity {
 	private final int maxHealth;
 	
 	private final int attack;
-	private final ID attackAlgorithmID;
+	private final AttackAlgorithmID attackAlgorithmID;
 
 	private final SkillList skillList = new SkillList();
 	private final SkillRotation skillRotation = new SkillRotation();
 	private final TagSet<Tag> tagSet;
+	private final CreatureInventory inventory;
 	private int curHealth;
-	private CreatureInventory inventory = new CreatureInventory(this, 4, 8);
 	private Item weapon;
 	
 	private Location location;
@@ -39,6 +36,7 @@ public class Creature extends Entity {
 		attack = preset.getAttack();
 		tagSet = TagSet.copyTagSet(preset.getTagSet());
 		attackAlgorithmID = preset.getAttackAlgorithmID();
+		inventory = new CreatureInventory(this, preset.getInventoryItemLimit(), preset.getInventoryWeightLimit());
 	}
 	
 	SkillList getSkillList() {
@@ -71,10 +69,6 @@ public class Creature extends Entity {
 	
 	public CreatureInventory getInventory() {
 		return inventory;
-	}
-	
-	void setInventory(CreatureInventory inventory) {
-		this.inventory = inventory;
 	}
 	
 	public Item getWeapon() {
@@ -132,38 +126,25 @@ public class Creature extends Entity {
 		return getWeapon() != null;
 	}
 	
-	public boolean addItem(Item item) {
-		AdditionResult result = getInventory().addItem(item);
-		switch (result) {
-		case AMOUNT_LIMIT:
-			IO.writeString("Your inventory is full.");
-			break;
-		case WEIGHT_LIMIT:
-			IO.writeString("You can't carry more weight.");
-			break;
-		case SUCCESSFUL:
-			IO.writeString("Added " + item.getName() + " to the inventory.");
-			return true;
-		default:
-			break;
-		}
-		return false;
-	}
-	
 	void dropItem(Item item) {
 		getInventory().removeItem(item);
 		getLocation().addItem(item);
 	}
 	
 	public void dropEverything() {
-		for (Iterator<Item> iterator = getInventory().getItems().iterator(); iterator.hasNext();) {
-			getLocation().addItem(iterator.next());
-			iterator.remove();
+		for (Item item : new ArrayList<Item>(getInventory().getItems())) {
+			getInventory().removeItem(item);
+			getLocation().addItem(item);
 		}
 	}
 	
-	public ID getAttackAlgorithmID() {
+	public AttackAlgorithmID getAttackAlgorithmID() {
 		return attackAlgorithmID;
+	}
+	
+	@Override
+	public String toString() {
+		return getName().getSingular();
 	}
 	
 	public enum Tag { MILKABLE, CORPSE }

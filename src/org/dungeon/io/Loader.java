@@ -139,7 +139,7 @@ public final class Loader {
 	}
 	
 	public static void saveGame(GameState gameState) {
-		saveFile(gameState, null);
+		saveGame(gameState, null);
 	}
 	
 	public static void saveGame(GameState gameState, IssuedCommand issuedCommand) {

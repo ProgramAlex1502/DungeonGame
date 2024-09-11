@@ -1,7 +1,6 @@
 package org.dungeon.game;
 
 import java.awt.Color;
-import java.util.Random;
 
 import org.dungeon.achievements.Achievement;
 import org.dungeon.commands.IssuedCommand;
@@ -12,21 +11,11 @@ import org.dungeon.io.IO;
 import org.dungeon.stats.CauseOfDeath;
 import org.dungeon.stats.ExplorationStatistics;
 import org.dungeon.util.Constants;
-import org.dungeon.util.Percentage;
 
 public class Engine {
 	
-	public static final Random RANDOM = new Random();
 	private static final int WALK_BLOCKED = 2;
 	private static final int WALK_SUCCESS = 200;
-	
-	public static boolean roll(Percentage chance) {
-		return chance.toDouble() > RANDOM.nextDouble();
-	}
-	
-	public static boolean roll(double chance) {
-		return roll(new Percentage(chance));
-	}
 	
 	public static void refresh() {
 		refreshAchievements();

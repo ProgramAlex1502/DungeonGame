@@ -14,6 +14,10 @@ class DScrollBarUI extends BasicScrollBarUI {
 	
 	private static final int TRACK_W = 4;
 	private static final int THUMB_W = TRACK_W * 2;
+
+	private int calculateX(int x, int areaWidth, int barWidth) {
+		return x + (areaWidth - barWidth) / 2;
+	}
 	
 	@Override
 	protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
@@ -47,10 +51,6 @@ class DScrollBarUI extends BasicScrollBarUI {
 	@Override
 	protected JButton createIncreaseButton(int orientation) {
 		return createZeroButton();
-	}
-	
-	private int calculateX(int x, int areaWidth, int barWidth) {
-		return x + (areaWidth - barWidth) / 2;
 	}
 	
 	private static JButton createZeroButton() {

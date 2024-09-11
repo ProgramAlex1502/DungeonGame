@@ -1,7 +1,11 @@
 package org.dungeon.debug;
 
+import static org.dungeon.date.DungeonTimeUnit.DAY;
+import static org.dungeon.date.DungeonTimeUnit.SECOND;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -13,6 +17,7 @@ import org.dungeon.commands.IssuedCommand;
 import org.dungeon.date.Date;
 import org.dungeon.entity.creatures.Creature;
 import org.dungeon.entity.creatures.CreatureFactory;
+import org.dungeon.entity.items.CreatureInventory.SimulationResult;
 import org.dungeon.entity.items.Item;
 import org.dungeon.entity.items.ItemFactory;
 import org.dungeon.game.Game;
@@ -24,6 +29,8 @@ import org.dungeon.game.LocationPreset;
 import org.dungeon.game.PartOfDay;
 import org.dungeon.game.Point;
 import org.dungeon.io.IO;
+import org.dungeon.map.WorldMap;
+import org.dungeon.map.WorldMapWriter;
 import org.dungeon.stats.CauseOfDeath;
 import org.dungeon.stats.ExplorationStatistics;
 import org.dungeon.util.CounterMap;
@@ -31,6 +38,7 @@ import org.dungeon.util.Matches;
 import org.dungeon.util.Messenger;
 import org.dungeon.util.Table;
 import org.dungeon.util.Utils;
+
 
 public class DebugTools {
 	
@@ -73,8 +81,12 @@ public class DebugTools {
 			@Override
 			public CommandResult execute(IssuedCommand issuedCommand) {
 				if (issuedCommand.getTokenCount() >= 3) {
-					give(issuedCommand.getArguments()[1]);
-					return new DebugCommandResult(0, true);
+					boolean gaveItem = give(issuedCommand.getArguments()[1]);
+					if (gaveItem) {
+						return new DebugCommandResult(0, true);
+					} else {
+						return null;
+					}
 				} else {
 					Messenger.printMissingArgumentsMessage();
 					return null;
@@ -99,6 +111,13 @@ public class DebugTools {
 			@Override
 			public CommandResult execute(IssuedCommand issuedCommand) {
 				listAllArguments();
+				return null;
+			}
+		});
+		commands.add(new Command("map") {
+			@Override
+			public CommandResult execute(IssuedCommand issuedCommand) {
+				WorldMapWriter.writeMap(WorldMap.makeDebugWorldMap());
 				return null;
 			}
 		});
@@ -128,7 +147,7 @@ public class DebugTools {
 		});
 		commands.add(new Command("tomorrow") {
 			public CommandResult execute(IssuedCommand issuedCommand) {
-				int timeWaiting = evaluateWaitedSeconds(Date.SECONDS_IN_DAY);
+				int timeWaiting = evaluateWaitedSeconds((int) DAY.as(SECOND));
 				IO.writeString("A day has passed.");
 				return new DebugCommandResult(timeWaiting, false);
 			}
@@ -158,17 +177,20 @@ public class DebugTools {
 	
 	private static void printNotYetUnlockedAchievements() {
 		AchievementTracker tracker = Game.getGameState().getHero().getAchievementTracker();
-		int notYetUnlockedCount = GameData.ACHIEVEMENTS.size() - tracker.getUnlockedCount();
-		ArrayList<Achievement> notYetUnlockedAchievements = new ArrayList<Achievement>(notYetUnlockedCount);
+		List<Achievement> achievementList = new ArrayList<Achievement>();
+		
 		for (Achievement achievement : GameData.ACHIEVEMENTS.values()) {
 			if (!tracker.isUnlocked(achievement)) {
-				notYetUnlockedAchievements.add(achievement);
+				achievementList.add(achievement);
 			}
 		}
-		if (notYetUnlockedAchievements.isEmpty()) {
+		if (achievementList.isEmpty()) {
 			IO.writeString("All achievements have been unlocked.");
 		} else {
-			IO.writeAchievementList(notYetUnlockedAchievements);
+			Collections.sort(achievementList);
+			for (Achievement achievement : achievementList) {
+				IO.writeString(String.format("%s : %s", achievement.getName(), achievement.getInfo()));
+			}
 		}
 	}
 	
@@ -197,8 +219,8 @@ public class DebugTools {
 			sb.append(Utils.padString("  " + creature.getName(), WIDTH));
 			sb.append(creature.getVisibility().toPercentage()).append('\n');
 		}
-		if (location.getItemCount() != 0) {
-			sb.append(Utils.padString("Items (" + location.getItemCount() + "):", WIDTH)).append('\n');
+		if (!location.getItemList().isEmpty()) {
+			sb.append(Utils.padString("Items (" + location.getItemList().size() + "):", WIDTH)).append('\n');
 			for (Item item : location.getItemList()) {
 				sb.append(Utils.padString("  " + item.getQualifiedName(), WIDTH));
 				sb.append(item.getVisibility().toPercentage()).append('\n');
@@ -216,11 +238,17 @@ public class DebugTools {
     	Date date = Game.getGameState().getWorld().getWorldDate();
 		Item item = ItemFactory.makeItem(new ID(itemID.toUpperCase()), date);
         if (item != null) {
-            if (Game.getGameState().getHero().addItem(item)) {
-                return true;
-            }
+        	IO.writeString("Item successfully created.");
+        	if (Game.getGameState().getHero().getInventory().simulateItemAddition(item) == SimulationResult.SUCCESSFUL) {
+        		Game.getGameState().getHero().addItem(item);
+        	} else {
+        		Game.getGameState().getHeroLocation().addItem(item);
+        		IO.writeString("Item could not be added to your inventory. It was added to the current location instead.");
+        	}
+        	return true;
+        } else {
+        	IO.writeString("Item could not be creates.");
         }
-        IO.writeString("Item could not be added to your inventory.");
         return false;
     }
 

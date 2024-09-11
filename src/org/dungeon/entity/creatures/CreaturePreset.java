@@ -20,10 +20,12 @@ public final class CreaturePreset implements Preset {
 	private Weight weight;
 	private int health;
 	private int attack;
-	private ID attackAlgorithmID;
+	private AttackAlgorithmID attackAlgorithmID;
 	private List<ID> items = new ArrayList<ID>();
 	private Visibility visibility;
 	private ID weaponID;
+	private int inventoryItemLimit;
+	private double inventoryWeightLimit;
 	
 	private static int validate(int value, int minimum, String attributeName) {
 		if (value >= minimum) {
@@ -97,11 +99,11 @@ public final class CreaturePreset implements Preset {
 		this.attack = attack;
 	}
 	
-	public ID getAttackAlgorithmID() {
+	public AttackAlgorithmID getAttackAlgorithmID() {
 		return attackAlgorithmID;
 	}
 	
-	public void setAttackAlgorithmID(ID attackAlgorithmID) {
+	public void setAttackAlgorithmID(AttackAlgorithmID attackAlgorithmID) {
 		this.attackAlgorithmID = attackAlgorithmID;
 	}
 	
@@ -127,6 +129,22 @@ public final class CreaturePreset implements Preset {
 	
 	public void setWeaponID(ID weaponID) {
 		this.weaponID = weaponID;
+	}
+	
+	public int getInventoryItemLimit() {
+		return inventoryItemLimit;
+	}
+	
+	public void setInventoryItemLimit(int inventoryItemLimit) {
+		this.inventoryItemLimit = inventoryItemLimit;
+	}
+	
+	public double getInventoryWeightLimit() {
+		return inventoryWeightLimit;
+	}
+	
+	public void setInventoryWeightLimit(double inventoryWeightLimit) {
+		this.inventoryWeightLimit = inventoryWeightLimit;
 	}
 
 }

@@ -9,13 +9,31 @@ public final class UnlockedAchievement implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public final ID id;
-	public final String name;
-	public final Date date;
+	private final String name;
+	private final String info;
+	private final Date date;
 	
-	public UnlockedAchievement(ID id, String name, Date date) {
-		this.id = id;
-		this.name = name;
+	public UnlockedAchievement(Achievement achievement, Date date) {
+		this.id = achievement.getID();
+		this.name = achievement.getName();
+		this.info = achievement.getInfo();
 		this.date = date;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getInfo() {
+		return info;
+	}
+	public Date getDate() {
+		return date;
+	}
+	
+	@Override
+	public String toString() {
+		return "Unlocked " + name + " in " + date;
 	}
 
 }

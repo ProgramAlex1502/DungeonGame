@@ -2,12 +2,13 @@ package org.dungeon.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class CircularList<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final int capacity;
-	private final ArrayList<T> list;
+	private final List<T> list;
 	
 	private int zeroIndex;
 	
@@ -15,8 +16,8 @@ public final class CircularList<T> implements Serializable {
 		if (capacity < 1) {
 			throw new IllegalArgumentException("capacity must be positive.");
 		}
-		list = new ArrayList<T>(capacity);
 		this.capacity = capacity;
+		list = new ArrayList<T>(capacity);
 	}
 	
 	public void add(T t) {
@@ -36,7 +37,7 @@ public final class CircularList<T> implements Serializable {
 		return list.size();
 	}
 	
-	private boolean isFull() {
+	protected boolean isFull() {
 		return size() == capacity;
 	}
 	
@@ -45,6 +46,9 @@ public final class CircularList<T> implements Serializable {
 	}
 	
 	public T get(final int index) {
+		if (index > size()) {
+			throw new IndexOutOfBoundsException();
+		}
 		return list.get((index + zeroIndex) % capacity);
 	}
 

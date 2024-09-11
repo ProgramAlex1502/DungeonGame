@@ -35,20 +35,28 @@ public class CreatureInventory extends BaseInventory implements LimitedInventory
 		return sum;
 	}
 	
-	public AdditionResult addItem(Item item) {
+	public void addItem(Item item) {
+		if (simulateItemAddition(item) == SimulationResult.SUCCESSFUL) {
+			items.add(item);
+			item.setInventory(this);
+			DLogger.inventoryManagement(String.format("Added %s to the inventory of %s.", item.getQualifiedName(), owner));
+		} else {
+			throw new IllegalStateException("simulateItemAddition did not return SimulationResult.SUCCESSFUL.");
+		}
+	}
+	
+	public SimulationResult simulateItemAddition(Item item) {
 		if (hasItem(item)) {
 			DLogger.warning("Tried to add an item to a CreatureInventory that already has it.");
-			return AdditionResult.ALREADY_IN_THE_INVENTORY;
+			return SimulationResult.ALREADY_IN_THE_INVENTORY;
 		}
 		
 		if (isFull()) {
-			return AdditionResult.AMOUNT_LIMIT;
+			return SimulationResult.AMOUNT_LIMIT;
 		} else if (willExceedWeightLimitAfterAdding(item)) {
-			return AdditionResult.WEIGHT_LIMIT;
+			return SimulationResult.WEIGHT_LIMIT;
 		} else {
-			items.add(item);
-			item.setInventory(this);
-			return AdditionResult.SUCCESSFUL;
+			return SimulationResult.SUCCESSFUL;
 		}
 	}
 	
@@ -67,8 +75,9 @@ public class CreatureInventory extends BaseInventory implements LimitedInventory
 		
 		items.remove(item);
 		item.setInventory(null);
+		DLogger.inventoryManagement(String.format("Removed %s from the inventory of %s.", item.getQualifiedName(), owner));
 	}
 	
-	public enum AdditionResult { ALREADY_IN_THE_INVENTORY, AMOUNT_LIMIT, WEIGHT_LIMIT, SUCCESSFUL }
+	public enum SimulationResult { ALREADY_IN_THE_INVENTORY, AMOUNT_LIMIT, WEIGHT_LIMIT, SUCCESSFUL }
 
 }

@@ -673,3 +673,55 @@
 [2024-09-10 08:58:38] (INFO) : Created 25 achievements.
 [2024-09-10 08:58:38] (INFO) : Finished loading the game data. Took 271 ms.
 [2024-09-10 08:59:11] (INFO) : Exited with no problems.
+[2024-09-10 11:36:38] (INFO) : Started loading the game data.
+[2024-09-10 11:36:38] (INFO) : Loaded 20 item blueprints.
+[2024-09-10 11:36:38] (INFO) : Loaded 21 creature blueprints.
+[2024-09-10 11:36:38] (INFO) : Loaded 11 location presets.
+[2024-09-10 11:36:38] (INFO) : Created 25 achievements.
+[2024-09-10 11:36:38] (INFO) : Finished loading the game data. Took 270 ms.
+[2024-09-10 11:40:09] (INFO) : Started loading the game data.
+[2024-09-10 11:40:09] (INFO) : Loaded 20 item blueprints.
+[2024-09-10 11:40:09] (INFO) : Loaded 21 creature blueprints.
+[2024-09-10 11:40:09] (INFO) : Loaded 11 location presets.
+[2024-09-10 11:40:09] (INFO) : Created 25 achievements.
+[2024-09-10 11:40:09] (INFO) : Finished loading the game data. Took 126 ms.
+[2024-09-10 11:40:17] (INFO) : Saved 37,4 kB in 112 ms.
+[2024-09-10 11:40:17] (INFO) : Exited with no problems.
+[2024-09-10 16:17:02] (INFO) : Started loading the game data.
+[2024-09-10 16:17:02] (INFO) : Loaded 23 item blueprints.
+[2024-09-10 16:17:58] (INFO) : Started loading the game data.
+[2024-09-10 16:17:58] (INFO) : Loaded 23 item blueprints.
+[2024-09-10 16:18:14] (INFO) : Started loading the game data.
+[2024-09-10 16:18:14] (INFO) : Loaded 23 item blueprints.
+[2024-09-10 16:18:14] (INFO) : Loaded 21 creature blueprints.
+[2024-09-10 16:18:14] (INFO) : Loaded 12 location presets.
+[2024-09-10 16:18:14] (INFO) : Created 25 achievements.
+[2024-09-10 16:18:14] (INFO) : Finished loading the game data. Took 312 ms.
+[2024-09-10 16:18:17] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-10 16:18:17] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-10 16:18:17] (FINE) : Added Rat Beef to the inventory of Rat.
+[2024-09-10 16:18:17] (FINE) : Added Rat Beef to the inventory of Rat.
+[2024-09-10 16:18:17] (FINE) : Added Rat Beef to the inventory of Rat.
+[2024-09-10 16:19:03] (INFO) : Saved 36,8 kB in 131 ms.
+[2024-09-10 16:19:03] (INFO) : Exited with no problems.
+[2024-09-11 11:08:11] (INFO) : Started loading the game data.
+[2024-09-11 11:08:11] (INFO) : Loaded 23 item blueprints.
+[2024-09-11 11:08:11] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 11:08:11] (WARNING) : Line 16 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 27 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 38 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 49 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 60 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 81 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 101 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 112 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (WARNING) : Line 123 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 11:08:11] (INFO) : Loaded 12 location presets.
+[2024-09-11 11:08:11] (INFO) : Created 25 achievements.
+[2024-09-11 11:08:11] (INFO) : Finished loading the game data. Took 582 ms.
+[2024-09-11 11:08:14] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 11:08:14] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 11:08:14] (WARNING) : Could not add FOX_BEEF to FOX. Reason: AMOUNT_LIMIT.
+[2024-09-11 11:08:14] (WARNING) : Could not add FOX_BEEF to FOX. Reason: AMOUNT_LIMIT.
+[2024-09-11 11:08:51] (INFO) : Saved 1,1 MB in 519 ms.
+[2024-09-11 11:08:51] (INFO) : Exited with no problems.

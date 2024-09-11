@@ -3,7 +3,7 @@ package org.dungeon.entity.creatures;
 import java.awt.Color;
 
 import org.dungeon.entity.items.Item;
-import org.dungeon.game.Engine;
+import org.dungeon.game.Random;
 import org.dungeon.io.IO;
 import org.dungeon.util.Constants;
 
@@ -28,7 +28,7 @@ class AttackAlgorithmIO {
 	}
 	
 	public static void writeCritterAttackMessage(Creature attacker) {
-		if (Engine.RANDOM.nextBoolean()) {
+		if (Random.nextBoolean()) {
 			IO.writeBattleString(attacker.getName() + " does nothing.", Color.YELLOW);
 		} else {
 			IO.writeBattleString(attacker.getName() + " tries to run away.", Color.YELLOW);

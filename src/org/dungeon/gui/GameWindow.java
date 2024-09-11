@@ -2,6 +2,8 @@ package org.dungeon.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +15,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -29,6 +34,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -36,8 +42,8 @@ import javax.swing.text.StyledDocument;
 import org.dungeon.commands.CommandHistory;
 import org.dungeon.commands.IssuedCommand;
 import org.dungeon.game.Game;
-import org.dungeon.game.GameData;
 import org.dungeon.game.GameState;
+import org.dungeon.io.DLogger;
 import org.dungeon.io.Loader;
 import org.dungeon.util.Constants;
 
@@ -45,6 +51,8 @@ public class GameWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int ROWS = 30;
+    private static final int FONT_SIZE = 15;
+	private static final Font FONT = getMonospacedFont();
 	private static final String WINDOW_TITLE = "Dungeon";
 
 	private static final int MARGIN = 5;
@@ -55,6 +63,7 @@ public class GameWindow extends JFrame {
 	private JTextPane textPane;
 	
 	private boolean idle;
+	private boolean usingExternalDocument = false;
 	
 	public GameWindow() {
 		initComponents();
@@ -63,6 +72,47 @@ public class GameWindow extends JFrame {
 		setIdle(true);
 	}
 	
+	private static Font getMonospacedFont() {
+    	Font font = new Font(Font.MONOSPACED, Font.PLAIN, FONT_SIZE);
+    	InputStream fontStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("DroidSansMono.ttf");
+    	
+    	try {
+    		font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, FONT_SIZE);
+    	} catch (FontFormatException bad) {
+    		DLogger.warning("threw FontFormatException during font creation.");
+    	} catch (IOException bad) {
+    		DLogger.warning("threw IOException during font creation.");
+    	} finally {
+    		if (fontStream != null) {
+    			try {
+    				fontStream.close();
+    			} catch (IOException ignore) {
+    			}
+    		}
+    	}
+    	return font;
+    }
+
+	private static void setSystemLookAndFeel() {
+		try {
+			String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
+			if (lookAndFeel.equals("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")) {
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			} else {
+				UIManager.setLookAndFeel(lookAndFeel);
+			}
+		} catch (UnsupportedLookAndFeelException ignored) {
+		} catch (ClassNotFoundException ignored) {
+		} catch (InstantiationException ignored) {
+		} catch (IllegalAccessException ignored) {
+		}
+	}
+	
+	private static void logExecutionExceptionAndExit(ExecutionException fatal) {
+		DLogger.severe(fatal.getCause().toString());
+		System.exit(1);
+	}
+
 	private void initComponents() {
 		setSystemLookAndFeel();
 		
@@ -76,7 +126,7 @@ public class GameWindow extends JFrame {
 		
 		textPane.setEditable(false);
 		textPane.setBackground(SharedConstants.INSIDE_COLOR);
-		textPane.setFont(GameData.FONT);
+		textPane.setFont(FONT);
 		
 		scrollPane.setViewportView(textPane);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -86,7 +136,7 @@ public class GameWindow extends JFrame {
 		textField.setBackground(SharedConstants.INSIDE_COLOR);
 		textField.setForeground(Constants.FORE_COLOR_NORMAL);
 		textField.setCaretColor(Color.WHITE);
-		textField.setFont(GameData.FONT);
+		textField.setFont(FONT);
 		textField.setFocusTraversalKeysEnabled(false);
 		textField.setBorder(BorderFactory.createEmptyBorder());
 		
@@ -145,21 +195,6 @@ public class GameWindow extends JFrame {
 		resize();
 	}
 	
-	private void setSystemLookAndFeel() {
-		try {
-			String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
-			if (lookAndFeel.equals("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")) {
-				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			} else {
-				UIManager.setLookAndFeel(lookAndFeel);
-			}
-		} catch (UnsupportedLookAndFeelException ignored) {
-		} catch (ClassNotFoundException ignored) {
-		} catch (InstantiationException ignored) {
-		} catch (IllegalAccessException ignored) {
-		}
-	}
-	
 	private void resize() {
 		textPane.setPreferredSize(calculateTextPaneSize());
 		pack();
@@ -167,7 +202,7 @@ public class GameWindow extends JFrame {
 	}
 	
 	private Dimension calculateTextPaneSize() {
-		FontMetrics fontMetrics = getFontMetrics(GameData.FONT);
+		FontMetrics fontMetrics = getFontMetrics(FONT);
 		int width = fontMetrics.charWidth(' ') * (Constants.COLS + 1);
 		int height = fontMetrics.getHeight() * ROWS;
 		return new Dimension(width, height);
@@ -188,12 +223,19 @@ public class GameWindow extends JFrame {
 				
 				@Override
 				protected void done() {
+					try {
+						get();
+					} catch (InterruptedException ignore) {
+					} catch (ExecutionException fatal) {
+						logExecutionExceptionAndExit(fatal);
+					}
 					setIdle(true);
 				}
 			};
 			inputRenderer.execute();
 		}
 	}
+	
 	
 	private void setIdle(boolean idle) {
 		this.idle = idle;
@@ -227,6 +269,10 @@ public class GameWindow extends JFrame {
 	}
 	
 	public void writeToTextPane(String string, Color color, boolean scrollDown) {
+		if (usingExternalDocument) {
+			textPane.setDocument(document);
+			usingExternalDocument = false;
+		}
 		writeToTextPane(string, color, textPane.getBackground(), scrollDown);
 	}
 	
@@ -258,6 +304,11 @@ public class GameWindow extends JFrame {
 	
 	private void clearTextField() {
 		textField.setText(null);
+	}
+	
+	public void writeMapToTextPane(Document document) {
+		textPane.setDocument(document);
+		usingExternalDocument = true;
 	}
 
 }

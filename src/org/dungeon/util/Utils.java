@@ -146,5 +146,9 @@ public final class Utils {
 		}
 		return matches;
 	}
+	
+	public static int zeroIfNull(Integer integer) {
+		return integer == null ? 0 : integer;
+	}
 
 }

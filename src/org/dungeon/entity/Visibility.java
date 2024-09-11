@@ -16,5 +16,9 @@ public class Visibility implements Serializable {
 	public Percentage toPercentage() {
 		return value;
 	}
+	
+	public boolean visibleUnder(Percentage luminosity) {
+		return luminosity.toDouble() >= 1 - value.toDouble();
+	}
 
 }

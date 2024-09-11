@@ -16,20 +16,16 @@ class WorldGenerator implements Serializable {
 	private final int chunkSide;
 	
 	public WorldGenerator(World world) {
-		this(world, CHUNK_SIDE);
-	}
-	
-	private WorldGenerator(World world, int chunkSide) {
 		this.world = world;
-		this.chunkSide = chunkSide;
+		this.chunkSide = WorldGenerator.CHUNK_SIDE;
 		riverGenerator = new RiverGenerator(MIN_DIST_RIVER, MAX_DIST_RIVER);
 	}
 	
-	private LocationPreset getRandomLandLocationPreset() {
+	private static LocationPreset getRandomLandLocationPreset() {
 		List<LocationPreset> locationPresets = new ArrayList<LocationPreset>(GameData.getLocationPresets().values());
 		LocationPreset selectedPreset;
 		do {
-			selectedPreset = locationPresets.get(Engine.RANDOM.nextInt(locationPresets.size()));
+			selectedPreset = locationPresets.get(Random.nextInteger(locationPresets.size()));
 		} while (!"Land".equals(selectedPreset.getType()));
 		return selectedPreset;
 	}
@@ -39,7 +35,8 @@ class WorldGenerator implements Serializable {
 	}
 	
 	private Location createBridgeLocation() {
-		return new Location(GameData.getLocationPresets().get(new ID("BRIDGE")), world);
+		ID bridgeID = new ID(Random.nextBoolean() ? "STONE_BRIDGE" : "WOOD_BRIDGE");
+		return new Location(GameData.getLocationPresets().get(bridgeID), world);
 	}
 	
 	public void expand(Point p) {

@@ -40,13 +40,15 @@ public class Weight implements Comparable<Weight>, Serializable {
 		return newInstance(this.value * p.toDouble());
 	}
 	
+	@Override
+	public int compareTo(Weight weight) {
+		return Double.compare(value, weight.value);
+	}
+
+	@Override
 	public String toString() {
 		return WEIGHT_FORMAT.format(value);
 	}
 
-	@Override
-	public int compareTo(Weight o) {
-		return Double.compare(value, o.value);
-	}
 
 }

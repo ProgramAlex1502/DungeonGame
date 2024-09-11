@@ -1,5 +1,6 @@
 package org.dungeon.io;
 
+import java.awt.Color;
 import java.io.Closeable;
 import java.io.InputStreamReader;
 import java.util.AbstractMap.SimpleEntry;
@@ -135,6 +136,15 @@ public class ResourceReader implements Closeable {
 			return new Visibility(Percentage.fromString(getValue("VISIBILITY")));
 		} else {
 			return null;
+		}
+	}
+	
+	public Color readColor() {
+		if (hasValue("COLOR")) {
+			String[] RGB = getArrayOfValues("COLOR");
+			return new Color(Integer.parseInt(RGB[0]), Integer.parseInt(RGB[1]), Integer.parseInt(RGB[2]));
+		} else {
+			throw new IllegalStateException("current element does not have a COLOR value.");
 		}
 	}
 	

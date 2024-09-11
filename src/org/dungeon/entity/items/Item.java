@@ -5,12 +5,12 @@ import org.dungeon.date.Period;
 import org.dungeon.entity.Entity;
 import org.dungeon.entity.TagSet;
 import org.dungeon.entity.Weight;
-import org.dungeon.game.Engine;
 import org.dungeon.game.Game;
+import org.dungeon.game.Random;
 import org.dungeon.io.DLogger;
 import org.dungeon.util.Percentage;
 
-public class Item extends Entity {
+public final class Item extends Entity {
 	private static final long serialVersionUID = 1L;
 	
 	private final int maxIntegrity;
@@ -159,7 +159,7 @@ public class Item extends Entity {
 	}
 	
 	public boolean rollForHit() {
-		return Engine.roll(weaponComponent.getHitRate());
+		return Random.roll(weaponComponent.getHitRate());
 	}
 	
 	private String getIntegrityString() {

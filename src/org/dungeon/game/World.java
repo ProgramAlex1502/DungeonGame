@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import org.dungeon.date.Date;
+import org.dungeon.date.DungeonTimeUnit;
 import org.dungeon.entity.creatures.Hero;
 import org.dungeon.io.DLogger;
 import org.dungeon.stats.WorldStatistics;
@@ -22,7 +23,7 @@ public class World implements Serializable {
 	public World(WorldStatistics statistics) {
 		worldStatistics = statistics;
 		worldDate = new Date(455, 6, 2, 6, 10, 0);
-		worldCreationDate = worldDate.minusHours(6);
+		worldCreationDate = worldDate.minus(6, DungeonTimeUnit.HOUR);
 		locations = new HashMap<Point, Location>();
 		generator = new WorldGenerator(this);
 	}
@@ -70,7 +71,7 @@ public class World implements Serializable {
 		if (seconds <= 0) {
 			DLogger.warning("Cannot roll the World's Date back!");
 		} else {
-			worldDate = worldDate.plusSeconds(seconds);
+			worldDate = worldDate.plus(seconds, DungeonTimeUnit.SECOND);
 		}
 	}
 	

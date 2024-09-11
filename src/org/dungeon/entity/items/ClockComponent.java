@@ -3,8 +3,8 @@ package org.dungeon.entity.items;
 import java.io.Serializable;
 
 import org.dungeon.date.Date;
-import org.dungeon.game.Engine;
 import org.dungeon.game.Game;
+import org.dungeon.game.Random;
 
 public class ClockComponent implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class ClockComponent implements Serializable {
 	public String getTimeString() {
 		if (master.isBroken()) {
 			if (lastTime == null) {
-				if (Engine.RANDOM.nextBoolean()) {
+				if (Random.nextBoolean()) {
 					return "The clock is pure junk.";
 				} else {
 					return "The clock is completely smashed.";

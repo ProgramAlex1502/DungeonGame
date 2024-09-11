@@ -1,9 +1,5 @@
 package org.dungeon.game;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -14,8 +10,8 @@ import java.util.Set;
 
 import org.dungeon.achievements.Achievement;
 import org.dungeon.achievements.AchievementBuilder;
-import org.dungeon.date.Date;
 import org.dungeon.entity.Weight;
+import org.dungeon.entity.creatures.AttackAlgorithmID;
 import org.dungeon.entity.creatures.Creature;
 import org.dungeon.entity.creatures.CreatureFactory;
 import org.dungeon.entity.creatures.CreaturePreset;
@@ -30,17 +26,19 @@ import org.dungeon.stats.TypeOfCauseOfDeath;
 import org.dungeon.util.CounterMap;
 import org.dungeon.util.StopWatch;
 
+import static org.dungeon.date.DungeonTimeUnit.DAY;
+import static org.dungeon.date.DungeonTimeUnit.SECOND;
+
+
 public final class GameData {
 
-	public static final Font FONT = getMonospacedFont();
     private static final int CORPSE_DAMAGE = 2;
     private static final int CORPSE_INTEGRITY_DECREMENT_ON_HIT = 5;
-    private static final long CORPSE_PUTREFACTION_PERIOD = Date.SECONDS_IN_DAY;
+    private static final long CORPSE_PUTREFACTION_PERIOD = DAY.as(SECOND);
     private static final double CORPSE_HIT_RATE = 0.5;
     private static final PoetryLibrary poetryLibrary = new PoetryLibrary();
     private static final DreamLibrary dreamLibrary = new DreamLibrary();
     private static final HintLibrary hintLibrary = new HintLibrary();
-    private static final int FONT_SIZE = 15;
     
     private static String tutorial = null;
     
@@ -55,26 +53,7 @@ public final class GameData {
     	throw new AssertionError();
     }
 
-    private static Font getMonospacedFont() {
-    	Font font = new Font(Font.MONOSPACED, Font.PLAIN, FONT_SIZE);
-    	InputStream fontStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("DroidSansMono.ttf");
-    	
-    	try {
-    		font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, FONT_SIZE);
-    	} catch (FontFormatException bad) {
-    		DLogger.warning(bad.getMessage());
-    	} catch (IOException bad) {
-    		DLogger.warning(bad.getMessage());
-    	} finally {
-    		if (fontStream != null) {
-    			try {
-    				fontStream.close();
-    			} catch (IOException ignore) {
-    			}
-    		}
-    	}
-    	return font;
-    }
+    
     
     public static PoetryLibrary getPoetryLibrary() {
     	return poetryLibrary;
@@ -179,11 +158,13 @@ public final class GameData {
         			preset.addTag(tag);
         		}
         	}
+        	preset.setInventoryItemLimit(readIntegerFromResourceReader(reader, "INVENTORY_ITEM_LIMIT"));
+        	preset.setInventoryWeightLimit(readDoubleFromResourceReader(reader, "INVENTORY_WEIGHT_LIMIT"));
         	preset.setVisibility(reader.readVisibility());
         	preset.setWeight(Weight.newInstance(readDoubleFromResourceReader(reader, "WEIGHT")));
         	preset.setHealth(readIntegerFromResourceReader(reader, "HEALTH"));
         	preset.setAttack(readIntegerFromResourceReader(reader, "ATTACK"));
-        	preset.setAttackAlgorithmID(new ID(reader.getValue("ATTACK_ALGORITHM_ID")));
+        	preset.setAttackAlgorithmID(AttackAlgorithmID.valueOf(reader.getValue("ATTACK_ALGORITHM_ID")));
         	if (reader.hasValue("ITEMS")) {
         		preset.setItems(readIDList(reader, "ITEMS"));
         	}
@@ -231,6 +212,7 @@ public final class GameData {
         	String type = reader.getValue("TYPE");
         	Name name = nameFromArray(reader.getArrayOfValues("NAME"));
         	LocationPreset preset = new LocationPreset(id, type, name);
+        	preset.setDescription(new LocationDescription(reader.getValue("SYMBOL").charAt(0), reader.readColor()));
         	preset.setBlobSize(readIntegerFromResourceReader(reader, "BLOB_SIZE"));
         	preset.setLightPermittivity(readDoubleFromResourceReader(reader, "LIGHT_PERMITTIVITY"));
         	if (reader.hasValue("SPAWNERS")) {

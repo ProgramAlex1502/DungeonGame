@@ -12,12 +12,13 @@ import org.dungeon.entity.items.LocationInventory;
 import org.dungeon.io.DLogger;
 import org.dungeon.util.Percentage;
 
-public class Location implements Serializable {
+public final class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final ID id;
 	private final String type;
 	private final Name name;
+	private final LocationDescription description;
 	private final BlockedEntrances blockedEntrances;
 	private final List<Creature> creatures;
 	private final List<Spawner> spawners;
@@ -30,6 +31,7 @@ public class Location implements Serializable {
 		this.id = preset.getID();
 		this.type = preset.getType();
 		this.name = preset.getName();
+		this.description = preset.getDescription();
 		this.world = world;
 		this.blockedEntrances = preset.getBlockedEntrances();
 		this.lightPermittivity = preset.getLightPermittivity();
@@ -40,7 +42,7 @@ public class Location implements Serializable {
 		}
 		this.items = new LocationInventory();
 		for (Entry<ID, Percentage> entry : preset.getItems()) {
-			if (Engine.roll(entry.getValue())) {
+			if (Random.roll(entry.getValue())) {
 				Item item = ItemFactory.makeItem(entry.getKey(), world.getWorldDate());
 				if (item != null) {
 					this.addItem(item);
@@ -61,6 +63,10 @@ public class Location implements Serializable {
 	
 	public Name getName() {
 		return name;
+	}
+	
+	public LocationDescription getDescription() {
+		return description;
 	}
 	
 	public void refreshSpawners() {
@@ -101,10 +107,6 @@ public class Location implements Serializable {
 			}
 		}
 		return count;
-	}
-	
-	public int getItemCount() {
-		return items.getItems().size();
 	}
 	
 	public void addCreature(Creature creature) {
