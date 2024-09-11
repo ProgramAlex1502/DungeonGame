@@ -3,11 +3,12 @@ package org.dungeon.game;
 import java.awt.Color;
 import java.io.Serializable;
 
-public class LocationDescription implements Serializable {
+public class LocationDescription implements Examinable, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final char symbol;
 	private final Color color;
+	private String info = "You don't discover anything.";
 	
 	public LocationDescription(char symbol, Color color) {
 		this.symbol = symbol;
@@ -20,6 +21,15 @@ public class LocationDescription implements Serializable {
 	
 	public Color getColor() {
 		return color;
+	}
+	
+	@Override
+	public String getInfo() {
+		return info;
+	}
+	
+	public void setInfo(String info) {
+		this.info = info;
 	}
 	
 	@Override

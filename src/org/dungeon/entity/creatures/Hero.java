@@ -43,17 +43,13 @@ import org.dungeon.util.Messenger;
 import org.dungeon.util.Percentage;
 import org.dungeon.util.Utils;
 
-
-
 public class Hero extends Creature {
 	private static final long serialVersionUID = 1L;
 	
 	private static final long DREAM_DURATION_IN_SECONDS = 4 * HOUR.as(SECOND);
 	private static final int MILLISECONDS_TO_SLEEP_AN_HOUR = 500;
-	private static final int SECONDS_TO_LOOK_AT_THE_COVER_OF_A_BOOK = 6;
 	private static final int SECONDS_TO_PICK_UP_AN_ITEM = 10;
 	private static final int SECONDS_TO_DESTROY_AN_ITEM = 120;
-	private static final int SECONDS_TO_LEARN_A_SKILL = 60;
 	private static final int SECONDS_TO_EAT_AN_ITEM = 30;
 	private static final int SECONDS_TO_DROP_AN_ITEM = 2;
 	private static final int SECONDS_TO_UNEQUIP = 4;
@@ -81,7 +77,7 @@ public class Hero extends Creature {
 	
 	private void addHealth(int amount) {
 		int sum = amount + getCurHealth();
-		if (sum > getMaxHealth()) {
+		if (sum >= getMaxHealth()) {
 			setCurHealth(getMaxHealth());
 			IO.writeString("You are completely healed.");
 		} else {
@@ -203,22 +199,22 @@ public class Hero extends Creature {
 	
 	public void look(Direction walkedInFrom) {
 		Location location = getLocation();
-		String firstLine;
+		String description;
 		if (walkedInFrom != null) {
-			firstLine = "You arrive at " + location.getName() + ".";
+			description = "You arrive at " + location.getName() + ".";
 		} else {
-			firstLine = "You are at " + location.getName() + ".";
+			description = "You are at " + location.getName() + ".";
 		}
-		firstLine += " " + "It is " + location.getWorld().getPartOfDay().toString().toLowerCase() + ".";
-		IO.writeString(firstLine);
-		IO.writeNewLine();
+		description += " " + location.getDescription().getInfo();
+		description += " " + "It is " + location.getWorld().getPartOfDay().toString().toLowerCase() + ".";
+		IO.writeString(description);
 		lookAdjacentLocations(walkedInFrom);
-		IO.writeNewLine();
 		lookCreatures();
 		lookItems();
 	}
 	
 	private void lookAdjacentLocations(Direction walkedInFrom) {
+		IO.writeNewLine();
 		if (!canSeeAdjacentLocations()) {
 			IO.writeString("You can't clearly see the surrounding locations.");
 			return;
@@ -254,6 +250,7 @@ public class Hero extends Creature {
 		List<Creature> creatures = new ArrayList<Creature>(getLocation().getCreatures());
 		creatures.remove(this);
 		creatures = filterByVisibility(creatures);
+		IO.writeNewLine();
 		if (creatures.isEmpty()) {
 			IO.writeString("You don't see anyone here.");
 		} else {
@@ -458,17 +455,21 @@ public class Hero extends Creature {
 		if (getInventory().getItemCount() != 0) {
 			printItems();
 		}
-		if (hasWeapon()) {
-			IO.writeString("You are equipping " + getWeapon().getQualifiedName() + ".");
-		}
 	}
 	
 	private void printItems() {
-		ArrayList<String> names = new ArrayList<String>(getInventory().getItemCount());
-		for (Item item : getInventory().getItems()) {
-			names.add(String.format("%s (%s)", item.getQualifiedName(), item.getWeight()));
+		if (getInventory().getItemCount() == 0) {
+			throw new IllegalStateException("inventory item count is 0.");
 		}
-		IO.writeString("You are carrying " + Utils.enumerate(names) + ".");
+		IO.writeString("You are carrying:");
+		for (Item item : getInventory().getItems()) {
+			String name = String.format("%s (%s)", item.getQualifiedName(), item.getWeight());
+			if (hasWeapon() && getWeapon() == item) {
+				IO.writeString(" [Equipped] " + name);
+			} else {
+				IO.writeString(" " + name);
+			}
+		}
 	}
 	
 	public int eatItem(IssuedCommand issuedCommand) {
@@ -540,20 +541,28 @@ public class Hero extends Creature {
 			if (book != null) {
 				IO.writeString(book.getText());
 				IO.writeNewLine();
-				Skill skill = new Skill(GameData.getSkillDefinitions().get(book.getSkillID()));
-				if (getSkillList().hasSkill(skill.getID())) {
-					IO.writeString("You already knew " + skill.getName() + ".");
-					return SECONDS_TO_LOOK_AT_THE_COVER_OF_A_BOOK;
-				} else {
-					getSkillList().addSkill(skill);
-					IO.writeString("You learned " + skill.getName() + ".");
-					return SECONDS_TO_LEARN_A_SKILL;
+				if (book.isDidactic()) {
+					learnSkill(book);
 				}
+				return book.getTimeToRead();
 			} else {
 				IO.writeString("You can only read books.");
 			}
 		}
 		return 0;
+	}
+	
+	private void learnSkill(BookComponent book) {
+		if (!book.isDidactic()) {
+			throw new IllegalArgumentException("book should be didactic");
+		}
+		Skill skill = new Skill(GameData.getSkillDefinitions().get(book.getSkillID()));
+		if (getSkillList().hasSkill(skill.getID())) {
+			IO.writeString("You already knew " + skill.getName() + ".");
+		} else {
+			getSkillList().addSkill(skill);
+			IO.writeString("You learned " + skill.getName() + ".");
+		}
 	}
 	
 	public int destroyItem(IssuedCommand issuedCommand) {

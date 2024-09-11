@@ -1,8 +1,8 @@
 package org.dungeon.game;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.dungeon.game.LocationPreset.Type;
 
 class WorldGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,21 +22,15 @@ class WorldGenerator implements Serializable {
 	}
 	
 	private static LocationPreset getRandomLandLocationPreset() {
-		List<LocationPreset> locationPresets = new ArrayList<LocationPreset>(GameData.getLocationPresets().values());
-		LocationPreset selectedPreset;
-		do {
-			selectedPreset = locationPresets.get(Random.nextInteger(locationPresets.size()));
-		} while (!"Land".equals(selectedPreset.getType()));
-		return selectedPreset;
+		return Random.select(GameData.getLocationPresetStore().getLocationPresetByType(Type.LAND));
 	}
 	
-	private Location createRiverLocation() {
-		return new Location(GameData.getLocationPresets().get(new ID("RIVER")), world);
+	private Location createRandomRiverLocation() {
+		return new Location(Random.select(GameData.getLocationPresetStore().getLocationPresetByType(Type.RIVER)), world);
 	}
 	
-	private Location createBridgeLocation() {
-		ID bridgeID = new ID(Random.nextBoolean() ? "STONE_BRIDGE" : "WOOD_BRIDGE");
-		return new Location(GameData.getLocationPresets().get(bridgeID), world);
+	private Location createRandomBridgeLocation() {
+		return new Location(Random.select(GameData.getLocationPresetStore().getLocationPresetByType(Type.BRIDGE)), world);
 	}
 	
 	public void expand(Point p) {
@@ -54,9 +48,9 @@ class WorldGenerator implements Serializable {
                 currentPoint = new Point(x, y);
                 if (!world.hasLocation(currentPoint)) {
                     if (riverGenerator.isRiver(currentPoint)) {
-                        world.addLocation(createRiverLocation(), currentPoint);
+                        world.addLocation(createRandomRiverLocation(), currentPoint);
                     } else if (riverGenerator.isBridge(currentPoint)) {
-                        world.addLocation(createBridgeLocation(), currentPoint);
+                        world.addLocation(createRandomBridgeLocation(), currentPoint);
                     } else {
                     	if (currentLocationPreset == null || remainingLocationsOfCurrentPreset == 0) {
                     		currentLocationPreset = getRandomLandLocationPreset();

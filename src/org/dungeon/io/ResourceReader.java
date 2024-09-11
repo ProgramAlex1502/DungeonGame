@@ -132,20 +132,18 @@ public class ResourceReader implements Closeable {
 	}
 	
 	public Visibility readVisibility() {
-		if (hasValue("VISIBILITY") && Percentage.isValidPercentageString(getValue("VISIBILITY"))) {
+		assertExists("VISIBILITY");
+		if (Percentage.isValidPercentageString(getValue("VISIBILITY"))) {
 			return new Visibility(Percentage.fromString(getValue("VISIBILITY")));
 		} else {
-			return null;
+			throw new IllegalStateException("this resource reader does not have a VISIBILITY value.");
 		}
 	}
 	
 	public Color readColor() {
-		if (hasValue("COLOR")) {
-			String[] RGB = getArrayOfValues("COLOR");
-			return new Color(Integer.parseInt(RGB[0]), Integer.parseInt(RGB[1]), Integer.parseInt(RGB[2]));
-		} else {
-			throw new IllegalStateException("current element does not have a COLOR value.");
-		}
+		assertExists("COLOR");
+		String[] RGB = getArrayOfValues("COLOR");
+		return new Color(Integer.parseInt(RGB[0]), Integer.parseInt(RGB[1]), Integer.parseInt(RGB[2]));
 	}
 	
 	private void logRepeatedValue() {
@@ -160,10 +158,30 @@ public class ResourceReader implements Closeable {
 	private void logMissingValue() {
 		DLogger.warning(filename, resourceParser.getLineNumber(), " does not have a value!");
 	}
+	
+	public char readCharacter(String key) {
+		assertExists(key);
+		if (getValue(key).length() == 1) {
+			return getValue(key).charAt(0);
+		} else {
+			throw new IllegalStateException(key + " is not mapped to a single character.");
+		}
+	}
+	
+	private void assertExists(String key) {
+		if (!hasValue(key)) {
+			throw new IllegalStateException("current element does not have a " + key + " value.");
+		}
+	}
 
 	@Override
 	public void close() {
 		resourceParser.close();
+	}
+	
+	@Override
+	public String toString() {
+		return "ResourceReader reading " + filename + ".";
 	}
 
 }
