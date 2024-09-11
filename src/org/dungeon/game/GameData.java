@@ -22,6 +22,7 @@ import org.dungeon.entity.items.Item;
 import org.dungeon.entity.items.ItemBlueprint;
 import org.dungeon.entity.items.ItemFactory;
 import org.dungeon.io.DLogger;
+import org.dungeon.io.JsonObjectFactory;
 import org.dungeon.io.ResourceReader;
 import org.dungeon.skill.SkillDefinition;
 import org.dungeon.stats.CauseOfDeath;
@@ -369,8 +370,7 @@ public final class GameData {
     				set.add(Enum.valueOf(enumClass, tag));
     			} catch (IllegalArgumentException fatal) {
     				String message = "Invalid tag '" + tag + "' found!";
-    				DLogger.warning(message);
-    				throw new Error(message, fatal);
+    				throw new InvalidTagException(message, fatal);
     			}
     		}
     	} else {
@@ -398,10 +398,7 @@ public final class GameData {
     	if (tutorial != null) {
     		throw new AssertionError();
     	}
-    	ResourceReader reader = new ResourceReader("tutorial.txt");
-    	reader.readNextElement();
-    	tutorial = reader.getValue("TUTORIAL");
-    	reader.close();
+    	tutorial = JsonObjectFactory.makeJsonObject("tutorial.json").get("tutorial").asString();
     }
     
     public static Map<ID, ItemBlueprint> getItemBlueprints() {
@@ -414,6 +411,14 @@ public final class GameData {
     
     public static LocationPresetStore getLocationPresetStore() {
     	return locationPresetStore;
+    }
+    
+    public static class InvalidTagException extends IllegalArgumentException {
+		private static final long serialVersionUID = 1L;
+
+		public InvalidTagException(String message, Throwable cause) {
+    		super(message, cause);
+    	}
     }
 
 }

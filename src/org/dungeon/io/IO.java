@@ -5,7 +5,6 @@ import java.awt.Color;
 import org.dungeon.game.Game;
 import org.dungeon.util.Constants;
 import org.dungeon.util.Poem;
-import org.dungeon.util.Utils;
 
 public class IO {
 	
@@ -20,16 +19,22 @@ public class IO {
 	}
 	
 	public static void writeString(String string, Color color) {
-		writeString(string, color, true, true, 0);
+		writeString(string, color, true);
+	}
+	
+	public static void writeString(String string, Color color, boolean newLine) {
+		writeString(string, color, newLine, true, 0);
 	}
 	
 	private static void writeString(String string, Color color, boolean newLine, boolean scrollDown, int wait) {
 		if (color == null) {
 			DLogger.warning("Passed null as a Color to writeString.");
 		}
+		if (newLine) {
+			string += '\n';
+		}
 		
-		String processedString = newLine ? Utils.clearEnd(string) + '\n' : Utils.clearEnd(string);
-		Game.getGameWindow().writeToTextPane(processedString, color, scrollDown);
+		Game.getGameWindow().writeToTextPane(string, color, scrollDown);
 
 		if (wait > 0) {
 			Sleeper.sleep(wait);

@@ -725,3 +725,168 @@
 [2024-09-11 11:08:14] (WARNING) : Could not add FOX_BEEF to FOX. Reason: AMOUNT_LIMIT.
 [2024-09-11 11:08:51] (INFO) : Saved 1,1 MB in 519 ms.
 [2024-09-11 11:08:51] (INFO) : Exited with no problems.
+[2024-09-11 14:21:10] (INFO) : Started loading the game data.
+[2024-09-11 14:21:10] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 14:21:10] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 14:39:16] (INFO) : Started loading the game data.
+[2024-09-11 14:39:17] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 14:39:17] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 14:39:17] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 14:39:17] (INFO) : Loaded 14 location presets.
+[2024-09-11 14:39:17] (INFO) : Created 25 achievements.
+[2024-09-11 14:39:17] (INFO) : Finished loading the game data. Took 986 ms.
+[2024-09-11 14:39:20] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 14:39:20] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 14:39:20] (FINE) : Added Orc Sword to the inventory of Orc.
+[2024-09-11 14:39:20] (FINE) : Added Orc Sword to the inventory of Orc.
+[2024-09-11 14:39:20] (FINE) : Added Club to the inventory of Zombie.
+[2024-09-11 14:39:50] (INFO) : Saved 40,4 kB in 207 ms.
+[2024-09-11 14:39:50] (INFO) : Exited with no problems.
+[2024-09-11 15:25:41] (INFO) : Started loading the game data.
+[2024-09-11 15:25:41] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 15:25:41] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 15:25:41] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 15:25:41] (INFO) : Loaded 14 location presets.
+[2024-09-11 15:25:41] (INFO) : Created 25 achievements.
+[2024-09-11 15:25:41] (INFO) : Finished loading the game data. Took 774 ms.
+[2024-09-11 15:25:44] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 15:25:44] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 15:26:19] (INFO) : Exited with no problems.
+[2024-09-11 16:12:23] (INFO) : Started loading the game data.
+[2024-09-11 16:12:23] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 16:12:23] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 16:12:23] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:12:23] (INFO) : Loaded 14 location presets.
+[2024-09-11 16:12:23] (INFO) : Created 25 achievements.
+[2024-09-11 16:12:23] (INFO) : Finished loading the game data. Took 284 ms.
+[2024-09-11 16:12:25] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 16:12:25] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 16:12:30] (SEVERE) : java.lang.NoClassDefFoundError: com/eclipsesource/json/JsonObject
+[2024-09-11 16:13:19] (INFO) : Started loading the game data.
+[2024-09-11 16:13:19] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 16:13:19] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 16:13:19] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:13:19] (INFO) : Loaded 14 location presets.
+[2024-09-11 16:13:19] (INFO) : Created 25 achievements.
+[2024-09-11 16:13:19] (INFO) : Finished loading the game data. Took 288 ms.
+[2024-09-11 16:13:21] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 16:13:21] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 16:14:39] (INFO) : Exited with no problems.
+[2024-09-11 16:15:22] (INFO) : Started loading the game data.
+[2024-09-11 16:15:22] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 16:15:22] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 16:15:22] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:15:22] (INFO) : Loaded 14 location presets.
+[2024-09-11 16:15:22] (INFO) : Created 25 achievements.
+[2024-09-11 16:15:22] (INFO) : Finished loading the game data. Took 287 ms.
+[2024-09-11 16:15:24] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 16:15:24] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 16:15:24] (WARNING) : Could not add FOX_BEEF to FOX. Reason: AMOUNT_LIMIT.
+[2024-09-11 16:15:24] (WARNING) : Could not add FOX_BEEF to FOX. Reason: AMOUNT_LIMIT.
+[2024-09-11 16:15:57] (INFO) : Exited with no problems.
+[2024-09-11 16:44:22] (INFO) : Started loading the game data.
+[2024-09-11 16:44:22] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 16:44:22] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 16:44:22] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:44:22] (INFO) : Loaded 14 location presets.
+[2024-09-11 16:44:22] (INFO) : Created 25 achievements.
+[2024-09-11 16:44:22] (INFO) : Finished loading the game data. Took 777 ms.
+[2024-09-11 16:44:24] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 16:44:24] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 16:45:29] (INFO) : Saved 39,3 kB in 204 ms.
+[2024-09-11 16:45:29] (INFO) : Exited with no problems.
+[2024-09-11 16:48:59] (INFO) : Started loading the game data.
+[2024-09-11 16:48:59] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 16:48:59] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 16:48:59] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 16:48:59] (INFO) : Loaded 14 location presets.
+[2024-09-11 16:48:59] (INFO) : Created 25 achievements.
+[2024-09-11 16:48:59] (INFO) : Finished loading the game data. Took 296 ms.
+[2024-09-11 16:49:02] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 16:49:02] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 16:49:16] (INFO) : Saved 42,0 kB in 122 ms.
+[2024-09-11 16:49:16] (INFO) : Exited with no problems.
+[2024-09-11 17:07:01] (INFO) : Started loading the game data.
+[2024-09-11 17:07:01] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 17:07:01] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 17:07:01] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:07:01] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:07:01] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:07:01] (WARNING) : Line 74 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (INFO) : Started loading the game data.
+[2024-09-11 17:08:23] (INFO) : Loaded 24 item blueprints.
+[2024-09-11 17:08:23] (INFO) : Loaded 21 creature blueprints.
+[2024-09-11 17:08:23] (WARNING) : Line 18 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 51 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 63 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 75 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 98 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 121 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 133 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 145 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (WARNING) : Line 157 of locations.txt repeats a value of its element (first occurence was used)!
+[2024-09-11 17:08:23] (INFO) : Loaded 14 location presets.
+[2024-09-11 17:08:23] (INFO) : Created 25 achievements.
+[2024-09-11 17:08:23] (INFO) : Finished loading the game data. Took 353 ms.
+[2024-09-11 17:08:25] (FINE) : Added Potato to the inventory of Seth.
+[2024-09-11 17:08:25] (INFO) : Set the GameState field in Game to a GameState.
+[2024-09-11 17:08:25] (FINE) : Added Rat Beef to the inventory of Rat.
+[2024-09-11 17:08:25] (FINE) : Added Rat Beef to the inventory of Rat.
+[2024-09-11 17:08:25] (FINE) : Added Rat Beef to the inventory of Rat.
+[2024-09-11 17:08:38] (INFO) : Exited with no problems.

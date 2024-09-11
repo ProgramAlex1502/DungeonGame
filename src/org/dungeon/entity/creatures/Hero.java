@@ -37,6 +37,7 @@ import org.dungeon.io.IO;
 import org.dungeon.io.Sleeper;
 import org.dungeon.skill.Skill;
 import org.dungeon.stats.ExplorationStatistics;
+import org.dungeon.util.Constants;
 import org.dungeon.util.CounterMap;
 import org.dungeon.util.Matches;
 import org.dungeon.util.Messenger;
@@ -199,13 +200,10 @@ public class Hero extends Creature {
 	
 	public void look(Direction walkedInFrom) {
 		Location location = getLocation();
-		String description;
-		if (walkedInFrom != null) {
-			description = "You arrive at " + location.getName() + ".";
-		} else {
-			description = "You are at " + location.getName() + ".";
-		}
-		description += " " + location.getDescription().getInfo();
+		IO.writeString(walkedInFrom != null ? "You arrive at " : "You are at ", Constants.FORE_COLOR_NORMAL, false);
+		IO.writeString(location.getName().getSingular(), location.getDescription().getColor(), false);
+		IO.writeString(".", Constants.FORE_COLOR_NORMAL, false);
+		String description = " " + location.getDescription().getInfo();
 		description += " " + "It is " + location.getWorld().getPartOfDay().toString().toLowerCase() + ".";
 		IO.writeString(description);
 		lookAdjacentLocations(walkedInFrom);
@@ -222,7 +220,7 @@ public class Hero extends Creature {
 		World world = Game.getGameState().getWorld();
 		Point pos = Game.getGameState().getHeroPosition();
 		
-		HashMap<String, ArrayList<Direction>> visibleLocations = new HashMap<String, ArrayList<Direction>>();
+		HashMap<ColoredString, ArrayList<Direction>> visibleLocations = new HashMap<ColoredString, ArrayList<Direction>>();
 		
 		Collection<Direction> directions = Direction.getAllExcept(walkedInFrom);
 		
@@ -231,19 +229,21 @@ public class Hero extends Creature {
 			Location adjacentLocation = world.getLocation(adjacentPoint);
 			ExplorationStatistics explorationStatistics = Game.getGameState().getStatistics().getExplorationStatistics();
 			explorationStatistics.createEntryIfNotExists(adjacentPoint, adjacentLocation.getID());
-			String locationName = adjacentLocation.getName().getSingular();
+			String name = adjacentLocation.getName().getSingular();
+			Color color = adjacentLocation.getDescription().getColor();
+			ColoredString locationName = new ColoredString(name, color);
 			if (!visibleLocations.containsKey(locationName)) {
 				visibleLocations.put(locationName, new ArrayList<Direction>());
 			}
 			visibleLocations.get(locationName).add(dir);
 		}
 		
-		StringBuilder stringBuilder = new StringBuilder(140);
-		for (Entry<String, ArrayList<Direction>> entry : visibleLocations.entrySet()) {
-			stringBuilder.append(String.format("To %s you see %s.\n", Utils.enumerate(entry.getValue()), entry.getKey()));
+		for (Entry<ColoredString, ArrayList<Direction>> entry : visibleLocations.entrySet()) {
+			String text = String.format("To %s you see ", Utils.enumerate(entry.getValue()));
+			IO.writeString(text, Constants.FORE_COLOR_NORMAL, false);
+			IO.writeString(String.format("%s", entry.getKey().getString()), entry.getKey().getColor(), false);
+			IO.writeString(".");
 		}
-		
-		IO.writeString(stringBuilder.toString());
 	}
 	
 	private void lookCreatures() {
