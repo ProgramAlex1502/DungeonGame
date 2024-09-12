@@ -20,7 +20,7 @@ public class BattleStatistics implements Serializable {
 	public CounterMap<CauseOfDeath> getKillsByCauseOfDeath() {
 		CounterMap<CauseOfDeath> causeOfDeathCounterMap = new CounterMap<CauseOfDeath>();
 		for (BattleRecord record : records.keySet()) {
-			causeOfDeathCounterMap.incrementCounter(record.getCauseOfDeath());
+			causeOfDeathCounterMap.incrementCounter(record.getCauseOfDeath(), records.getCounter(record));
 		}
 		return causeOfDeathCounterMap;
 	}
