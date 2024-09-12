@@ -1,4 +1,4 @@
-package org.dungeon.util;
+package org.dungeon.game;
 
 public class Poem {
 	
@@ -6,7 +6,7 @@ public class Poem {
 	private final String author;
 	private final String content;
 	
-	Poem(String title, String author, String content) {
+	public Poem(String title, String author, String content) {
 		this.title = title;
 		this.author = author;
 		this.content = content;

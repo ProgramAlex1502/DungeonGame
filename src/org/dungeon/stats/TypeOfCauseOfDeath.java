@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum TypeOfCauseOfDeath implements Serializable {
 	
-	WEAPON("Weapon"), SKILL("Skill");
+	UNARMED("Unarmed"), WEAPON("Weapon"), SKILL("Skill");
 	
 	private final String stringRepresentation;
 	

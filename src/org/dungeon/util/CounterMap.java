@@ -43,13 +43,9 @@ public class CounterMap<K> implements Serializable {
 		}
 	}
 	
-	public boolean fulfills(CounterMap<K> requirements) {
-		for (K key : requirements.keySet()) {
-			if (getCounter(key) < requirements.getCounter(key)) {
-				return false;
-			}
-		}
-		return true;
+	@Override
+	public String toString() {
+		return String.format("CounterMap{map=%s}", map);
 	}
 
 }

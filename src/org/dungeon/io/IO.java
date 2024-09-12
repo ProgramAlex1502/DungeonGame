@@ -3,8 +3,8 @@ package org.dungeon.io;
 import java.awt.Color;
 
 import org.dungeon.game.Game;
+import org.dungeon.game.Poem;
 import org.dungeon.util.Constants;
-import org.dungeon.util.Poem;
 
 public class IO {
 	

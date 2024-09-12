@@ -43,7 +43,7 @@ public enum PartOfDay implements Selectable {
 			}
 		}
 		
-		return null;
+		throw new AssertionError();
 	}
 	
 	public static int getSecondsToNext(Date cur, PartOfDay pod) {

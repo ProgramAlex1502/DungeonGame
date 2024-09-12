@@ -34,5 +34,11 @@ class ExplorationStatisticsEntry implements Serializable {
 	public void addKill() {
 		this.killCount++;
 	}
+	
+	@Override
+	public String toString() {
+		String format = "ExplorationStatisticsEntry{locationID=%s, visitCount=%d, killCount=%d}";
+		return String.format(format, locationID, visitCount, killCount);
+	}
 
 }

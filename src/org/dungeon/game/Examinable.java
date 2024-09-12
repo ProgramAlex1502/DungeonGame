@@ -1,6 +1,6 @@
 package org.dungeon.game;
 
-public interface Examinable {
+interface Examinable {
 	
 	String getInfo();
 

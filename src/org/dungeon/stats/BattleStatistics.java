@@ -2,46 +2,40 @@ package org.dungeon.stats;
 
 import java.io.Serializable;
 
+import org.dungeon.achievements.BattleStatisticsRequirement;
 import org.dungeon.entity.creatures.Creature;
-import org.dungeon.game.ID;
+import org.dungeon.game.PartOfDay;
 import org.dungeon.util.CounterMap;
-import org.dungeon.util.Utils;
 
 public class BattleStatistics implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private final CounterMap<String> killsByCreatureType = new CounterMap<String>();
-	private final CounterMap<ID> killsByCreatureID = new CounterMap<ID>();
-	private final CounterMap<CauseOfDeath> killsByCauseOfDeath = new CounterMap<CauseOfDeath>();
-	private final Record longestBattleLength = new Record(Record.Type.MAXIMUM);
-	private int battleCount;
+	private final CounterMap<BattleRecord> records = new CounterMap<BattleRecord>();
 	
-	public void addBattle(Creature foe, CauseOfDeath causeOfDeath, int turns) {
-		battleCount++;
-		killsByCreatureType.incrementCounter(foe.getType());
-		killsByCreatureID.incrementCounter(foe.getID());
-		killsByCauseOfDeath.incrementCounter(causeOfDeath);
-		longestBattleLength.update(turns);
-	}
-	
-	public CounterMap<String> getKillsByCreatureType() {
-		return killsByCreatureType;
-	}
-
-	public CounterMap<ID> getKillsByCreatureID() {
-		return killsByCreatureID;
+	public void addBattle(Creature foe, CauseOfDeath causeOfDeath, PartOfDay partOfDay) {
+		BattleRecord record = new BattleRecord(foe.getID(), foe.getType(), causeOfDeath, partOfDay);
+		records.incrementCounter(record);
 	}
 	
 	public CounterMap<CauseOfDeath> getKillsByCauseOfDeath() {
-		return killsByCauseOfDeath;
+		CounterMap<CauseOfDeath> causeOfDeathCounterMap = new CounterMap<CauseOfDeath>();
+		for (BattleRecord record : records.keySet()) {
+			causeOfDeathCounterMap.incrementCounter(record.getCauseOfDeath());
+		}
+		return causeOfDeathCounterMap;
 	}
 	
-	public int getLongestBattleLength() {
-		return Utils.zeroIfNull(longestBattleLength.getValue());
-	}
-	
-	public int getBattleCount() {
-		return battleCount;
+	public boolean satisfies(BattleStatisticsRequirement requirement) {
+		int count = 0;
+		for (BattleRecord record : records.keySet()) {
+			if (requirement.getQuery().matches(record)) {
+				count += records.getCounter(record);
+				if (count >= requirement.getCount()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

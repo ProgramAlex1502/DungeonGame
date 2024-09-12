@@ -38,22 +38,6 @@ public final class Utils {
 		return string.split("\\s+");
 	}
 	
-	public static String clearEnd(String str) {
-		StringBuilder stringBuilder = new StringBuilder(str);
-		int length = stringBuilder.length();
-		char lastChar;
-		while (length > 0) {
-			lastChar = stringBuilder.charAt(length - 1);
-			if (Character.isSpaceChar(lastChar) || lastChar == '\n') {
-				stringBuilder.setLength(stringBuilder.length() - 1);
-			} else {
-				break;
-			}
-			length = stringBuilder.length();
-		}
-		return stringBuilder.toString();
-	}
-	
 	public static String join(String delimiter, String... elements) {
 		if (elements.length == 0) {
 			throw new IllegalArgumentException("elements must have at least one element.");
@@ -145,10 +129,6 @@ public final class Utils {
 			}
 		}
 		return matches;
-	}
-	
-	public static int zeroIfNull(Integer integer) {
-		return integer == null ? 0 : integer;
 	}
 
 }
