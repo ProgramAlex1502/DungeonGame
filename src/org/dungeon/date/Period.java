@@ -2,15 +2,19 @@ package org.dungeon.date;
 
 import java.io.Serializable;
 
+import org.dungeon.util.DungeonMath;
+
 public class Period implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private static final String LESS_THAN_A_DAY = "Less than a day";
-	
 	private final long difference;
 	
 	public Period(Date start, Date end) {
 		difference = end.getTime() - start.getTime();
+	}
+	
+	public Period(long start, long end) {
+		difference = end - start;
 	}
 	
 	public long getSeconds() {
@@ -19,45 +23,19 @@ public class Period implements Serializable {
 	
 	@Override
 	public String toString() {
-		long years = difference / DungeonTimeUnit.YEAR.milliseconds;
-		long months = (difference % DungeonTimeUnit.YEAR.milliseconds) / DungeonTimeUnit.MONTH.milliseconds;
-		long days = (difference % DungeonTimeUnit.MONTH.milliseconds) / DungeonTimeUnit.DAY.milliseconds;
-		StringBuilder builder = new StringBuilder();
+		if (difference < DungeonTimeUnit.DAY.milliseconds) {
+			return "Less than a day";
+		}
 		
-		if (years != 0) {
-			if (years == 1) {
-				builder.append(years).append(" year");
-			} else {
-				builder.append(years).append(" years");
-			}
-		}
-		if (months != 0) {
-			if (builder.length() != 0) {
-				if (days == 0) {
-					builder.append(" and ");
-				} else {
-					builder.append(", ");
-				}
-			}
-			if (months == 1) {
-				builder.append(months).append(" month");
-			} else {
-				builder.append(months).append(" months");
-			}
-		}
-		if (days != 0) {
-			if (builder.length() != 0) {
-				builder.append(" and ");
-			}
-			if (days == 1) {
-				builder.append(days).append(" day");
-			} else {
-				builder.append(days).append(" days");
-			}
-		}
-		if (builder.length() == 0) {
-			builder.append(LESS_THAN_A_DAY);
-		}
+		TimeStringBuilder builder = new TimeStringBuilder();
+		int years = DungeonMath.safeCastLongToInteger(difference / DungeonTimeUnit.YEAR.milliseconds);
+		long monthsLong = (difference % DungeonTimeUnit.YEAR.milliseconds) / DungeonTimeUnit.MONTH.milliseconds;
+		int months = DungeonMath.safeCastLongToInteger(monthsLong);
+		long daysLong = (difference % DungeonTimeUnit.MONTH.milliseconds) / DungeonTimeUnit.DAY.milliseconds;
+		int days = DungeonMath.safeCastLongToInteger(daysLong);
+		builder.set(EarthTimeUnit.YEAR, years);
+		builder.set(EarthTimeUnit.MONTH, months);
+		builder.set(EarthTimeUnit.DAY, days);
 		return builder.toString();
 	}
 

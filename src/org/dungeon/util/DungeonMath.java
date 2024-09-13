@@ -5,13 +5,13 @@ import java.math.BigInteger;
 import org.dungeon.commands.IssuedCommand;
 import org.dungeon.io.IO;
 
-public class Math {
+public class DungeonMath {
 	
 	private static final int SECOND_IN_NANOSECONDS = 1000000000;
 	private static final double DEFAULT_DOUBLE_TOLERANCE = 1e-8;
 	private static final String TIMEOUT = "TIMEOUT";
 	
-	private Math() {
+	private DungeonMath() {
 		throw new AssertionError();
 	}
 	
@@ -106,6 +106,40 @@ public class Math {
 			charactersOnThisLine++;
 		}
 		return builder.toString();
+	}
+	
+	public static int safeCastLongToInteger(long l) {
+		if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException(l + " does not fit into an integer.");
+		} else {
+			return (int) l;
+		}
+	}
+	
+	public static int sum(int[] integers) {
+		int total = 0;
+		for (int integer : integers) {
+			total += integer;
+		}
+		return total;
+	}
+	
+	public static void distribute(int value, int[] buckets) {
+		if (buckets.length == 0) {
+			throw new IllegalArgumentException("buckets must have at least one element.");
+		}
+		int commonModification = value / buckets.length;
+		value %= buckets.length;
+		for (int i = 0; i < buckets.length; i++) {
+			buckets[i] += commonModification;
+			if (value > 0) {
+				buckets[i]++;
+				value--;
+			} else if (value < 0) {
+				buckets[i]--;
+				value++;
+			}
+		}
 	}
 
 }

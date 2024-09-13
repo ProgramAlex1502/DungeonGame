@@ -14,10 +14,10 @@ public class Percentage implements Comparable<Percentage>, Serializable {
 	private final double value;
 	
 	public Percentage(double percentage) {
-		if (Math.fuzzyCompare(percentage, ZERO) < 0) {
+		if (DungeonMath.fuzzyCompare(percentage, ZERO) < 0) {
 			value = ZERO;
 			DLogger.warning("Tried to use " + percentage + " as a percentage. Used " + ZERO + " instead.");
-		} else if (Math.fuzzyCompare(percentage, ONE) > 0) {
+		} else if (DungeonMath.fuzzyCompare(percentage, ONE) > 0) {
 			value = ONE;
 			DLogger.warning("Tried to use " + percentage + " as a percentage. Used " + ONE + " instead.");
 		} else {
@@ -47,7 +47,7 @@ public class Percentage implements Comparable<Percentage>, Serializable {
 	}
 	
 	private static boolean isValidPercentageDouble(double value) {
-		return Math.fuzzyCompare(value, ZERO) >= 0 && Math.fuzzyCompare(value, ONE) <= 0;
+		return DungeonMath.fuzzyCompare(value, ZERO) >= 0 && DungeonMath.fuzzyCompare(value, ONE) <= 0;
 	}
 	
 	private static String trimAndDiscardLastCharacter(String string) {
@@ -65,7 +65,7 @@ public class Percentage implements Comparable<Percentage>, Serializable {
 	
 	@Override
 	public int compareTo(Percentage o) {
-		return Math.fuzzyCompare(toDouble(), o.toDouble());
+		return DungeonMath.fuzzyCompare(toDouble(), o.toDouble());
 	}
 	
 	public boolean biggerThanOrEqualTo(Percentage o) {
